@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
     view.rootContext()->setContextProperty("engine", &engine);
 
-    view.setSource(QUrl::fromLocalFile(mainFile));
+    view.setSource(QUrl(QStringLiteral("qrc:///") + mainFile));
     view.show();
 
 

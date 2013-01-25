@@ -6,7 +6,8 @@ Item {
 
     Main {
         anchors.centerIn: parent
-        anchors.fill: parent
+        width: parent.height
+        height: parent.width
         rotation: 90
     }
 }

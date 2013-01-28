@@ -30,11 +30,10 @@ int main(int argc, char **argv)
     qDebug() << "MainFile:" << mainFile;
 
     view.rootContext()->setContextProperty("engine", &engine);
-
+    view.setColor(Qt::black);
+    view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.setSource(QUrl(QStringLiteral("qrc:///") + mainFile));
     view.show();
-
-
 
     app.exec();
 }

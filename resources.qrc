@@ -4,5 +4,11 @@
         <file>qml/main_desktop.qml</file>
         <file>qml/main_nexus7.qml</file>
         <file>qml/bootscreen/BootScreen.qml</file>
+        <file>qml/launchscreen/LaunchScreen.qml</file>
+        <file>qml/common/NoisyGradient.qml</file>
+        <file>qml/common/images/particle.png</file>
+        <file>qml/common/images/qt-logo.png</file>
+        <file>qml/common/images/particle_star.png</file>
+        <file>qml/common/images/qt-logo-mask.png</file>
     </qresource>
 </RCC>

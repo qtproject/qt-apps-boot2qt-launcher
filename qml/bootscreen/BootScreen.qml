@@ -8,14 +8,19 @@ Item {
 
     SequentialAnimation {
         id: entryAnimation
-        NumberAnimation { target: logo; property: "opacity"; from: 0; to: 1; duration: 3000; easing.type: Easing.InOutQuad }
+        NumberAnimation { target: logo; property: "opacity"; from: 0; to: 1; duration: 2000; easing.type: Easing.InOutQuad }
         PropertyAction { target: starSystem; property: "running"; value: true }
-        PauseAnimation { duration: 2000 }
-        NumberAnimation { target: label; property: "opacity"; from: 0; to: 1; duration: 3000; easing.type: Easing.InOutQuad }
+        PauseAnimation { duration: 1000 }
+        NumberAnimation { target: label; property: "opacity"; from: 0; to: 1; duration: 5000; easing.type: Easing.InOutQuad }
+        ScriptAction { script: { engine.markIntroAnimationDone(); } }
     }
 
     Component.onCompleted: {
-        entryAnimation.running = true
+        if (1) {
+            engine.markIntroAnimationDone()
+        } else {
+            entryAnimation.running = true
+        }
     }
 
     Image {
@@ -60,13 +65,13 @@ Item {
         Emitter {
             id: starEmitter
             anchors.fill: parent
-            emitRate: 200
+            emitRate: 100
             lifeSpan: 1500
             size: 16
             sizeVariation: 8
 
-            velocity: PointDirection { xVariation: 10; yVariation: 10;}
-            acceleration: PointDirection {xVariation: 10; yVariation: 10;}
+            velocity: PointDirection { xVariation: 10; yVariation: 10; }
+            acceleration: PointDirection {xVariation: 10; yVariation: 10; }
 
             shape: MaskShape {
                 source: "../common/images/qt-logo-mask.png"

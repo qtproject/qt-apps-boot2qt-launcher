@@ -31,7 +31,7 @@ Item {
         }
     ]
 
-    state: engine.state;
+    state: engine.state
 
     Loader {
         id: bootScreenLoader
@@ -45,4 +45,7 @@ Item {
         sourceComponent: LaunchScreen {}
     }
 
+    Component.onCompleted: {
+        engine.initialize();
+    }
 }

@@ -15,6 +15,8 @@ Item {
         source: engine.backgroundImage;
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
+        sourceSize.width: 1024
+        asynchronous: true;
     }
 
 //    NoisyGradient {

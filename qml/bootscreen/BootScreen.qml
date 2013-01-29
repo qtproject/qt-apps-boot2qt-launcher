@@ -16,7 +16,7 @@ Item {
     }
 
     Component.onCompleted: {
-        if (1) {
+        if (0) {
             engine.markIntroAnimationDone()
         } else {
             entryAnimation.running = true

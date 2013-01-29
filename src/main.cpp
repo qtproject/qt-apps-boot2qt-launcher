@@ -14,9 +14,9 @@ int main(int argc, char **argv)
     QGuiApplication app(argc, argv);
 
     QString mainFile = QStringLiteral("qml/Main.qml");
-    QString appsRoot = QStringLiteral("/user/data");
+    QString appsRoot = QStringLiteral("/data/user/qt");
 
-    QString bgImage = QStringLiteral("/user/data/qt/bg.jpg");
+    QString bgImage = QStringLiteral("/data/user/qt/bg.jpg");
 
     QStringList args = app.arguments();
     for (int i=0; i<args.size(); ++i) {

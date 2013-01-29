@@ -34,15 +34,15 @@ Item {
     state: engine.state
 
     Loader {
-        id: bootScreenLoader
-        anchors.fill: parent
-        sourceComponent: BootScreen {}
-    }
-
-    Loader {
         id: launchScreenLoader
         anchors.fill: parent
         sourceComponent: LaunchScreen {}
+    }
+
+    Loader {
+        id: bootScreenLoader
+        anchors.fill: parent
+        sourceComponent: BootScreen {}
     }
 
     Component.onCompleted: {

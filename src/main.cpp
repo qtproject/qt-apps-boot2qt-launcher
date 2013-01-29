@@ -36,15 +36,16 @@ int main(int argc, char **argv)
     qDebug() << "Applications Root:" << appsRoot;
     qDebug() << "Background Image:" << bgImage;
 
-    Engine engine;
+    QQuickView view;
 
+    Engine engine;
     engine.setBackgroundImage(QUrl::fromLocalFile(bgImage));
+    engine.setQmlEngine(view.engine());
 
     ApplicationsModel appsModel;
     QObject::connect(&appsModel, SIGNAL(ready()), &engine, SLOT(markApplicationsModelReady()));
     appsModel.initialize(appsRoot);
 
-    QQuickView view;
     view.rootContext()->setContextProperty("engine", &engine);
     view.rootContext()->setContextProperty("applicationsModel", &appsModel);
     view.setColor(Qt::black);

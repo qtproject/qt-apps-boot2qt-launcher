@@ -17,6 +17,23 @@ Item {
         State {
             name: "running"
             PropertyChanges { target: launchScreenLoader; opacity: 1 }
+            PropertyChanges { target: applicationLoader; opacity: 0 }
+            PropertyChanges { target: applicationCloseButton; opacity: 0 }
+        },
+        State {
+            name: "app-launching"
+        },
+        State {
+            name: "app-running"
+            PropertyChanges { target: applicationLoader; opacity: 1 }
+            PropertyChanges { target: applicationCloseButton; opacity: 1 }
+            PropertyChanges { target: launchScreenLoader; opacity: 0 }
+        },
+        State {
+            name: "app-closing"
+            PropertyChanges { target: applicationLoader; opacity: 0 }
+            PropertyChanges { target: applicationCloseButton; opacity: 0 }
+            PropertyChanges { target: launchScreenLoader; opacity: 1 }
         }
     ]
 
@@ -28,7 +45,24 @@ Item {
                 NumberAnimation { target: launchScreenLoader; property: "opacity"; duration: 1000; easing.type: Easing.InOutQuad }
                 PropertyAction { target: bootScreenLoader; property: "sourceComponent"; value: undefined }
             }
+        },
+        Transition {
+            from: "app-launching"
+            to: "app-running"
+            SequentialAnimation {
+                ScriptAction { script: print("running -> app-launching"); }
+                NumberAnimation { property: "opacity"; duration: 1000 }
+            }
+        },
+        Transition {
+            from: "app-running"
+            to: "app-closing"
+            SequentialAnimation {
+                NumberAnimation { property: "opacity"; duration: 1000 }
+                ScriptAction { script: engine.closeApplication(); }
+            }
         }
+
     ]
 
     state: engine.state
@@ -45,7 +79,37 @@ Item {
         sourceComponent: BootScreen {}
     }
 
-    Component.onCompleted: {
-        engine.initialize();
+    Loader {
+        id: applicationLoader
+        opacity: 0;
+
+        asynchronous: true;
+        source: engine.applicationUrl
+
+        onLoaded: {
+            print("onLoaded: " + status);
+            item.x = 0
+            item.y = 0
+            item.width = root.width
+            item.height = root.height
+            engine.state = "app-running";
+        }
     }
+
+    Image {
+        id: applicationCloseButton;
+        source: "common/images/application-close.png"
+        width: engine.titleBarSize();
+        height: width
+        anchors.right: parent.right
+        anchors.top: parent.top
+        opacity: 0;
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                engine.state = "app-closing"
+            }
+        }
+    }
+
 }

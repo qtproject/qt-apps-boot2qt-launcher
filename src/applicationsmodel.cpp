@@ -71,7 +71,6 @@ ApplicationsModel::ApplicationsModel(QObject *parent) :
 
 QHash<int, QByteArray> ApplicationsModel::roleNames() const
 {
-    qDebug() << "asking for role names...";
     QHash<int, QByteArray> names;
     names[NameRole] = "name";
     names[DescriptionRole] = "description";
@@ -97,7 +96,6 @@ bool ApplicationsModel::event(QEvent *e)
     if (e->type() == RESULT_EVENT) {
         beginResetModel();
         m_data = static_cast<ResultEvent *>(e)->results;
-        qDebug() << "ApplicationsModel: got" << m_data.size() << "entries from indexer...";
         endResetModel();
         emit ready();
         return true;

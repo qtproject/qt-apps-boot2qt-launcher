@@ -11,5 +11,7 @@
         <file>qml/common/images/particle_star.png</file>
         <file>qml/common/images/qt-logo-mask.png</file>
         <file>qml/launchscreen/TitleBar.qml</file>
+        <file>qml/launchscreen/ApplicationIcon.qml</file>
+        <file>qml/common/images/application-close.png</file>
     </qresource>
 </RCC>

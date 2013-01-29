@@ -12,6 +12,7 @@ Item {
     property real cellSize: size / 3;
 
     Image {
+        id: backgroundImage
         source: engine.backgroundImage;
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
@@ -19,13 +20,14 @@ Item {
         asynchronous: true;
     }
 
-//    NoisyGradient {
-//        anchors.fill: parent
-//        gradient: Gradient {
-//            GradientStop { position: 0; color: "lightsteelblue" }
-//            GradientStop { position: 1; color: "gray" }
-//        }
-//    }
+    NoisyGradient {
+        visible: backgroundImage.source == "";
+        anchors.fill: parent
+        gradient: Gradient {
+            GradientStop { position: 0; color: "lightsteelblue" }
+            GradientStop { position: 1; color: "black" }
+        }
+    }
 
     GridView {
         anchors.fill: parent

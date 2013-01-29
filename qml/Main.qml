@@ -86,6 +86,9 @@ Item {
         asynchronous: true;
         source: engine.applicationUrl
 
+        onSourceChanged: print("App Source: '" + source + "'");
+        onStatusChanged: print("Loader Status: '" + status + "'");
+
         onLoaded: {
             print("onLoaded: " + status);
             item.x = 0

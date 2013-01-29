@@ -29,8 +29,9 @@ Item {
 
     GridView {
         anchors.top: titleBar.bottom
-        anchors.bottom: parent.bottom
-        width: parent.width
+        anchors.bottom: root.bottom
+        anchors.horizontalCenter: root.horizontalCenter
+        width: Math.floor(root.width / root.cellSize) * root.cellSize;
         model: applicationsModel;
 
         cellWidth: root.cellSize

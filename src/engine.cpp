@@ -84,6 +84,11 @@ int Engine::sensibleButtonSize() const
     if (buttonSize > baseSize)
         buttonSize = baseSize;
 
+    qDebug() << "screen size: " << screenSize;
+    qDebug() << "pdpi: " << screen->physicalDotsPerInch();
+    qDebug() << "baseSize: " << baseSize;
+    qDebug() << "buttonSize: " << buttonSize;
+
     return buttonSize;
 }
 

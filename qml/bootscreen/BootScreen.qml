@@ -10,10 +10,10 @@ Item {
         id: entryAnimation
         ParallelAnimation {
             SequentialAnimation {
-                PropertyAction { target: sphereEmitter; property: "emitRate"; value: 50 }
+                PropertyAction { target: sphereEmitter; property: "emitRate"; value: 100 }
                 PropertyAction { target: sphereSystem; property: "running"; value: true }
                 PauseAnimation { duration: 3000 }
-                PropertyAction { target: sphereEmitter; property: "emitRate"; value: 200 }
+                PropertyAction { target: sphereEmitter; property: "emitRate"; value: 300 }
                 PropertyAction { target: starSystem; property: "running"; value: true }
                 PauseAnimation { duration: 5000 }
                 ScriptAction { script: {
@@ -35,16 +35,14 @@ Item {
                 NumberAnimation { target: label; property: "opacity"; to: 0; duration: 3000 }
             }
         }
-
         ScriptAction { script: {
                 engine.markIntroAnimationDone();
             }
         }
-
     }
 
     Component.onCompleted: {
-        if (1) {
+        if (0) {
             engine.markIntroAnimationDone()
         } else {
             entryAnimation.running = true
@@ -85,7 +83,7 @@ Item {
             source: "../common/images/particle.png"
             anchors.fill: parent
             color: "#80c342"
-            alpha: 0
+            alpha: 1
             colorVariation: 0.0
         }
 
@@ -94,8 +92,8 @@ Item {
             anchors.fill: parent
             emitRate: 100
             lifeSpan: 5000
-            size: 15
-            sizeVariation: 8
+            size: 20
+            sizeVariation: 4
 
             velocity: PointDirection { xVariation: 5; yVariation: 5; }
             acceleration: PointDirection {

@@ -6,7 +6,6 @@ Item {
 
     property real size: Math.min(root.width, root.height);
 
-
     SequentialAnimation {
         id: entryAnimation
         ParallelAnimation {
@@ -31,9 +30,8 @@ Item {
                 PauseAnimation { duration: 4000 }
             }
             SequentialAnimation {
-                PauseAnimation { duration: 5000 }
-                NumberAnimation { target: label; property: "opacity"; to: 1; duration: 3000 }
-                PauseAnimation { duration: 4000 }
+                PauseAnimation { duration: 3000 }
+                NumberAnimation { target: label; property: "opacity"; to: 1; duration: 5000 }
                 NumberAnimation { target: label; property: "opacity"; to: 0; duration: 3000 }
             }
         }
@@ -99,7 +97,7 @@ Item {
             size: 15
             sizeVariation: 8
 
-            velocity: PointDirection { xVariation: 1; yVariation: 1; }
+            velocity: PointDirection { xVariation: 5; yVariation: 5; }
             acceleration: PointDirection {
                 id: sphereAccel
                 xVariation: 0;
@@ -135,7 +133,7 @@ Item {
             size: 24
             sizeVariation: 8
 
-            velocity: PointDirection { xVariation: 1; yVariation: 1; }
+            velocity: PointDirection { xVariation: 5; yVariation: 5; }
             acceleration: PointDirection {
                 id: starAccel
                 xVariation: 0;

@@ -2,12 +2,14 @@
 
 #include <QFile>
 #include <QTimerEvent>
+#include <QDebug>
+
+#include <QGuiApplication>
+#include <QScreen>
 
 #define ENGINE_STATE_BOOTING QStringLiteral("booting")
 #define ENGINE_STATE_RUNNING QStringLiteral("running")
 #define ENGINE_STATE_APPRUNNING QStringLiteral("app-running")
-
-
 
 Engine::Engine(QObject *parent)
     : QObject(parent)
@@ -44,4 +46,32 @@ void Engine::setBackgroundImage(const QUrl &name)
     else
         m_bgImage = QUrl();
     emit backgroundImageChanged(m_bgImage);
+}
+
+
+int Engine::titleBarSize() const
+{
+    return int(QGuiApplication::primaryScreen()->physicalDotsPerInch() / 2.54f);
+}
+
+
+int Engine::sensibleButtonSize() const
+{
+    QScreen *screen = QGuiApplication::primaryScreen();
+
+    QSize screenSize = screen->size();
+    qDebug() << "Screensize is: " << screenSize;
+    int baseSize = qMin(screenSize.width(), screenSize.height());
+    float dpcm = screen->physicalDotsPerInch() / 2.54f;
+
+    // 3cm buttons, nice and big...
+    int buttonSize = int(dpcm * 4);
+
+    qDebug() << dpcm << buttonSize << screen->logicalDotsPerInch() << screen->physicalDotsPerInch();
+
+    // Clamp buttonSize to screen..
+    if (buttonSize > baseSize)
+        buttonSize = baseSize;
+
+    return buttonSize;
 }

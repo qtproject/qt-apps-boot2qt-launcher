@@ -20,6 +20,9 @@ public:
     QUrl backgroundImage() const { return m_bgImage; }
     void setBackgroundImage(const QUrl &name);
 
+    Q_INVOKABLE int sensibleButtonSize() const;
+    Q_INVOKABLE int titleBarSize() const;
+
 protected:
 
 signals:

@@ -9,7 +9,7 @@ Item {
     id: root
 
     property real size: Math.min(root.width, root.height);
-    property real cellSize: size / 3;
+    property real cellSize: engine.sensibleButtonSize();
 
     Image {
         id: backgroundImage
@@ -30,7 +30,9 @@ Item {
     }
 
     GridView {
-        anchors.fill: parent
+        anchors.top: titleBar.bottom
+        anchors.bottom: parent.bottom
+        width: parent.width
         model: applicationsModel;
 
         cellWidth: root.cellSize
@@ -65,6 +67,7 @@ Item {
                     anchors.fill: parent
                     anchors.margins: parent.width * 0.1
                     smooth: true
+                    asynchronous: true;
                 }
 
                 Text {
@@ -105,4 +108,11 @@ Item {
             }
         }
     }
+
+    TitleBar {
+        id: titleBar
+        height: engine.titleBarSize();
+        width: parent.width
+    }
+
 }

@@ -43,7 +43,7 @@ Item {
             to: "running"
             SequentialAnimation {
                 NumberAnimation { target: launchScreenLoader; property: "opacity"; duration: 1000; easing.type: Easing.InOutQuad }
-                PropertyAction { target: bootScreenLoader; property: "sourceComponent"; value: undefined }
+                ScriptAction { script: bootScreenLoader.sourceComponent = undefined }
             }
         },
         Transition {
@@ -51,14 +51,16 @@ Item {
             to: "app-running"
             SequentialAnimation {
                 ScriptAction { script: print("running -> app-launching"); }
-                NumberAnimation { property: "opacity"; duration: 1000 }
+                NumberAnimation { target: applicationLoader; property: "opacity"; duration: 1000 }
+                PropertyAction { target: launchScreenLoader; property: "opacity"; value: 0}
             }
         },
         Transition {
             from: "app-running"
             to: "app-closing"
             SequentialAnimation {
-                NumberAnimation { property: "opacity"; duration: 1000 }
+                PropertyAction { target: launchScreenLoader; property: "opacity"; value: 1 }
+                NumberAnimation { target: applicationLoader; property: "opacity"; duration: 1000 }
                 ScriptAction { script: engine.closeApplication(); }
             }
         }
@@ -77,6 +79,19 @@ Item {
         id: bootScreenLoader
         anchors.fill: parent
         sourceComponent: BootScreen {}
+
+        onSourceComponentChanged: print("bootScreenLoader: sourceComponent changed to: " + sourceComponent);
+
+        onStatusChanged: {
+            switch (status) {
+            case Loader.Null: print("bootScreenLoader status: Null"); break;
+            case Loader.Ready: print("bootScreenLoader status: Ready"); break;
+            case Loader.Error: print("bootScreenLoader status: Error"); break;
+            case Loader.Loading: print("bootScreenLoader status: Loading"); break;
+            default: print("bootScreenLoader: unknown status: " + status); break;
+            }
+        }
+
     }
 
     Loader {

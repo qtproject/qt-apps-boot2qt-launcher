@@ -80,17 +80,22 @@ Item {
         text: name
     }
 
-    layer.smooth: true
-    layer.enabled: true
-    layer.effect: DropShadow {
-        color: Qt.rgba(0, 0, 0, .6);
-        fast: true
-        samples: 8
-        radius: 16
-        spread: 0.7
-        verticalOffset: appIcon.width * 0.02
-        horizontalOffset: appIcon.width * 0.02
-        cached: true
+    Component {
+        id: shadow
+        DropShadow {
+            color: Qt.rgba(0, 0, 0, .6);
+            fast: true
+            samples: 8
+            radius: 16
+            spread: 0.7
+            verticalOffset: appIcon.width * 0.02
+            horizontalOffset: appIcon.width * 0.02
+            cached: true
+        }
     }
+
+    layer.smooth: engine.hasIconShadows
+    layer.enabled: engine.hasIconShadows
+    layer.effect: engine.hasIconShadows ? shadow : undefined;
 
 }

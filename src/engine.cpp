@@ -24,6 +24,7 @@ Engine::Engine(QObject *parent)
     : QObject(parent)
     , m_qmlEngine(0)
     , m_activeIcon(0)
+    , m_hasIconShadows(true)
     , m_intro_done(false)
     , m_apps_ready(false)
 {
@@ -50,6 +51,14 @@ void Engine::setState(const QString &state)
     emit stateChanged(m_state);
 }
 
+void Engine::setHasIconShadows(bool shadows)
+{
+    if (m_hasIconShadows == shadows)
+        return;
+    m_hasIconShadows = shadows;
+    emit hasIconShadowsChanged(m_hasIconShadows);
+}
+
 void Engine::setBackgroundImage(const QUrl &name)
 {
     if (m_bgImage == name)
@@ -62,6 +71,14 @@ void Engine::setBackgroundImage(const QUrl &name)
     emit backgroundImageChanged(m_bgImage);
 }
 
+void Engine::setBackgroundColor(const QString &color)
+{
+    if (m_bgColor == color)
+        return;
+
+    m_bgColor = color;
+    emit backgroundColorChanged(m_bgColor);
+}
 
 int Engine::titleBarSize() const
 {
@@ -75,7 +92,7 @@ int Engine::sensibleButtonSize() const
 
     QSize screenSize = screen->size();
     int baseSize = qMin(screenSize.width(), screenSize.height());
-    float dpcm = screen->physicalDotsPerInch() / 2.54f;
+    float dpcm = screen->physicalDotsPerInchY() / 2.54f;
 
     // 3cm buttons, nice and big...
     int buttonSize = int(dpcm * 4);
@@ -85,7 +102,9 @@ int Engine::sensibleButtonSize() const
         buttonSize = baseSize;
 
     qDebug() << "screen size: " << screenSize;
-    qDebug() << "pdpi: " << screen->physicalDotsPerInch();
+    qDebug() << "physical screen size: " << screen->physicalSize();
+    qDebug() << "pdpi: " << screen->physicalDotsPerInch() << (screenSize.width() / screen->physicalSize().width() * 2.54);
+
     qDebug() << "baseSize: " << baseSize;
     qDebug() << "buttonSize: " << buttonSize;
 

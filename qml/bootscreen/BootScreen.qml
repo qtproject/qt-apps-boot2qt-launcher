@@ -10,11 +10,11 @@ Item {
         id: entryAnimation
         ParallelAnimation {
             SequentialAnimation {
-                PropertyAction { target: sphereEmitter; property: "emitRate"; value: 100 }
                 PropertyAction { target: sphereSystem; property: "running"; value: true }
-                PauseAnimation { duration: 3000 }
-                PropertyAction { target: sphereEmitter; property: "emitRate"; value: 300 }
                 PropertyAction { target: starSystem; property: "running"; value: true }
+                PauseAnimation { duration: 3000 }
+                PropertyAction { target: sphereEmitter; property: "emitRate"; value: 200 }
+                PropertyAction { target: starEmitter; property: "emitRate"; value: 200 }
                 PauseAnimation { duration: 5000 }
                 ScriptAction { script: {
                         starAccel.xVariation = 20;
@@ -27,12 +27,12 @@ Item {
                 PauseAnimation { duration: 3000 }
                 PropertyAction { target: starEmitter; property: "enabled"; value: false }
                 PropertyAction { target: sphereEmitter; property: "enabled"; value: false }
-                PauseAnimation { duration: 4000 }
+                PauseAnimation { duration: 5000 }
             }
             SequentialAnimation {
-                PauseAnimation { duration: 3000 }
+                PauseAnimation { duration: 5000 }
                 NumberAnimation { target: label; property: "opacity"; to: 1; duration: 5000 }
-                NumberAnimation { target: label; property: "opacity"; to: 0; duration: 3000 }
+                NumberAnimation { target: label; property: "opacity"; to: 0; duration: 1000 }
             }
         }
         ScriptAction { script: {
@@ -40,6 +40,8 @@ Item {
             }
         }
     }
+
+
 
     Component.onCompleted: {
         if (0) {
@@ -49,15 +51,12 @@ Item {
         }
     }
 
-    Image {
+    Item {
         id: logo;
-        source: "../common/images/qt-logo.png"
         width: root.size / 2;
         height: root.size / 2;
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -root.size * 0.1
-        smooth: true
-        opacity: 0
     }
 
     Text {
@@ -90,20 +89,20 @@ Item {
         Emitter {
             id: sphereEmitter
             anchors.fill: parent
-            emitRate: 100
+            emitRate: 50
             lifeSpan: 5000
-            size: 20
-            sizeVariation: 4
+            size: 24
+            sizeVariation: 8
 
-            velocity: PointDirection { xVariation: 5; yVariation: 5; }
+            velocity: PointDirection { xVariation: 2; yVariation: 2; }
             acceleration: PointDirection {
                 id: sphereAccel
-                xVariation: 0;
-                yVariation: 0;
+                xVariation: 1;
+                yVariation: 1;
             }
 
             shape: MaskShape {
-                source: "../common/images/qt-logo.png"
+                source: "images/qt-logo-green-mask.png"
             }
         }
     }
@@ -126,12 +125,12 @@ Item {
         Emitter {
             id: starEmitter
             anchors.fill: parent
-            emitRate: 200
+            emitRate: 50
             lifeSpan: 5000
-            size: 24
+            size: 32
             sizeVariation: 8
 
-            velocity: PointDirection { xVariation: 5; yVariation: 5; }
+            velocity: PointDirection { xVariation: 1; yVariation: 1; }
             acceleration: PointDirection {
                 id: starAccel
                 xVariation: 0;
@@ -139,8 +138,10 @@ Item {
             }
 
             shape: MaskShape {
-                source: "../common/images/qt-logo-mask.png"
+                source: "images/qt-logo-white-mask.png"
             }
         }
     }
+
+
 }

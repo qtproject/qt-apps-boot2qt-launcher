@@ -9,6 +9,22 @@
 #include "engine.h"
 #include "applicationsmodel.h"
 
+void displayHelp(const char *appName)
+{
+    printf("Usage: \n"
+           " > %s [options]\n"
+           "\n"
+           "Options:\n"
+           " --main-file [qml-file]             Launches an alternative QML file\n"
+           " --applications-root [path]         Specify a different applications root\n"
+           " --background-image [path]          Specify a different background image\n"
+           " --background-color [html-color]    Specify a background color, overrides image\n"
+           " --no-icon-shadow                   Disable drop shadow on icons\n"
+           , appName
+           );
+
+}
+
 int main(int argc, char **argv)
 {
     QGuiApplication app(argc, argv);
@@ -17,6 +33,8 @@ int main(int argc, char **argv)
     QString appsRoot = QStringLiteral("/data/user/qt");
 
     QString bgImage = QStringLiteral("/data/user/qt/bg.jpg");
+    QString bgColor;
+    bool iconShadow = true;
 
     QStringList args = app.arguments();
     for (int i=0; i<args.size(); ++i) {
@@ -29,18 +47,33 @@ int main(int argc, char **argv)
         } else if (args.at(i) == QStringLiteral("--background-image")) {
             ++i;
             bgImage = args.at(i);
+        } else if (args.at(i) == QStringLiteral("--background-color")) {
+            ++i;
+            if (QColor(args.at(i)).isValid())
+                bgColor = args.at(i);
+        } else if (args.at(i) == QStringLiteral("--no-icon-shadow")) {
+            iconShadow = false;
+        } else if (args.at(i) == QStringLiteral("-h")
+                   || args.at(i) == QStringLiteral("--help")
+                   || args.at(i) == QStringLiteral("-?")) {
+            displayHelp(argv[0]);
+            return 0;
         }
     }
 
     qDebug() << "Main File:" << mainFile;
     qDebug() << "Applications Root:" << appsRoot;
     qDebug() << "Background Image:" << bgImage;
+    qDebug() << "Background Color:" << bgColor;
+    qDebug() << "Icon Shadows:" << iconShadow;
 
     QQuickView view;
 
     Engine engine;
     engine.setBackgroundImage(QUrl::fromLocalFile(bgImage));
+    engine.setBackgroundColor(bgColor);
     engine.setQmlEngine(view.engine());
+    engine.setHasIconShadows(iconShadow);
 
     ApplicationsModel appsModel;
     QObject::connect(&appsModel, SIGNAL(ready()), &engine, SLOT(markApplicationsModelReady()));

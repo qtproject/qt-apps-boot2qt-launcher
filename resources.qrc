@@ -9,9 +9,10 @@
         <file>qml/common/images/particle.png</file>
         <file>qml/common/images/qt-logo.png</file>
         <file>qml/common/images/particle_star.png</file>
-        <file>qml/common/images/qt-logo-mask.png</file>
         <file>qml/launchscreen/TitleBar.qml</file>
         <file>qml/launchscreen/ApplicationIcon.qml</file>
         <file>qml/common/images/application-close.png</file>
+        <file>qml/bootscreen/images/qt-logo-green-mask.png</file>
+        <file>qml/bootscreen/images/qt-logo-white-mask.png</file>
     </qresource>
 </RCC>

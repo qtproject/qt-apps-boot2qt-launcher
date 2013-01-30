@@ -16,4 +16,22 @@ Rectangle {
         color: "white"
         style: Text.Raised
     }
+
+    Rectangle {
+        border.width: 1
+        border.color: "lightsteelblue"
+        color: "steelblue"
+
+        antialiasing: true
+
+        width: 100
+        height: 100
+
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+
+        anchors.margins: 100
+
+        NumberAnimation on rotation { from: 0; to: 360; duration: 5000; loops: Animation.Infinite }
+    }
 }

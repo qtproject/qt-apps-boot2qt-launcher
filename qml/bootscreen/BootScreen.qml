@@ -17,8 +17,10 @@ Item {
                 PropertyAction { target: starEmitter; property: "emitRate"; value: 200 }
                 PauseAnimation { duration: 5000 }
                 ScriptAction { script: {
+                        starAccel.x = 5
                         starAccel.xVariation = 20;
                         starAccel.yVariation = 20;
+                        sphereAccel.x = -5
                         sphereAccel.xVariation = 20
                         sphereAccel.yVariation = 20
                         sphereParticle.alpha = 0;
@@ -90,7 +92,7 @@ Item {
             id: sphereEmitter
             anchors.fill: parent
             emitRate: 50
-            lifeSpan: 5000
+            lifeSpan: 4000
             size: 24
             sizeVariation: 8
 

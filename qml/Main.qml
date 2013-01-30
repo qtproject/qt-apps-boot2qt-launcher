@@ -50,8 +50,10 @@ Item {
             from: "app-launching"
             to: "app-running"
             SequentialAnimation {
-                ScriptAction { script: print("running -> app-launching"); }
-                NumberAnimation { target: applicationLoader; property: "opacity"; duration: 1000 }
+                ParallelAnimation {
+                    NumberAnimation { target: applicationLoader; property: "opacity"; duration: 1000 }
+                    NumberAnimation { target: applicationCloseButton; property: "opacity"; duration: 1000 }
+                }
                 PropertyAction { target: launchScreenLoader; property: "opacity"; value: 0}
             }
         },
@@ -59,7 +61,10 @@ Item {
             from: "app-running"
             to: "app-closing"
             SequentialAnimation {
-                PropertyAction { target: launchScreenLoader; property: "opacity"; value: 1 }
+                ParallelAnimation {
+                    NumberAnimation { target: applicationLoader; property: "opacity"; duration: 1000 }
+                    NumberAnimation { target: applicationCloseButton; property: "opacity"; duration: 1000 }
+                }
                 NumberAnimation { target: applicationLoader; property: "opacity"; duration: 1000 }
                 ScriptAction { script: engine.closeApplication(); }
             }
@@ -68,6 +73,10 @@ Item {
     ]
 
     state: engine.state
+
+    onStateChanged: {
+        print("-- state: " + state + " --");
+    }
 
     Loader {
         id: launchScreenLoader
@@ -91,7 +100,16 @@ Item {
             default: print("bootScreenLoader: unknown status: " + status); break;
             }
         }
+    }
 
+    Timer {
+        id: failedAppLaunchTrigger;
+        interval: 500;
+        running: false
+        repeat: false
+        onTriggered: {
+            engine.closeApplication()
+        }
     }
 
     Loader {
@@ -101,8 +119,21 @@ Item {
         asynchronous: true;
         source: engine.applicationUrl
 
-        onSourceChanged: print("App Source: '" + source + "'");
-        onStatusChanged: print("Loader Status: '" + status + "'");
+        onStatusChanged: {
+            switch (status) {
+            case Loader.Null: print("applicationLoader status: Null"); break;
+            case Loader.Ready: print("applicationLoader status: Ready"); break;
+            case Loader.Error: print("applicationLoader status: Error"); break;
+            case Loader.Loading: print("applicationLoader status: Loading"); break;
+            default: print("applicationLoader: unknown status: " + status); break;
+            }
+
+            if (status == Loader.Error) {
+                print("applicationLoader: app failed, reverting to 'running' state");
+                failedAppLaunchTrigger.running = true;
+            }
+
+        }
 
         onLoaded: {
             print("onLoaded: " + status);

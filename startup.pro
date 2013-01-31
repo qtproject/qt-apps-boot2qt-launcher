@@ -1,22 +1,21 @@
 SOURCES += src/main.cpp \
     src/engine.cpp \
-    src/applicationsmodel.cpp
+    src/applicationsmodel.cpp \
+    src/logmanager.cpp
 
 QT += quick
-TARGET = boot2qt-launcher
+TARGET = qtlauncher
 
 QML_FILES += qml
 
 HEADERS += \
     src/engine.h \
-    src/applicationsmodel.h
+    src/applicationsmodel.h \
+    src/logmanager.h
 
-qmlfiles.path = $$[INSTALL_ROOT]/system/boot2qt-launcher
-qmlfiles.files = $$QML_FILES
+target.path = $$[INSTALL_ROOT]/system/bin
 
-target.path = $$[INSTALL_ROOT]/system/boot2qt-launcher
-
-INSTALLS += target qmlfiles
+INSTALLS += target
 
 RESOURCES += \
     resources.qrc

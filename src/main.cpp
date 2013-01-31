@@ -8,6 +8,7 @@
 
 #include "engine.h"
 #include "applicationsmodel.h"
+#include "logmanager.h"
 
 void displayHelp(const char *appName)
 {
@@ -33,6 +34,7 @@ int main(int argc, char **argv)
     QString appsRoot = QStringLiteral("/data/user/qt");
 
     QString bgImage = QStringLiteral("/data/user/qt/bg.jpg");
+    bool logcat = false;
     QString bgColor;
     bool iconShadow = true;
 
@@ -53,6 +55,8 @@ int main(int argc, char **argv)
                 bgColor = args.at(i);
         } else if (args.at(i) == QStringLiteral("--no-icon-shadow")) {
             iconShadow = false;
+        } else if (args.at(i) == QStringLiteral("--logcat")) {
+            logcat = true;
         } else if (args.at(i) == QStringLiteral("-h")
                    || args.at(i) == QStringLiteral("--help")
                    || args.at(i) == QStringLiteral("-?")) {
@@ -61,11 +65,16 @@ int main(int argc, char **argv)
         }
     }
 
+    if (logcat) {
+        LogManager::install();
+    }
+
     qDebug() << "Main File:" << mainFile;
     qDebug() << "Applications Root:" << appsRoot;
     qDebug() << "Background Image:" << bgImage;
     qDebug() << "Background Color:" << bgColor;
-    qDebug() << "Icon Shadows:" << iconShadow;
+    qDebug() << "Icon Shadows:" << (iconShadow ? "enabled" : "disabled");
+    qDebug() << "Log redirection:" << (logcat ? "enabled" : "disabled");
 
     QQuickView view;
 

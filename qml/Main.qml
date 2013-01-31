@@ -88,18 +88,6 @@ Item {
         id: bootScreenLoader
         anchors.fill: parent
         sourceComponent: BootScreen {}
-
-        onSourceComponentChanged: print("bootScreenLoader: sourceComponent changed to: " + sourceComponent);
-
-        onStatusChanged: {
-            switch (status) {
-            case Loader.Null: print("bootScreenLoader status: Null"); break;
-            case Loader.Ready: print("bootScreenLoader status: Ready"); break;
-            case Loader.Error: print("bootScreenLoader status: Error"); break;
-            case Loader.Loading: print("bootScreenLoader status: Loading"); break;
-            default: print("bootScreenLoader: unknown status: " + status); break;
-            }
-        }
     }
 
     Timer {

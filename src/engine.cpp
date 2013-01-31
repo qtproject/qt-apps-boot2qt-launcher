@@ -24,9 +24,9 @@ Engine::Engine(QObject *parent)
     : QObject(parent)
     , m_qmlEngine(0)
     , m_activeIcon(0)
-    , m_hasIconShadows(true)
     , m_intro_done(false)
     , m_apps_ready(false)
+    , m_hasIconShadows(true)
 {
     m_state = ENGINE_STATE_BOOTING;
 }
@@ -113,6 +113,10 @@ int Engine::sensibleButtonSize() const
 
 void Engine::launchApplication(const QUrl &path, const QString &mainFile, QQuickItem *appIcon)
 {
+    // only launch apps when in the homescreen...
+    if (m_state != QStringLiteral("running"))
+        return;
+
     m_activeIcon = appIcon;
     emit activeIconChanged(m_activeIcon);
 

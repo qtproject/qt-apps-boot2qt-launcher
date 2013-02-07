@@ -1,10 +1,14 @@
-#include <QDebug>
-#include <QGuiApplication>
-#include <QQuickView>
+#include <QtCore/QDebug>
 
-#include <QQmlEngine>
-#include <QQmlContext>
-#include <QQmlComponent>
+#include <QtGui/QGuiApplication>
+#include <QtGui/QFont>
+#include <QtGui/QFontDatabase>
+
+#include <QtQuick/QQuickView>
+
+#include <QtQml/QQmlEngine>
+#include <QtQml/QQmlContext>
+#include <QtQml/QQmlComponent>
 
 #include "engine.h"
 #include "applicationsmodel.h"
@@ -29,6 +33,16 @@ void displayHelp(const char *appName)
 int main(int argc, char **argv)
 {
     QGuiApplication app(argc, argv);
+
+    QString fontName = QStringLiteral("/system/fonts/Roboto-Regular.ttf");
+    if (QFile::exists(fontName)) {
+        QFontDatabase::addApplicationFont(fontName);
+        QGuiApplication::setFont(QFont("Roboto"));
+    } else {
+        QFont font;
+        font.setStyleHint(QFont::SansSerif);
+        QGuiApplication::setFont(font);
+    }
 
     QString mainFile = QStringLiteral("qml/Main.qml");
     QString appsRoot = QStringLiteral("/data/user/qt");

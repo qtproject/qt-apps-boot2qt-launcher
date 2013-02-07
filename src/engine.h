@@ -21,7 +21,7 @@ class Engine : public QObject
     Q_PROPERTY(QUrl applicationUrl READ applicationUrl NOTIFY applicationUrlChanged)
     Q_PROPERTY(QString backgroundColor READ backgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
 
-    Q_PROPERTY(bool hasIconShadows READ hasIconShadows WRITE setHasIconShadows NOTIFY hasIconShadowsChanged)
+    Q_PROPERTY(bool bootAnimationEnabled READ isBootAnimationEnabled WRITE setBootAnimationEnabled NOTIFY bootAnimationEnabledChanged)
 
 public:
     explicit Engine(QObject *parent = 0);
@@ -38,12 +38,12 @@ public:
     QQmlEngine *qmlEngine() const { return m_qmlEngine; }
     void setQmlEngine(QQmlEngine *engine) { m_qmlEngine = engine; }
 
+    bool isBootAnimationEnabled() const { return m_bootAnimationEnabled; }
+    void setBootAnimationEnabled(bool enabled);
+
     QQuickItem *activeIcon() const { return m_activeIcon; }
 
     QUrl applicationUrl() const { return m_applicationUrl; }
-
-    void setHasIconShadows(bool shadows);
-    bool hasIconShadows() const { return m_hasIconShadows; }
 
     Q_INVOKABLE int sensibleButtonSize() const;
     Q_INVOKABLE int titleBarSize() const;
@@ -56,7 +56,7 @@ signals:
     void backgroundColorChanged(const QString &color);
     void activeIconChanged(QQuickItem *item);
     void applicationUrlChanged(const QUrl &applicationUrl);
-    void hasIconShadowsChanged(bool shadows);
+    void bootAnimationEnabledChanged(bool enabled);
 
 public slots:
     void markApplicationsModelReady() { m_apps_ready = true; updateReadyness(); }
@@ -82,7 +82,7 @@ private:
     uint m_intro_done : 1;
     uint m_apps_ready : 1;
 
-    uint m_hasIconShadows;
+    uint m_bootAnimationEnabled;
 };
 
 #endif // ENGINE_H

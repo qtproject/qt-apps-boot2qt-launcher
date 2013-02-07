@@ -24,7 +24,7 @@ void displayHelp(const char *appName)
            " --applications-root [path]         Specify a different applications root\n"
            " --background-image [path]          Specify a different background image\n"
            " --background-color [html-color]    Specify a background color, overrides image\n"
-           " --no-icon-shadow                   Disable drop shadow on icons\n"
+           " --no-boot-animation                Disable startup animation\n"
            , appName
            );
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     QString bgImage = QStringLiteral("/data/user/qt/bg.jpg");
     bool logcat = false;
     QString bgColor;
-    bool iconShadow = true;
+    bool bootAnimation = true;
 
     QStringList args = app.arguments();
     for (int i=0; i<args.size(); ++i) {
@@ -67,8 +67,8 @@ int main(int argc, char **argv)
             ++i;
             if (QColor(args.at(i)).isValid())
                 bgColor = args.at(i);
-        } else if (args.at(i) == QStringLiteral("--no-icon-shadow")) {
-            iconShadow = false;
+        } else if (args.at(i) == QStringLiteral("--no-boot-animation")) {
+            bootAnimation = false;
         } else if (args.at(i) == QStringLiteral("--logcat")) {
             logcat = true;
         } else if (args.at(i) == QStringLiteral("-h")
@@ -87,8 +87,8 @@ int main(int argc, char **argv)
     qDebug() << "Applications Root:" << appsRoot;
     qDebug() << "Background Image:" << bgImage;
     qDebug() << "Background Color:" << bgColor;
-    qDebug() << "Icon Shadows:" << (iconShadow ? "enabled" : "disabled");
-    qDebug() << "Log redirection:" << (logcat ? "enabled" : "disabled");
+    qDebug() << "Boot Animation:" << (bootAnimation ? "yes" : "no");
+    qDebug() << "Log redirection:" << (logcat ? "yes" : "no");
 
     QQuickView view;
 
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
     engine.setBackgroundImage(QUrl::fromLocalFile(bgImage));
     engine.setBackgroundColor(bgColor);
     engine.setQmlEngine(view.engine());
-    engine.setHasIconShadows(iconShadow);
+    engine.setBootAnimationEnabled(bootAnimation);
 
     ApplicationsModel appsModel;
     QObject::connect(&appsModel, SIGNAL(ready()), &engine, SLOT(markApplicationsModelReady()));

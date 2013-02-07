@@ -46,10 +46,10 @@ Item {
 
 
     Component.onCompleted: {
-        if (0) {
-            engine.markIntroAnimationDone()
-        } else {
+        if (engine.bootAnimationEnabled) {
             entryAnimation.running = true
+        } else {
+            engine.markIntroAnimationDone()
         }
     }
 

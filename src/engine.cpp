@@ -26,7 +26,7 @@ Engine::Engine(QObject *parent)
     , m_activeIcon(0)
     , m_intro_done(false)
     , m_apps_ready(false)
-    , m_hasIconShadows(true)
+    , m_bootAnimationEnabled(true)
 {
     m_state = ENGINE_STATE_BOOTING;
 }
@@ -51,12 +51,14 @@ void Engine::setState(const QString &state)
     emit stateChanged(m_state);
 }
 
-void Engine::setHasIconShadows(bool shadows)
+
+void Engine::setBootAnimationEnabled(bool enabled)
 {
-    if (m_hasIconShadows == shadows)
+    if (m_bootAnimationEnabled == enabled)
         return;
-    m_hasIconShadows = shadows;
-    emit hasIconShadowsChanged(m_hasIconShadows);
+
+    m_bootAnimationEnabled = enabled;
+    emit bootAnimationEnabledChanged(enabled);
 }
 
 void Engine::setBackgroundImage(const QUrl &name)

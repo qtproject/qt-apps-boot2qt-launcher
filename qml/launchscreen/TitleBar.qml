@@ -9,22 +9,31 @@ Rectangle {
         GradientStop { position: 1; color: Qt.rgba(0.0, 0.0, 0.0, 0.6) }
     }
 
-    function calculateTime() {
-        var d = new Date();
-        var min = d.getMinutes();
-        if (min < 10)
-            min = "0" + min;
-        var hour = d.getHours();
-        if (hour < 10)
-            hour = "0" + hour;
-        return hour + ":" + min;
-    }
-
     Text {
+        id: clockText
         anchors.centerIn: parent
         color: "white"
         font.pixelSize: parent.height / 2;
         text: calculateTime();
+
+        function calculateTime() {
+            var d = new Date();
+            var min = d.getMinutes();
+            if (min < 10)
+                min = "0" + min;
+            var hour = d.getHours();
+            if (hour < 10)
+                hour = "0" + hour;
+            return hour + ":" + min;
+        }
+
+        Timer {
+            running: true
+            interval: 60000
+            repeat: true
+            onTriggered:  clockText.text = calcualteTime();
+        }
+
     }
 
     Rectangle {

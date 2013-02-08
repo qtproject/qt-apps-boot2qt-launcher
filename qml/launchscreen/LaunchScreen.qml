@@ -48,11 +48,12 @@ Item {
         }
     }
 
-    GridView {
+    GridViewWithInertia {
         anchors.top: titleBar.bottom
         anchors.bottom: root.bottom
         anchors.horizontalCenter: root.horizontalCenter
         width: Math.floor(root.width / root.cellSize) * root.cellSize;
+
         model: applicationsModel;
 
         cellWidth: root.cellSize

@@ -14,5 +14,6 @@
         <file>qml/common/images/application-close.png</file>
         <file>qml/bootscreen/images/qt-logo-green-mask.png</file>
         <file>qml/bootscreen/images/qt-logo-white-mask.png</file>
+        <file>qml/common/GridViewWithInertia.qml</file>
     </qresource>
 </RCC>

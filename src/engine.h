@@ -15,13 +15,13 @@ class Engine : public QObject
 
     Q_PROPERTY(QString state READ state WRITE setState NOTIFY stateChanged)
 
+    Q_PROPERTY(bool bootAnimationEnabled READ isBootAnimationEnabled WRITE setBootAnimationEnabled NOTIFY bootAnimationEnabledChanged)
+    Q_PROPERTY(QString backgroundColor READ backgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
     Q_PROPERTY(QUrl backgroundImage READ backgroundImage WRITE setBackgroundImage NOTIFY backgroundImageChanged)
 
     Q_PROPERTY(QQuickItem *activeIcon READ activeIcon NOTIFY activeIconChanged)
+    Q_PROPERTY(QUrl applicationMain READ applicationMain NOTIFY applicationMainChanged)
     Q_PROPERTY(QUrl applicationUrl READ applicationUrl NOTIFY applicationUrlChanged)
-    Q_PROPERTY(QString backgroundColor READ backgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
-
-    Q_PROPERTY(bool bootAnimationEnabled READ isBootAnimationEnabled WRITE setBootAnimationEnabled NOTIFY bootAnimationEnabledChanged)
 
 public:
     explicit Engine(QObject *parent = 0);
@@ -44,6 +44,7 @@ public:
     QQuickItem *activeIcon() const { return m_activeIcon; }
 
     QUrl applicationUrl() const { return m_applicationUrl; }
+    QUrl applicationMain() const { return m_applicationMain; }
 
     Q_INVOKABLE int sensibleButtonSize() const;
     Q_INVOKABLE int titleBarSize() const;
@@ -56,6 +57,7 @@ signals:
     void backgroundColorChanged(const QString &color);
     void activeIconChanged(QQuickItem *item);
     void applicationUrlChanged(const QUrl &applicationUrl);
+    void applicationMainChanged(const QUrl &applicationMain);
     void bootAnimationEnabledChanged(bool enabled);
 
 public slots:
@@ -68,7 +70,6 @@ public slots:
 private:
     void updateReadyness();
 
-
     QQmlEngine *m_qmlEngine;
 
     QString m_state;
@@ -78,6 +79,7 @@ private:
 
     QQuickItem *m_activeIcon;
     QUrl m_applicationUrl;
+    QUrl m_applicationMain;
 
     uint m_intro_done : 1;
     uint m_apps_ready : 1;

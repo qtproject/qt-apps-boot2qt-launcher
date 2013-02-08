@@ -4,7 +4,7 @@ Flickable
 {
     id: root
 
-    property real inertia: 0.1;
+    property real inertia: 0.2;
 
     property alias delegate: repeater.delegate
     property alias model: repeater.model

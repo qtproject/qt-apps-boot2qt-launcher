@@ -97,7 +97,7 @@ int Engine::sensibleButtonSize() const
     float dpcm = screen->physicalDotsPerInchY() / 2.54f;
 
     // 3cm buttons, nice and big...
-    int buttonSize = int(dpcm * 4);
+    int buttonSize = int(dpcm * 3);
 
     // Clamp buttonSize to screen..
     if (buttonSize > baseSize)
@@ -122,9 +122,10 @@ void Engine::launchApplication(const QUrl &path, const QString &mainFile, QQuick
     m_activeIcon = appIcon;
     emit activeIconChanged(m_activeIcon);
 
-    m_applicationUrl = path;
-    m_applicationUrl.setPath(path.path() + "/" + mainFile);
+    m_applicationMain = m_applicationUrl = path;
+    m_applicationMain.setPath(path.path() + "/" + mainFile);
     emit applicationUrlChanged(m_applicationUrl);
+    emit applicationMainChanged(m_applicationMain);
 
     qDebug() << "before setting state";
     setState(ENGINE_STATE_APPLAUNCHING);
@@ -138,8 +139,9 @@ void Engine::closeApplication()
     m_activeIcon = 0;
     emit activeIconChanged(0);
 
-    m_applicationUrl = QUrl();
+    m_applicationMain = m_applicationUrl = QUrl();
     emit applicationUrlChanged(m_applicationUrl);
+    emit applicationMainChanged(m_applicationMain);
 
     setState(ENGINE_STATE_RUNNING);
 }

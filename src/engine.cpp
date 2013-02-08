@@ -100,13 +100,6 @@ int Engine::sensibleButtonSize() const
     if (buttonSize > baseSize)
         buttonSize = baseSize;
 
-    qDebug() << "screen size: " << screenSize;
-    qDebug() << "physical screen size: " << screen->physicalSize();
-    qDebug() << "pdpi: " << screen->physicalDotsPerInch() << (screenSize.width() / screen->physicalSize().width() * 2.54);
-
-    qDebug() << "baseSize: " << baseSize;
-    qDebug() << "buttonSize: " << buttonSize;
-
     return buttonSize;
 }
 
@@ -123,16 +116,11 @@ void Engine::launchApplication(const QUrl &path, const QString &mainFile, QQuick
     m_applicationMain.setPath(path.path() + "/" + mainFile);
     emit applicationUrlChanged(m_applicationUrl);
     emit applicationMainChanged(m_applicationMain);
-
-    qDebug() << "before setting state";
     setState(ENGINE_STATE_APPLAUNCHING);
-    qDebug() << "after setting state";
 }
 
 void Engine::closeApplication()
 {
-    qDebug() << "App closed..";
-
     m_activeIcon = 0;
     emit activeIconChanged(0);
 

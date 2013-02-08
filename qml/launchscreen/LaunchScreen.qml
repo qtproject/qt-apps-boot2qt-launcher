@@ -24,7 +24,6 @@ Item {
         visible: false
         anchors.fill: parent
         color: engine.backgroundColor
-        onColorChanged: print(color);
     }
 
     Image {

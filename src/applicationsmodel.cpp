@@ -25,7 +25,6 @@ class IndexingThread : public QThread
 public:
 
     void run() {
-        qDebug() << "Indexer: started...";
         QDirIterator iterator(root);
 
         QList<AppData> results;

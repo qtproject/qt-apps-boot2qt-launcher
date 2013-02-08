@@ -135,16 +135,15 @@ Item {
         asynchronous: true;
 
         onStatusChanged: {
-            switch (status) {
-            case Loader.Null: print("applicationLoader status: Null"); break;
-            case Loader.Ready: print("applicationLoader status: Ready"); break;
-            case Loader.Error: print("applicationLoader status: Error"); break;
-            case Loader.Loading: print("applicationLoader status: Loading"); break;
-            default: print("applicationLoader: unknown status: " + status); break;
-            }
-
+//            switch (status) {
+//            case Loader.Null: print("applicationLoader status: Null"); break;
+//            case Loader.Ready: print("applicationLoader status: Ready"); break;
+//            case Loader.Error: print("applicationLoader status: Error"); break;
+//            case Loader.Loading: print("applicationLoader status: Loading"); break;
+//            default: print("applicationLoader: unknown status: " + status); break;
+//            }
             if (status == Loader.Error) {
-                print("applicationLoader: app failed, reverting to 'running' state");
+//                print("applicationLoader: app failed, reverting to 'running' state");
                 failedAppLaunchTrigger.running = true;
             }
 

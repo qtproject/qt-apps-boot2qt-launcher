@@ -22,5 +22,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     test/dummyapps/basicapp/info.json \
-    test/dummyapps/basicapp/main.qml
+    test/dummyapps/basicapp/main.qml \
+    qml/common/GridViewWithInertia.qml \
+    test/inertiagridtest/main.qml \
+    test/dummyapps/Address Book/main.qml
 

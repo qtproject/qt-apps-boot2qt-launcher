@@ -20,6 +20,8 @@ Item {
         sourceSize: Qt.size(width, height);
         smooth: true
         asynchronous: true;
+        scale: mouse.pressed ? 1.1 : 1
+        opacity: mouse.pressed ? 0.8 : 1
     }
 
     Text {

@@ -107,7 +107,9 @@ Item {
     Loader {
         id: launchScreenLoader
         anchors.fill: parent
-        sourceComponent: LaunchScreen {}
+        sourceComponent: LaunchScreen {
+            visible: parent.opacity > 0;
+        }
     }
 
     Loader {

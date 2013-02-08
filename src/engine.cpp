@@ -66,10 +66,7 @@ void Engine::setBackgroundImage(const QUrl &name)
     if (m_bgImage == name)
         return;
 
-    if (!name.isLocalFile() || QFile::exists(name.toLocalFile()))
-        m_bgImage = name;
-    else
-        m_bgImage = QUrl();
+    m_bgImage = name;
     emit backgroundImageChanged(m_bgImage);
 }
 

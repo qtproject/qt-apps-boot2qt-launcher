@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     QString mainFile = QStringLiteral("qml/Main.qml");
     QString appsRoot = QStringLiteral("/data/user/qt");
 
-    QString bgImage = QStringLiteral("/data/user/qt/bg.jpg");
+    QString bgImage = QStringLiteral(":/qml/common/images/bg_1280x800.jpg");
     bool logcat = false;
     QString bgColor;
     bool bootAnimation = true;

@@ -8,6 +8,8 @@
 
 class QQmlEngine;
 class QQuickItem;
+class FpsCounter;
+class QQuickWindow;
 
 class Engine : public QObject
 {
@@ -23,6 +25,11 @@ class Engine : public QObject
     Q_PROPERTY(QUrl applicationMain READ applicationMain NOTIFY applicationMainChanged)
     Q_PROPERTY(QUrl applicationUrl READ applicationUrl NOTIFY applicationUrlChanged)
 
+    Q_PROPERTY(bool fpsEnabled READ isFpsEnabled WRITE setFpsEnabled NOTIFY fpsEnabledChanged)
+    Q_PROPERTY(qreal fps READ fps NOTIFY fpsChanged)
+
+    Q_PROPERTY(const QString qtVersion READ qtVersion)
+
 public:
     explicit Engine(QObject *parent = 0);
     
@@ -35,6 +42,11 @@ public:
     QString backgroundColor() const { return m_bgColor; }
     void setBackgroundColor(const QString &color);
 
+    bool isFpsEnabled() const { return m_fps_enabled; }
+    void setFpsEnabled(bool enabled);
+
+    qreal fps() const { return m_fps; }
+
     QQmlEngine *qmlEngine() const { return m_qmlEngine; }
     void setQmlEngine(QQmlEngine *engine) { m_qmlEngine = engine; }
 
@@ -43,11 +55,17 @@ public:
 
     QQuickItem *activeIcon() const { return m_activeIcon; }
 
+    QString qtVersion() const { return QT_VERSION_STR; }
+
     QUrl applicationUrl() const { return m_applicationUrl; }
     QUrl applicationMain() const { return m_applicationMain; }
 
+    void setWindow(QQuickWindow *window) { m_window = window; }
+
     Q_INVOKABLE int sensibleButtonSize() const;
     Q_INVOKABLE int titleBarSize() const;
+    Q_INVOKABLE int fontSize() const { return sensibleButtonSize() * 0.2; }
+    Q_INVOKABLE int titleFontSize() const { return sensibleButtonSize() * 0.25; }
 
 protected:
 
@@ -59,6 +77,8 @@ signals:
     void applicationUrlChanged(const QUrl &applicationUrl);
     void applicationMainChanged(const QUrl &applicationMain);
     void bootAnimationEnabledChanged(bool enabled);
+    void fpsChanged(qreal fps);
+    void fpsEnabledChanged(bool enabled);
 
 public slots:
     void markApplicationsModelReady() { m_apps_ready = true; updateReadyness(); }
@@ -67,9 +87,12 @@ public slots:
     void launchApplication(const QUrl &location, const QString &mainFile, QQuickItem *appIcon);
     void closeApplication();
 
+    void setFps(qreal fps);
+
 private:
     void updateReadyness();
 
+    QQuickWindow *m_window;
     QQmlEngine *m_qmlEngine;
 
     QString m_state;
@@ -81,8 +104,12 @@ private:
     QUrl m_applicationUrl;
     QUrl m_applicationMain;
 
+    FpsCounter *m_fpsCounter;
+    qreal m_fps;
+
     uint m_intro_done : 1;
     uint m_apps_ready : 1;
+    uint m_fps_enabled : 1;
 
     uint m_bootAnimationEnabled;
 };

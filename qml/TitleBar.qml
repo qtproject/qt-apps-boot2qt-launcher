@@ -58,55 +58,6 @@ Rectangle {
     }
 
     Image {
-        id: qtLogo
-        source: "images/qt-logo-small.png"
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-        sourceSize.height: parent.height * 0.8
-        visible: false
-    }
-
-
-    ShaderEffect {
-        id: logoShader
-
-        anchors.fill: qtLogo
-
-        visible: false;
-
-        property variant source: qtLogo
-        property real t: -1;
-        NumberAnimation on t {
-            id: animation;
-            from: -2;
-            to: 3;
-            duration: 2000;
-            loops: 1
-            running: false
-        }
-        Timer {
-            id: shaderTrigger
-            repeat: true
-            interval: 10000
-            running: titleBar.visible
-            onTriggered: animation.running = true
-        }
-
-        fragmentShader:
-            "
-            uniform lowp sampler2D source;
-            uniform highp float t;
-            uniform lowp float qt_Opacity;
-            varying highp vec2 qt_TexCoord0;
-            void main() {
-                lowp vec4 p = texture2D(source, qt_TexCoord0) * qt_Opacity;
-                highp float l = max(0.0, 1.0 - length(qt_TexCoord0.x + qt_TexCoord0.y - t));
-                gl_FragColor = p + pow(l, 3.0) * p.w;
-            }
-            "
-    }
-
-    Image {
         id: button
 
         anchors.top: parent.top
@@ -115,7 +66,7 @@ Rectangle {
         anchors.margins: parent.height * 0.2
         width: height
 
-        source: engine.state == "settings" ? "file:///Users/gunnar/Downloads/accept.png" : "file:///Users/gunnar/Downloads/cog.png"
+        source: "images/cog.png"
 
         MouseArea {
             id: buttonMouseArea

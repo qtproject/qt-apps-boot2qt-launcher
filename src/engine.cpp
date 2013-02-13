@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "fpscounter.h"
 
 #include <QFile>
 #include <QTimerEvent>
@@ -25,8 +26,11 @@ Engine::Engine(QObject *parent)
     : QObject(parent)
     , m_qmlEngine(0)
     , m_activeIcon(0)
+    , m_fpsCounter(0)
+    , m_fps(0)
     , m_intro_done(false)
     , m_apps_ready(false)
+    , m_fps_enabled(false)
     , m_bootAnimationEnabled(true)
 {
     m_state = ENGINE_STATE_BOOTING;
@@ -83,6 +87,32 @@ void Engine::setBackgroundColor(const QString &color)
 int Engine::titleBarSize() const
 {
     return int(QGuiApplication::primaryScreen()->physicalDotsPerInch() / 2.54f);
+}
+
+void Engine::setFps(qreal fps)
+{
+    fps = qRound(fps);
+    if (qFuzzyCompare(m_fps, fps))
+        return;
+    m_fps = fps;
+    emit fpsChanged(m_fps);
+}
+
+void Engine::setFpsEnabled(bool enabled)
+{
+    if (m_fps_enabled == enabled)
+        return;
+    m_fps_enabled = enabled;
+
+    if (m_fps_enabled) {
+        m_fpsCounter = new FpsCounter(m_window);
+        connect(m_fpsCounter, SIGNAL(fps(qreal)), this, SLOT(setFps(qreal)));
+    } else {
+        delete m_fpsCounter;
+        m_fpsCounter = 0;
+    }
+
+    emit fpsEnabledChanged(m_fps_enabled);
 }
 
 

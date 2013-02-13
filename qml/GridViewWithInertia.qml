@@ -9,8 +9,12 @@ Flickable
     property alias delegate: repeater.delegate
     property alias model: repeater.model
 
+    property alias columns: grid.columns
+    property alias rows: grid.rows
+
     property real cellWidth;
     property real cellHeight;
+
 
     contentWidth: grid.width
     contentHeight: grid.height

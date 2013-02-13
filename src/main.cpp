@@ -25,6 +25,7 @@ void displayHelp(const char *appName)
            " --background-image [path]          Specify a different background image\n"
            " --background-color [html-color]    Specify a background color, overrides image\n"
            " --no-boot-animation                Disable startup animation\n"
+           " --show-fps                         Show FPS\n"
            , appName
            );
 }
@@ -53,13 +54,14 @@ int main(int argc, char **argv)
         QGuiApplication::setFont(font);
     }
 
-    QString mainFile = QStringLiteral("qml/Main.qml");
+    QString mainFile = QStringLiteral("qrc:///qml/Main.qml");
     QString appsRoot = QStringLiteral("/data/user/qt");
 
     QString bgImage = QStringLiteral(":/qml/images/bg_1280x800.jpg");
     bool logcat = false;
     QString bgColor;
     bool bootAnimation = true;
+    bool showFps = false;
 
     QStringList args = app.arguments();
     for (int i=0; i<args.size(); ++i) {
@@ -78,6 +80,8 @@ int main(int argc, char **argv)
                 bgColor = args.at(i);
         } else if (args.at(i) == QStringLiteral("--no-boot-animation")) {
             bootAnimation = false;
+        } else if (args.at(i) == QStringLiteral("--show-fps")) {
+            showFps = true;
         } else if (args.at(i) == QStringLiteral("--logcat")) {
             logcat = true;
         } else if (args.at(i) == QStringLiteral("-h")
@@ -97,11 +101,14 @@ int main(int argc, char **argv)
     qDebug() << "Background Image:" << bgImage;
     qDebug() << "Background Color:" << bgColor;
     qDebug() << "Boot Animation:" << (bootAnimation ? "yes" : "no");
+    qDebug() << "Show FPS:" << (showFps ? "yes" : "no");
     qDebug() << "Log redirection:" << (logcat ? "yes" : "no");
 
     QQuickView view;
 
     Engine engine;
+    engine.setWindow(&view);
+    engine.setFpsEnabled(showFps);
     engine.setBackgroundImage(QUrl::fromLocalFile(bgImage));
     engine.setBackgroundColor(bgColor);
     engine.setQmlEngine(view.engine());
@@ -115,7 +122,7 @@ int main(int argc, char **argv)
     view.rootContext()->setContextProperty("applicationsModel", &appsModel);
     view.setColor(Qt::black);
     view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.setSource(QUrl(QStringLiteral("qrc:///") + mainFile));
+    view.setSource(QUrl(mainFile));
     view.show();
 
     app.exec();

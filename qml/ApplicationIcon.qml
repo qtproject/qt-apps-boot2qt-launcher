@@ -8,14 +8,12 @@ Item {
     width: 400
     height: 400
 
-    Component.onCompleted: print("app icon loaded..");
-
     Image {
         id: icon
         source: iconName != "" ? location + "/" + iconName : ""
         y: parent.height * 0.1
         anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width * 0.4;
+        width: parent.width * 0.6;
         height: width
         sourceSize: Qt.size(width, height);
         smooth: true
@@ -58,7 +56,7 @@ Item {
 
         color: "white"
 
-        font.pixelSize: 16;
+        font.pixelSize: parent.height * 0.07;
         font.bold: true
         text: name
         style: Text.Raised

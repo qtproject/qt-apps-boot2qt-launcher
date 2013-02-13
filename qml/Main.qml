@@ -15,6 +15,7 @@ Item {
             PropertyChanges { target: splashScreen; opacity: 0 }
             PropertyChanges { target: titleBar; opacity: 0 }
             PropertyChanges { target: background; opacity: 0 }
+            PropertyChanges { target: settings; opacity: 0 }
         },
         State {
             name: "running"
@@ -23,6 +24,7 @@ Item {
             PropertyChanges { target: splashScreen; opacity: 0 }
             PropertyChanges { target: titleBar; opacity: 1 }
             PropertyChanges { target: background; opacity: 1 }
+            PropertyChanges { target: settings; opacity: 0 }
         },
         State {
             name: "settings"
@@ -30,6 +32,7 @@ Item {
             PropertyChanges { target: splashScreen; opacity: 0 }
             PropertyChanges { target: titleBar; opacity: 1 }
             PropertyChanges { target: background; opacity: 1 }
+            PropertyChanges { target: settings; opacity: 1 }
         },
 
         State {
@@ -38,6 +41,7 @@ Item {
             PropertyChanges { target: splashScreen; opacity: 1 }
             PropertyChanges { target: titleBar; opacity: 0 }
             PropertyChanges { target: background; opacity: 0 }
+            PropertyChanges { target: settings; opacity: 0 }
         },
         State {
             name: "app-running"
@@ -46,6 +50,7 @@ Item {
             PropertyChanges { target: splashScreen; opacity: 0 }
             PropertyChanges { target: titleBar; opacity: 0 }
             PropertyChanges { target: background; opacity: 0 }
+            PropertyChanges { target: settings; opacity: 0 }
         },
         State {
             name: "app-closing"
@@ -54,6 +59,7 @@ Item {
             PropertyChanges { target: splashScreen; opacity: 0 }
             PropertyChanges { target: titleBar; opacity: 1 }
             PropertyChanges { target: background; opacity: 1 }
+            PropertyChanges { target: settings; opacity: 0 }
         }
     ]
 
@@ -70,6 +76,9 @@ Item {
 
                 ScriptAction { script: bootScreenLoader.sourceComponent = undefined }
             }
+        },
+        Transition {
+            NumberAnimation { property: "opacity"; duration: root.stateDelay }
         },
         Transition {
             from: "running"
@@ -114,6 +123,12 @@ Item {
 
     ]
 
+//    Timer {
+//        running: true
+//        interval: 1000
+//        onTriggered: engine.state = "settings"
+//    }
+
     state: engine.state
 
     onStateChanged: {
@@ -127,6 +142,14 @@ Item {
 
     LaunchScreen {
         id: appGrid
+        anchors.top: titleBar.bottom
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+    }
+
+    SettingsScreen {
+        id: settings
         anchors.top: titleBar.bottom
         anchors.left: parent.left
         anchors.bottom: parent.bottom
@@ -233,6 +256,29 @@ Item {
         visible: parent.visible
     }
 
+    Item {
+        id: fps
+        opacity: engine.fpsEnabled ? 1 : 0
+        Behavior on opacity { NumberAnimation { duration: 500 } }
+
+        anchors.bottom: parent.bottom;
+        anchors.left: parent.left;
+        width: fpsLabel.width
+        height: fpsLabel.height
+
+        Rectangle {
+            color: "black"
+            opacity: 0.5
+            anchors.fill: fpsLabel
+        }
+
+        Text {
+            id: fpsLabel;
+            color: "white"
+            text: "FPS: " + engine.fps
+            font.pixelSize: engine.sensibleButtonSize() * 0.2
+        }
+    }
 
 
 

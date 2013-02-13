@@ -27,8 +27,17 @@ void displayHelp(const char *appName)
            " --no-boot-animation                Disable startup animation\n"
            , appName
            );
-
 }
+
+/*
+ * TODO:
+ *  - add fps counter
+ *  - settings screen
+ *    - Qt logo with glitter and particles
+ *    - Brightness control (when applicable)
+ *    - Toggle FPS measurement
+ *    - power off
+ */
 
 int main(int argc, char **argv)
 {
@@ -47,7 +56,7 @@ int main(int argc, char **argv)
     QString mainFile = QStringLiteral("qml/Main.qml");
     QString appsRoot = QStringLiteral("/data/user/qt");
 
-    QString bgImage = QStringLiteral(":/qml/common/images/bg_1280x800.jpg");
+    QString bgImage = QStringLiteral(":/qml/images/bg_1280x800.jpg");
     bool logcat = false;
     QString bgColor;
     bool bootAnimation = true;

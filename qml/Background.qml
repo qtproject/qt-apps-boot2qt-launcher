@@ -1,13 +1,8 @@
 import QtQuick 2.0
 
-import "../common"
-
 Item {
-
-    id: root
-
-    property real size: Math.min(root.width, root.height);
-    property real cellSize: engine.sensibleButtonSize();
+    width: 100
+    height: 62
 
     property bool portrait: root.width < root.height;
 
@@ -40,32 +35,5 @@ Item {
 
         Behavior on opacity { NumberAnimation { duration: 100 } }
     }
-
-    GridViewWithInertia {
-        clip: true;
-        anchors.top: titleBar.bottom
-        anchors.bottom: root.bottom
-        anchors.horizontalCenter: root.horizontalCenter
-        width: Math.floor(root.width / root.cellSize) * root.cellSize;
-
-        model: applicationsModel;
-
-        cellWidth: root.cellSize
-        cellHeight: root.cellSize
-
-        delegate: ApplicationIcon {
-            width: root.cellSize
-            height: root.cellSize
-        }
-    }
-
-    TitleBar {
-        id: titleBar
-        height: engine.titleBarSize();
-        width: parent.width
-        visible: parent.visible
-    }
-
-
 
 }

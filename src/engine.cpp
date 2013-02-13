@@ -15,6 +15,7 @@
 
 #define ENGINE_STATE_BOOTING QStringLiteral("booting")
 #define ENGINE_STATE_RUNNING QStringLiteral("running")
+#define ENGINE_STATE_SETTINGS QStringLiteral("settings")
 
 #define ENGINE_STATE_APPLAUNCHING QStringLiteral("app-launching")
 #define ENGINE_STATE_APPRUNNING QStringLiteral("app-running")

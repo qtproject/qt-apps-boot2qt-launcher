@@ -21,9 +21,13 @@ RESOURCES += \
     resources.qrc
 
 OTHER_FILES += \
-    test/dummyapps/basicapp/info.json \
-    test/dummyapps/basicapp/main.qml \
-    qml/common/GridViewWithInertia.qml \
-    test/inertiagridtest/main.qml \
-    test/dummyapps/Address Book/main.qml
+    qml/GridViewWithInertia.qml \
+    qml/NoisyGradient.qml \
+    qml/Main.qml \
+    qml/main_landscape.qml \
+    qml/ApplicationIcon.qml \
+    qml/LaunchScreen.qml \
+    qml/TitleBar.qml \
+    qml/BootScreen.qml \
+    qml/Background.qml
 

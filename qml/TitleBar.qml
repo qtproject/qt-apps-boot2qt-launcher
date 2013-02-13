@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import QtQuick.Particles 2.0
 
 Rectangle {
 
@@ -60,7 +59,7 @@ Rectangle {
 
     Image {
         id: qtLogo
-        source: "../common/images/qt-logo-small.png"
+        source: "images/qt-logo-small.png"
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         sourceSize.height: parent.height * 0.8
@@ -72,6 +71,8 @@ Rectangle {
         id: logoShader
 
         anchors.fill: qtLogo
+
+        visible: false;
 
         property variant source: qtLogo
         property real t: -1;
@@ -95,12 +96,39 @@ Rectangle {
             "
             uniform lowp sampler2D source;
             uniform highp float t;
+            uniform lowp float qt_Opacity;
             varying highp vec2 qt_TexCoord0;
             void main() {
-                lowp vec4 p = texture2D(source, qt_TexCoord0);
+                lowp vec4 p = texture2D(source, qt_TexCoord0) * qt_Opacity;
                 highp float l = max(0.0, 1.0 - length(qt_TexCoord0.x + qt_TexCoord0.y - t));
                 gl_FragColor = p + pow(l, 3.0) * p.w;
             }
             "
     }
+
+    Image {
+        id: button
+
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: parent.height * 0.2
+        width: height
+
+        source: engine.state == "settings" ? "file:///Users/gunnar/Downloads/accept.png" : "file:///Users/gunnar/Downloads/cog.png"
+
+        MouseArea {
+            id: buttonMouseArea
+            anchors.fill: parent
+            enabled: engine.state == "running" || engine.state == "settings"
+            onClicked: {
+                if (engine.state == "settings")
+                    engine.state = "running"
+                else
+                    engine.state = "settings"
+            }
+        }
+    }
+
+
 }

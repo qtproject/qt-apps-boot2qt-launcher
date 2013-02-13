@@ -8,12 +8,14 @@ Item {
     width: 400
     height: 400
 
+    Component.onCompleted: print("app icon loaded..");
+
     Image {
         id: icon
         source: iconName != "" ? location + "/" + iconName : ""
         y: parent.height * 0.1
         anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width * 0.6;
+        width: parent.width * 0.4;
         height: width
         sourceSize: Qt.size(width, height);
         smooth: true
@@ -38,7 +40,7 @@ Item {
 
     Rectangle {
         anchors.fill: label
-        anchors.margins: -icon.height * 0.05;
+        anchors.margins: -icon.height * 0.04;
         color: Qt.rgba(0, 0, 0, 0.3);
         radius: icon.height * 0.1
         antialiasing: true
@@ -56,7 +58,7 @@ Item {
 
         color: "white"
 
-        font.pixelSize: 18;
+        font.pixelSize: 16;
         font.bold: true
         text: name
         style: Text.Raised

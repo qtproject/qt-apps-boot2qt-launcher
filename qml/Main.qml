@@ -1,48 +1,59 @@
 import QtQuick 2.0
 
-import "bootscreen"
-import "launchscreen"
-
 Item {
     id: root
 
     width: 1280
     height: 800
 
-    property int stateDelay: 200;
+    property int stateDelay: 300;
 
     states: [
         State {
             name: "booting"
-            PropertyChanges { target: launchScreenLoader; opacity: 0 }
+            PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
+            PropertyChanges { target: titleBar; opacity: 0 }
+            PropertyChanges { target: background; opacity: 0 }
         },
         State {
             name: "running"
-            PropertyChanges { target: launchScreenLoader; opacity: 1 }
+            PropertyChanges { target: appGrid; opacity: 1 }
             PropertyChanges { target: applicationLoader; opacity: 0 }
-            PropertyChanges { target: applicationCloseButton; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
+            PropertyChanges { target: titleBar; opacity: 1 }
+            PropertyChanges { target: background; opacity: 1 }
         },
         State {
+            name: "settings"
+            PropertyChanges { target: appGrid; opacity: 0 }
+            PropertyChanges { target: splashScreen; opacity: 0 }
+            PropertyChanges { target: titleBar; opacity: 1 }
+            PropertyChanges { target: background; opacity: 1 }
+        },
+
+        State {
             name: "app-launching"
-            PropertyChanges { target: launchScreenLoader; opacity: 0 }
+            PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 1 }
+            PropertyChanges { target: titleBar; opacity: 0 }
+            PropertyChanges { target: background; opacity: 0 }
         },
         State {
             name: "app-running"
             PropertyChanges { target: applicationLoader; opacity: 1 }
-            PropertyChanges { target: applicationCloseButton; opacity: 1 }
-            PropertyChanges { target: launchScreenLoader; opacity: 0 }
+            PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
+            PropertyChanges { target: titleBar; opacity: 0 }
+            PropertyChanges { target: background; opacity: 0 }
         },
         State {
             name: "app-closing"
             PropertyChanges { target: applicationLoader; opacity: 0 }
-            PropertyChanges { target: applicationCloseButton; opacity: 0 }
-            PropertyChanges { target: launchScreenLoader; opacity: 1 }
+            PropertyChanges { target: appGrid; opacity: 1 }
             PropertyChanges { target: splashScreen; opacity: 0 }
-            PropertyChanges { target: launchScreenLoader; opacity: 1 }
+            PropertyChanges { target: titleBar; opacity: 1 }
+            PropertyChanges { target: background; opacity: 1 }
         }
     ]
 
@@ -51,7 +62,12 @@ Item {
             from: "booting"
             to: "running"
             SequentialAnimation {
-                NumberAnimation { target: launchScreenLoader; property: "opacity"; duration: root.stateDelay; easing.type: Easing.InOutQuad }
+                ParallelAnimation {
+                    NumberAnimation { target: appGrid; property: "opacity"; duration: root.stateDelay; easing.type: Easing.InOutQuad }
+                    NumberAnimation { target: background; property: "opacity"; duration: root.stateDelay; easing.type: Easing.InOutQuad }
+                    NumberAnimation { target: titleBar; property: "opacity"; duration: root.stateDelay; easing.type: Easing.InOutQuad }
+                }
+
                 ScriptAction { script: bootScreenLoader.sourceComponent = undefined }
             }
         },
@@ -60,7 +76,7 @@ Item {
             to: "app-launching"
             SequentialAnimation {
                 NumberAnimation { property: "opacity"; duration: root.stateDelay }
-                PauseAnimation { duration: 1000 }
+                PauseAnimation { duration: 300 }
                 ScriptAction { script: {
                         applicationLoader.source = engine.applicationMain;
                     }
@@ -71,7 +87,7 @@ Item {
             from: "app-launching"
             to: "running"
             SequentialAnimation {
-                NumberAnimation { target: launchScreenLoader; property: "opacity"; duration: root.stateDelay }
+                NumberAnimation { target: appGrid; property: "opacity"; duration: root.stateDelay }
             }
         },
         Transition {
@@ -104,12 +120,17 @@ Item {
         print("-- state: " + state + " --");
     }
 
-    Loader {
-        id: launchScreenLoader
+    Background {
+        id: background
         anchors.fill: parent
-        sourceComponent: LaunchScreen {
-            visible: parent.opacity > 0;
-        }
+    }
+
+    LaunchScreen {
+        id: appGrid
+        anchors.top: titleBar.bottom
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
     }
 
     Loader {
@@ -131,6 +152,8 @@ Item {
     Loader {
         id: applicationLoader
         opacity: 0;
+
+        anchors.fill: parent
 
         asynchronous: true;
 
@@ -156,6 +179,24 @@ Item {
             item.height = root.height
             engine.state = "app-running";
         }
+
+        Image {
+            id: applicationCloseButton;
+            source: "images/application-close.png"
+            width: engine.titleBarSize();
+            height: width
+            anchors.right: parent.right
+            anchors.top: parent.top
+            enabled: engine.state == "app-running"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    engine.state = "app-closing"
+                }
+            }
+            z: 1
+        }
+
     }
 
     Item {
@@ -172,7 +213,6 @@ Item {
             asynchronous: true;
             opacity: status == Image.Ready ? 1 : 0;
             Behavior on opacity { NumberAnimation { duration: 50; } }
-            onSourceChanged: print("loading image: " + source);
         }
 
         Text {
@@ -186,20 +226,14 @@ Item {
 
     }
 
-    Image {
-        id: applicationCloseButton;
-        source: "common/images/application-close.png"
-        width: engine.titleBarSize();
-        height: width
-        anchors.right: parent.right
-        anchors.top: parent.top
-        opacity: 0;
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                engine.state = "app-closing"
-            }
-        }
+    TitleBar {
+        id: titleBar
+        height: engine.titleBarSize();
+        width: parent.width
+        visible: parent.visible
     }
+
+
+
 
 }

@@ -25,7 +25,7 @@ Column {
     Item {
         anchors.horizontalCenter: parent.horizontalCenter
         width: 1
-        height: root.contentHeight
+        height: engine.fontSize() * 1.2
         Text {  anchors.right: parent.left; anchors.margins: engine.fontSize(); font.pixelSize: engine.fontSize(); color: "white"; text: "Brightness:" }
         Slider { anchors.left: parent.right; width: labelWidth; height: engine.fontSize(); onValueChanged: print("value is now: " + value)}
     }

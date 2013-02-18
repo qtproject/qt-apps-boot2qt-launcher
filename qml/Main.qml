@@ -6,7 +6,8 @@ Item {
     width: 1280
     height: 800
 
-    property int stateDelay: 300;
+    property int stateDelay: 400;
+    property int bootDelay: 1000;
 
     states: [
         State {
@@ -69,9 +70,9 @@ Item {
             to: "running"
             SequentialAnimation {
                 ParallelAnimation {
-                    NumberAnimation { target: appGrid; property: "opacity"; duration: root.stateDelay; easing.type: Easing.InOutQuad }
-                    NumberAnimation { target: background; property: "opacity"; duration: root.stateDelay; easing.type: Easing.InOutQuad }
-                    NumberAnimation { target: titleBar; property: "opacity"; duration: root.stateDelay; easing.type: Easing.InOutQuad }
+                    NumberAnimation { target: appGrid; property: "opacity"; duration: root.bootDelay; easing.type: Easing.InOutQuad }
+                    NumberAnimation { target: background; property: "opacity"; duration: root.bootDelay; easing.type: Easing.InOutQuad }
+                    NumberAnimation { target: titleBar; property: "opacity"; duration: root.bootDelay; easing.type: Easing.InOutQuad }
                 }
 
                 ScriptAction { script: bootScreenLoader.sourceComponent = undefined }

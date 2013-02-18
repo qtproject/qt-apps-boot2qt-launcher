@@ -63,10 +63,14 @@ Rectangle {
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: parent.height * 0.2
+        anchors.margins: parent.height * 0.1
         width: height
 
-        source: "images/cog.png"
+        smooth: true
+
+        source: "images/kservices.png"
+
+        opacity: buttonMouseArea.pressed ? 0.8 : 1
 
         MouseArea {
             id: buttonMouseArea

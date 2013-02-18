@@ -71,6 +71,7 @@ Rectangle {
         MouseArea {
             id: buttonMouseArea
             anchors.fill: parent
+            anchors.margins: -10
             enabled: engine.state == "running" || engine.state == "settings"
             onClicked: {
                 if (engine.state == "settings")

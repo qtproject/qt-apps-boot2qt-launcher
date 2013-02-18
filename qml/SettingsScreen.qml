@@ -9,10 +9,12 @@ Flickable
     id: root
     clip: true
 
-    property real labelWidth: engine.sensibleButtonSize() * 2;
+    enabled: opacity > 0
+
+    property real labelWidth: Math.min(engine.sensibleButtonSize() * 2, width * 0.4);
     property real entryHeight: engine.fontSize() * 1.2
 
-    property real inertia: 0.2;
+    property real inertia: 0.2
 
     property real cellWidth;
     property real cellHeight;
@@ -70,6 +72,15 @@ Flickable
                 Text {  anchors.right: parent.left; anchors.margins: engine.fontSize(); font.pixelSize: engine.fontSize(); color: "white"; text: "Show FPS:" }
                 CheckBox { anchors.left: parent.right; width: engine.fontSize(); height: width; onCheckedChanged: engine.fpsEnabled = checked; checked: engine.fpsEnabled }
             }
+
+//            Item {
+//                anchors.horizontalCenter: parent.horizontalCenter
+//                width: 1
+//                height: root.entryHeight
+//                Text {  anchors.right: parent.left; anchors.margins: engine.fontSize(); font.pixelSize: engine.fontSize(); color: "white"; text: "Homescreen Inertia:" }
+//                Slider { anchors.left: parent.right; width: labelWidth; height: engine.fontSize(); value: engine.inertia; onValueChanged: engine.inertia = value }
+//            }
+
 
             Item {
                 anchors.horizontalCenter: parent.horizontalCenter

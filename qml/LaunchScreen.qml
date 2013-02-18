@@ -7,7 +7,7 @@ Item {
     property real size: Math.min(root.width, root.height);
     property real cellSize: engine.sensibleButtonSize();
 
-    GridView {
+    GridViewWithInertia {
         clip: true;
         anchors.top: parent.top
         anchors.bottom: parent.bottom

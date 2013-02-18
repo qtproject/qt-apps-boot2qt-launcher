@@ -68,7 +68,7 @@ Rectangle {
 
         smooth: true
 
-        source: "images/kservices.png"
+        source: "images/cog.png"
 
         opacity: buttonMouseArea.pressed ? 0.8 : 1
 

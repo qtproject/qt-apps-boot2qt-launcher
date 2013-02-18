@@ -64,6 +64,7 @@ public:
 
     Q_INVOKABLE int sensibleButtonSize() const;
     Q_INVOKABLE int titleBarSize() const;
+    Q_INVOKABLE int smallFontSize() const { return sensibleButtonSize() * 0.08; }
     Q_INVOKABLE int fontSize() const { return sensibleButtonSize() * 0.15; }
     Q_INVOKABLE int titleFontSize() const { return sensibleButtonSize() * 0.25; }
 

@@ -56,7 +56,7 @@ Item {
 
         color: "white"
 
-        font.pixelSize: parent.height * 0.07;
+        font.pixelSize: engine.smallFontSize();
         font.bold: true
         text: name
         style: Text.Raised

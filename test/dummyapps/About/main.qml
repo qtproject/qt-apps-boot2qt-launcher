@@ -3,13 +3,13 @@ import QtQuick 2.0
 Item {
     id: root
 
-    width: 800
-    height: 480
+    width: 1280
+    height: 800
 
-    Rectangle {
-        anchors.fill: parent
-        color: "black"
-    }
+//    Rectangle {
+//        anchors.fill: parent
+//        color: "black"
+//    }
 
     Flickable {
         id: flick
@@ -57,7 +57,7 @@ Item {
 
                 spacing: engine.smallFontSize() * 2
 
-                Item { height: engine.smallFontSize() }
+                Item { width: 1; height: engine.smallFontSize() }
                 AboutBoot2Qt { }
                 QtFramework { }
                 QtForAndroid { }
@@ -66,7 +66,7 @@ Item {
                     source: "codeless.png"
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
-                Item { height: engine.smallFontSize() }
+                Item { width: 1; height: engine.smallFontSize() }
             }
 
         }

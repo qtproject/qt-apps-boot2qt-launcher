@@ -110,6 +110,7 @@ Item {
             to: "app-closing"
             SequentialAnimation {
                 ParallelAnimation {
+                    NumberAnimation { target: appGrid; property: "opacity"; duration: root.stateDelay }
                     NumberAnimation { target: applicationLoader; property: "opacity"; duration: root.stateDelay }
                     NumberAnimation { target: applicationCloseButton; property: "opacity"; duration: root.stateDelay}
                 }

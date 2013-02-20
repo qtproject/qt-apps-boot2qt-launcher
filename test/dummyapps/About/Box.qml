@@ -6,7 +6,7 @@ Rectangle {
     width: parent.width
     height: label.font.pixelSize * 3
 
-    radius: 4
+    radius: height * 0.2
 
     antialiasing: true
 

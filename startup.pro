@@ -42,5 +42,7 @@ OTHER_FILES += \
     qml/CheckBox.qml \
     qml/DeviceSettings.qml \
     qml/Button.qml \
-    qml/Slider.qml
+    qml/Slider.qml \
+    test/dummyapps/About/QtFramework.qml \
+    test/dummyapps/About/QtForAndroid.qml
 

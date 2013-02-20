@@ -34,6 +34,10 @@ Engine::Engine(QObject *parent)
     , m_bootAnimationEnabled(true)
 {
     m_state = ENGINE_STATE_BOOTING;
+
+    QScreen *screen = QGuiApplication::primaryScreen();
+    m_screenSize = screen->size();
+    m_dpcm = screen->physicalDotsPerInchY() / 2.54f;
 }
 
 
@@ -118,14 +122,10 @@ void Engine::setFpsEnabled(bool enabled)
 
 int Engine::sensibleButtonSize() const
 {
-    QScreen *screen = QGuiApplication::primaryScreen();
-
-    QSize screenSize = screen->size();
-    int baseSize = qMin(screenSize.width(), screenSize.height());
-    float dpcm = screen->physicalDotsPerInchY() / 2.54f;
-
     // 3cm buttons, nice and big...
-    int buttonSize = int(dpcm * 3);
+    int buttonSize = int(m_dpcm * 3);
+
+    int baseSize = qMin(m_screenSize.width(), m_screenSize.height());
 
     // Clamp buttonSize to screen..
     if (buttonSize > baseSize)

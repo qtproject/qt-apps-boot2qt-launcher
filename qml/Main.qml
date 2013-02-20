@@ -197,10 +197,6 @@ Item {
         }
 
         onLoaded: {
-            item.x = 0
-            item.y = 0
-            item.width = root.width
-            item.height = root.height
             engine.state = "app-running";
         }
 
@@ -220,7 +216,6 @@ Item {
             }
             z: 1
         }
-
     }
 
     Item {

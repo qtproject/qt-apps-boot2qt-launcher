@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QUrl>
+#include <QSize>
 
 #include <QColor>
 
@@ -64,9 +65,9 @@ public:
 
     Q_INVOKABLE int sensibleButtonSize() const;
     Q_INVOKABLE int titleBarSize() const;
-    Q_INVOKABLE int smallFontSize() const { return sensibleButtonSize() * 0.08; }
-    Q_INVOKABLE int fontSize() const { return sensibleButtonSize() * 0.15; }
-    Q_INVOKABLE int titleFontSize() const { return sensibleButtonSize() * 0.25; }
+    Q_INVOKABLE int smallFontSize() const { return m_dpcm * 0.3; }
+    Q_INVOKABLE int fontSize() const { return m_dpcm * 0.4; }
+    Q_INVOKABLE int titleFontSize() const { return m_dpcm * 0.7; }
 
 protected:
 
@@ -105,14 +106,16 @@ private:
     QUrl m_applicationUrl;
     QUrl m_applicationMain;
 
+    QSize m_screenSize;
+    qreal m_dpcm;
+
     FpsCounter *m_fpsCounter;
     qreal m_fps;
 
     uint m_intro_done : 1;
     uint m_apps_ready : 1;
     uint m_fps_enabled : 1;
-
-    uint m_bootAnimationEnabled;
+    uint m_bootAnimationEnabled : 1;
 };
 
 #endif // ENGINE_H

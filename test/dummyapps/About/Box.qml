@@ -4,11 +4,9 @@ Rectangle {
     id: root
 
     width: parent.width
-    height: engine.smallFontSize() * 3
+    height: label.font.pixelSize * 3
 
-    radius: 10
-    border.width: 2
-    border.color: "white"
+    radius: 4
 
     antialiasing: true
 
@@ -17,12 +15,14 @@ Rectangle {
     property color accentColor: "palegreen"
 
     gradient: Gradient {
-        GradientStop { position: 0; color: "white"; }
         GradientStop { position: 0; color: root.accentColor; }
+        GradientStop { position: 1; color: "black"; }
     }
 
     Text {
+        id: label
         font.pixelSize: engine.smallFontSize()
+        font.bold: true;
         color: "white"
         anchors.centerIn: parent
     }

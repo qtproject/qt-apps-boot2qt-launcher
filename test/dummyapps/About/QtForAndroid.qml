@@ -18,12 +18,6 @@ Column {
                purpose is to enable development of applications that
                can run on Android devices. For developers writing applications
                for the Android ecosystem, Qt for Android is the right choice.
-
-               <p>Boot2Qt tries to strip down the Android stack to the bare minimum,
-               relying only on basic Linux features. The majority of the Android stack,
-               such as <i>SurfaceFlinger</i> or <i>DalvikVM</i> is not running in
-               Boot2Qt, resulting in faster startup times, lower memory consumption
-               and overall better performance.
                "
     }
 
@@ -44,5 +38,14 @@ Column {
         Box { text: "Android Baselayer"; accentColor: "steelblue" }
         Box { text: "Embedded Hardware"; accentColor: "steelblue"}
     }
+
+    ContentText {
+        width: parent.width
+        text: "<p>Boot2Qt tries to strip down the Android stack to the bare minimum,
+               relying only on basic Linux features. The majority of the Android stack,
+               such as <i>SurfaceFlinger</i> or <i>DalvikVM</i> is not running in
+               Boot2Qt, resulting in faster startup times, lower memory consumption
+               and overall better performance."
+        }
 
 }

@@ -22,12 +22,12 @@ Item {
         Behavior on opacity { NumberAnimation { duration: 200 } }
     }
 
-    Text {
-        color: "white"
-        visible: iconName == ""
-        font.pixelSize: icon.height * 0.8
-        anchors.centerIn: icon
-        text: "?"
+    Image {
+        id: replacementIcon
+        source: "images/qt-logo.png"
+        anchors.fill: icon
+        sourceSize: Qt.size(width, height);
+        visible: icon.opacity == 0
     }
 
     MouseArea {

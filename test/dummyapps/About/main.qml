@@ -19,7 +19,7 @@ Item {
         property real cellWidth;
         property real cellHeight;
 
-        width: parent.width * 2 / 3
+        width: parent.width
         height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -35,14 +35,15 @@ Item {
         Item {
             id: shiftTrickery
 
-            width: content.width
+            width: flick.width
             height: content.height
 
             Column {
                 id: content;
 
                 y: -flick.contentItem.y + offsetY;
-                width: flick.width
+                width: flick.width * 2 / 3
+                anchors.horizontalCenter: parent.horizontalCenter
 
                 property real offsetY: 0;
                 property real inertia: flick.inertia;

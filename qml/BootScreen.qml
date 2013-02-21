@@ -82,7 +82,6 @@ Item {
         ImageParticle {
             id: sphereParticle
             source: "images/particle.png"
-            anchors.fill: parent
             color: "#80c342"
             alpha: 1
             colorVariation: 0.0
@@ -118,7 +117,6 @@ Item {
         ImageParticle {
             id: starParticle
             source: "images/particle_star.png"
-            anchors.fill: parent
             color: "#ffffff"
             alpha: 0
             colorVariation: 0

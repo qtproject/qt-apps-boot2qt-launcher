@@ -15,12 +15,12 @@ HEADERS += \
     src/logmanager.h \
     src/fpscounter.h
 
-script.files = qt_run.sh
-script.path = $$[INSTALL_ROOT]/system/bin
+#script.files = qt_run.sh
+#script.path = $$[INSTALL_ROOT]/system/bin
 
 target.path = $$[INSTALL_ROOT]/system/bin
 
-INSTALLS += target script
+INSTALLS += target
 
 RESOURCES += \
     resources.qrc

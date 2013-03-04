@@ -3,7 +3,7 @@ import QtQuick 2.0
 Item {
     id: root
 
-    property real value: grip.x / (root.width - grip.width) ;
+    property real value: grip.x / (root.width - grip.width);
 
     Rectangle {
         id: line
@@ -19,7 +19,8 @@ Item {
     Rectangle {
         id: grip
         anchors.verticalCenter: parent.verticalCenter
-        height: engine.fontSize() - 8
+        height: engine.fontSize();
+        x: parent.width - width
         width: height
         color: Qt.rgba(1, 1, 1, 1);
         radius: 6
@@ -27,10 +28,12 @@ Item {
         border.color: "white"
         border.width: 2
 
+
+
         MouseArea {
             id: mouse
             anchors.fill: parent
-            anchors.margins: -10
+            anchors.margins: -20
             drag.target: parent
             drag.axis: Drag.XAxis;
             drag.maximumX: root.width - grip.width

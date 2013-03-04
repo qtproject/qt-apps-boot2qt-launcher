@@ -28,5 +28,6 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: parent.checked = !parent.checked
+        anchors.margins: -20
     }
 }

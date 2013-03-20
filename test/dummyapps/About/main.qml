@@ -14,7 +14,7 @@ Item {
 
     Flickable {
         id: flick
-        property real inertia: 0.2
+        property real inertia: 0.4
 
         property real cellWidth;
         property real cellHeight;

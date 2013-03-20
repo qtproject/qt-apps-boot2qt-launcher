@@ -14,7 +14,7 @@ Flickable
     property real labelWidth: Math.min(engine.sensibleButtonSize() * 2, width * 0.4);
     property real entryHeight: engine.fontSize() * 1.2
 
-    property real inertia: 0.2
+    property real inertia: 0.4
 
     property real cellWidth;
     property real cellHeight;

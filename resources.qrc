@@ -16,6 +16,7 @@
         <file>qml/NoisyGradient.qml</file>
         <file>qml/SettingsScreen.qml</file>
         <file>qml/TitleBar.qml</file>        
+        <file>qml/KeyboardLoader.qml</file>
 
         <file>qml/images/application-close.png</file>
         <file>qml/images/bg_1280x800.jpg</file>

@@ -277,6 +277,10 @@ Item {
         }
     }
 
-
+    Loader {
+        anchors.fill: parent
+        asynchronous: false;
+        source: "KeyboardLoader.qml"
+    }
 
 }

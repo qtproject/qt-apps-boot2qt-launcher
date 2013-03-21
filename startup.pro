@@ -43,6 +43,5 @@ OTHER_FILES += \
     qml/DeviceSettings.qml \
     qml/Button.qml \
     qml/Slider.qml \
-    test/dummyapps/About/QtFramework.qml \
-    test/dummyapps/About/QtForAndroid.qml
+    qml/KeyboardLoader.qml
 

@@ -12,17 +12,14 @@ Item {
             SequentialAnimation {
                 PropertyAction { target: sphereSystem; property: "running"; value: true }
                 PropertyAction { target: starSystem; property: "running"; value: true }
-                PauseAnimation { duration: 3000 }
-                PropertyAction { target: sphereEmitter; property: "emitRate"; value: 200 }
-                PropertyAction { target: starEmitter; property: "emitRate"; value: 200 }
-                PauseAnimation { duration: 5000 }
+                PauseAnimation { duration: 1000 }
                 ScriptAction { script: {
                         starAccel.x = 5
-                        starAccel.xVariation = 20;
-                        starAccel.yVariation = 20;
+                        starAccel.xVariation = 200;
+                        starAccel.yVariation = 200;
                         sphereAccel.x = -5
-                        sphereAccel.xVariation = 20
-                        sphereAccel.yVariation = 20
+                        sphereAccel.xVariation = 200
+                        sphereAccel.yVariation = 200
                         sphereParticle.alpha = 0;
                     }
                 }
@@ -90,16 +87,16 @@ Item {
         Emitter {
             id: sphereEmitter
             anchors.fill: parent
-            emitRate: 50
-            lifeSpan: 4000
+            emitRate: 1000
+            lifeSpan: 2000
             size: 24
             sizeVariation: 8
 
             velocity: PointDirection { xVariation: 2; yVariation: 2; }
             acceleration: PointDirection {
                 id: sphereAccel
-                xVariation: 1;
-                yVariation: 1;
+                xVariation: 10;
+                yVariation: 10;
             }
 
             shape: MaskShape {
@@ -125,8 +122,8 @@ Item {
         Emitter {
             id: starEmitter
             anchors.fill: parent
-            emitRate: 50
-            lifeSpan: 5000
+            emitRate: 300
+            lifeSpan: 2000
             size: 32
             sizeVariation: 8
 

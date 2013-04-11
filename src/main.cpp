@@ -46,10 +46,12 @@ int main(int argc, char **argv)
 
     QGuiApplication app(argc, argv);
 
-    QString fontName = QStringLiteral("/system/fonts/Roboto-Regular.ttf");
+    QString fontName = QStringLiteral("/system/lib/fonts/OpenSans-Regular.ttf");
     if (QFile::exists(fontName)) {
         QFontDatabase::addApplicationFont(fontName);
-        QGuiApplication::setFont(QFont("Roboto"));
+        QFont font("Open Sans");
+        font.setBold(true);
+        QGuiApplication::setFont(QFont("Open Sans"));
     } else {
         QFont font;
         font.setStyleHint(QFont::SansSerif);

@@ -24,7 +24,18 @@ class IndexingThread : public QThread
 {
 public:
 
-    void run() {
+    void run()
+    {
+        QList<AppData> results;
+        QList<QString> roots = root.split(":");
+        foreach (const QString &root, roots) {
+            results += indexDirectory(root);
+        }
+        qDebug() << "Indexer: all done... total:" << results.size();
+        QCoreApplication::postEvent(model, new ResultEvent(results));
+    }
+
+    QList<AppData> indexDirectory(const QString &root) {
         QDirIterator iterator(root);
 
         QList<AppData> results;
@@ -54,9 +65,7 @@ public:
             results << data;
         }
 
-        qDebug() << "Indexer: all done... total:" << results.size();
-
-        QCoreApplication::postEvent(model, new ResultEvent(results));
+        return results;
     }
 
     QString root;

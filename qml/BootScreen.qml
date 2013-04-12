@@ -6,41 +6,25 @@ Item {
 
     property real size: Math.min(root.width, root.height);
 
+    property int particleLifeTime: 2000;
+
     SequentialAnimation {
         id: entryAnimation
+        NumberAnimation { target: logo; property: "opacity"; to: 1; duration: 500 }
+        PauseAnimation { duration: 500 }
         ParallelAnimation {
-            SequentialAnimation {
-                PropertyAction { target: sphereSystem; property: "running"; value: true }
-                PropertyAction { target: starSystem; property: "running"; value: true }
-                PauseAnimation { duration: 1000 }
-                ScriptAction { script: {
-                        starAccel.x = 5
-                        starAccel.xVariation = 200;
-                        starAccel.yVariation = 200;
-                        sphereAccel.x = -5
-                        sphereAccel.xVariation = 200
-                        sphereAccel.yVariation = 200
-                        sphereParticle.alpha = 0;
-                    }
+            ScriptAction { script: {
+                    starEmitter.burst(300);
+                    sphereEmitter.burst(2000);
                 }
-                PauseAnimation { duration: 3000 }
-                PropertyAction { target: starEmitter; property: "enabled"; value: false }
-                PropertyAction { target: sphereEmitter; property: "enabled"; value: false }
-                PauseAnimation { duration: 5000 }
             }
+            NumberAnimation { target: logo; property: "opacity"; to: 0; duration: 200 }
             SequentialAnimation {
-                PauseAnimation { duration: 5000 }
-                NumberAnimation { target: label; property: "opacity"; to: 1; duration: 5000 }
-                NumberAnimation { target: label; property: "opacity"; to: 0; duration: 1000 }
-            }
-        }
-        ScriptAction { script: {
-                engine.markIntroAnimationDone();
+                PauseAnimation { duration: root.particleLifeTime }
+                ScriptAction { script: { engine.markIntroAnimationDone(); } }
             }
         }
     }
-
-
 
     Component.onCompleted: {
         if (engine.bootAnimationEnabled) {
@@ -50,12 +34,13 @@ Item {
         }
     }
 
-    Item {
+    Image {
         id: logo;
-        width: root.size / 2;
-        height: root.size / 2;
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -root.size * 0.1
+        source: "images/qt-logo.png"
+        opacity: 0
+
     }
 
     Text {
@@ -64,39 +49,36 @@ Item {
         anchors.horizontalCenter: logo.horizontalCenter
         anchors.top: logo.bottom
 
-        font.pixelSize: size * 0.1
+        font.pixelSize: size * 0.04
         color: "white"
-        text: "Boot 2 Qt"
-        opacity: 0
+        text: "Boot2Qt"
+        opacity: logo.opacity * 0.5
     }
 
     ParticleSystem {
         id: sphereSystem;
         anchors.fill: logo
 
-        running: false
-
         ImageParticle {
             id: sphereParticle
             source: "images/particle.png"
             color: "#80c342"
-            alpha: 1
+            alpha: .9
             colorVariation: 0.0
         }
 
         Emitter {
             id: sphereEmitter
             anchors.fill: parent
-            emitRate: 1000
-            lifeSpan: 2000
-            size: 24
-            sizeVariation: 8
+            lifeSpan: root.particleLifeTime
+            size: 12
+            sizeVariation: 4
+            enabled: false
 
-            velocity: PointDirection { xVariation: 2; yVariation: 2; }
+            velocity: PointDirection { xVariation: 0; yVariation: 20; }
             acceleration: PointDirection {
                 id: sphereAccel
-                xVariation: 10;
-                yVariation: 10;
+                yVariation: 0
             }
 
             shape: MaskShape {
@@ -109,8 +91,6 @@ Item {
         id: starSystem;
         anchors.fill: logo
 
-        running: false
-
         ImageParticle {
             id: starParticle
             source: "images/particle_star.png"
@@ -122,16 +102,15 @@ Item {
         Emitter {
             id: starEmitter
             anchors.fill: parent
-            emitRate: 300
-            lifeSpan: 2000
-            size: 32
-            sizeVariation: 8
+            lifeSpan: root.particleLifeTime
+            size: 24
+            sizeVariation: 4
+            enabled: false
 
-            velocity: PointDirection { xVariation: 1; yVariation: 1; }
+            velocity: PointDirection { xVariation: 0; yVariation: 0; }
             acceleration: PointDirection {
                 id: starAccel
-                xVariation: 0;
-                yVariation: 0;
+                xVariation: 5000
             }
 
             shape: MaskShape {

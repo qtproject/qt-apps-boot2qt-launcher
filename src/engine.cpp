@@ -38,6 +38,13 @@ Engine::Engine(QObject *parent)
     QScreen *screen = QGuiApplication::primaryScreen();
     m_screenSize = screen->size();
     m_dpcm = screen->physicalDotsPerInchY() / 2.54f;
+
+    // Make the buttons smaller for smaller screens to compensate for that
+    // one typically holds it nearer to the eyes.
+    float low = 5;
+    float high = 20;
+    float screenSizeCM = qMax<float>(qMin(m_screenSize.width(), m_screenSize.height()) / m_dpcm, low);
+    m_dpcm *= (screenSizeCM - low) / (high - low) * 0.5 + 0.5;
 }
 
 

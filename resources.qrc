@@ -1,33 +1,21 @@
 <RCC>
     <qresource prefix="/">
-
         <file>qml/Main.qml</file>
         <file>qml/main_landscape.qml</file>
-
-	<file>qml/Button.qml</file>
-	<file>qml/Slider.qml</file>
         <file>qml/ApplicationIcon.qml</file>
-        <file>qml/Background.qml</file>
         <file>qml/BootScreen.qml</file>
-        <file>qml/CheckBox.qml</file>
-        <file>qml/DeviceSettings.qml</file>        
-        <file>qml/GridViewWithInertia.qml</file>
         <file>qml/LaunchScreen.qml</file>
-        <file>qml/NoisyGradient.qml</file>
-        <file>qml/SettingsScreen.qml</file>
-        <file>qml/TitleBar.qml</file>        
         <file>qml/KeyboardLoader.qml</file>
-
-        <file>qml/images/application-close.png</file>
-        <file>qml/images/bg_1280x800.jpg</file>
         <file>qml/images/codeless.png</file>
-        <file>qml/images/cog.png</file>
         <file>qml/images/particle.png</file>
         <file>qml/images/particle_star.png</file>
         <file>qml/images/qt-logo-green-mask.png</file>
         <file>qml/images/qt-logo-small.png</file>
         <file>qml/images/qt-logo-white-mask.png</file>
         <file>qml/images/qt-logo.png</file>
-
+        <file>qml/GlimmeringQtLogo.qml</file>
+        <file>qml/HighlightShader.qml</file>
+        <file>qml/images/play.png</file>
+        <file>qml/images/preview_fallback_landscape.jpg</file>
     </qresource>
 </RCC>

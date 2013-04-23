@@ -25,7 +25,6 @@
 Engine::Engine(QObject *parent)
     : QObject(parent)
     , m_qmlEngine(0)
-    , m_activeIcon(0)
     , m_fpsCounter(0)
     , m_fps(0)
     , m_intro_done(false)
@@ -77,24 +76,6 @@ void Engine::setBootAnimationEnabled(bool enabled)
     emit bootAnimationEnabledChanged(enabled);
 }
 
-void Engine::setBackgroundImage(const QUrl &name)
-{
-    if (m_bgImage == name)
-        return;
-
-    m_bgImage = name;
-    emit backgroundImageChanged(m_bgImage);
-}
-
-void Engine::setBackgroundColor(const QString &color)
-{
-    if (m_bgColor == color)
-        return;
-
-    m_bgColor = color;
-    emit backgroundColorChanged(m_bgColor);
-}
-
 int Engine::titleBarSize() const
 {
     return int(QGuiApplication::primaryScreen()->physicalDotsPerInch() / 2.54f);
@@ -141,30 +122,30 @@ int Engine::sensibleButtonSize() const
     return buttonSize;
 }
 
-void Engine::launchApplication(const QUrl &path, const QString &mainFile, QQuickItem *appIcon)
+void Engine::launchApplication(const QUrl &path, const QString &mainFile, const QString &name)
 {
     // only launch apps when in the homescreen...
     if (m_state != QStringLiteral("running"))
         return;
 
-    m_activeIcon = appIcon;
-    emit activeIconChanged(m_activeIcon);
-
     m_applicationMain = m_applicationUrl = path;
     m_applicationMain.setPath(path.path() + "/" + mainFile);
+    m_applicationName = name;
     emit applicationUrlChanged(m_applicationUrl);
     emit applicationMainChanged(m_applicationMain);
+    emit applicationNameChanged(m_applicationName);
     setState(ENGINE_STATE_APPLAUNCHING);
 }
 
 void Engine::closeApplication()
 {
-    m_activeIcon = 0;
     emit activeIconChanged(0);
 
     m_applicationMain = m_applicationUrl = QUrl();
+    m_applicationName = QString();
     emit applicationUrlChanged(m_applicationUrl);
     emit applicationMainChanged(m_applicationMain);
+    emit applicationNameChanged(m_applicationName);
 
     setState(ENGINE_STATE_RUNNING);
 }

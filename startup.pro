@@ -18,7 +18,7 @@ HEADERS += \
 #script.files = qt_run.sh
 #script.path = $$[INSTALL_ROOT]/system/bin
 
-include(open-sans/fonts.pri)
+#include(open-sans/fonts.pri)
 
 target.path = $$[INSTALL_ROOT]/system/bin
 
@@ -46,5 +46,9 @@ OTHER_FILES += \
     qml/Button.qml \
     qml/Slider.qml \
     qml/KeyboardLoader.qml \
-    open-sans/fonts.pri
+    open-sans/fonts.pri \
+    qml/GlimmeringQtLogo.qml \
+    qml/HighlightShader.qml \
+    screenshot/Main.qml \
+    screenshot/Button.qml
 

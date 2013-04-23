@@ -3,6 +3,7 @@
 #include <QtGui/QGuiApplication>
 #include <QtGui/QFont>
 #include <QtGui/QFontDatabase>
+#include <QtGui/QScreen>
 
 #include <QtQuick/QQuickView>
 
@@ -22,8 +23,6 @@ void displayHelp(const char *appName)
            "Options:\n"
            " --main-file [qml-file]             Launches an alternative QML file\n"
            " --applications-root [path]         Specify a different applications root\n"
-           " --background-image [path]          Specify a different background image\n"
-           " --background-color [html-color]    Specify a background color, overrides image\n"
            " --no-boot-animation                Disable startup animation\n"
            " --show-fps                         Show FPS\n"
            , appName
@@ -58,7 +57,11 @@ int main(int argc, char **argv)
         QGuiApplication::setFont(font);
     }
 
-    QString mainFile = QStringLiteral("qrc:///qml/Main.qml");
+    QSize screenSize = QGuiApplication::primaryScreen()->size();
+
+    QString mainFile = screenSize.width() < screenSize.height()
+        ? QStringLiteral("qrc:///qml/main_landscape.qml")
+        : QStringLiteral("qrc:///qml/Main.qml");
     QString appsRoot = QStringLiteral("/data/user/qt");
 
     QString bgImage = QStringLiteral(":/qml/images/bg_1280x800.jpg");
@@ -75,13 +78,6 @@ int main(int argc, char **argv)
         } else if (args.at(i) == QStringLiteral("--applications-root")) {
             ++i;
             appsRoot = args.at(i);
-        } else if (args.at(i) == QStringLiteral("--background-image")) {
-            ++i;
-            bgImage = args.at(i);
-        } else if (args.at(i) == QStringLiteral("--background-color")) {
-            ++i;
-            if (QColor(args.at(i)).isValid())
-                bgColor = args.at(i);
         } else if (args.at(i) == QStringLiteral("--no-boot-animation")) {
             bootAnimation = false;
         } else if (args.at(i) == QStringLiteral("--show-fps")) {
@@ -102,8 +98,6 @@ int main(int argc, char **argv)
 
     qDebug() << "Main File:" << mainFile;
     qDebug() << "Applications Root:" << appsRoot;
-    qDebug() << "Background Image:" << bgImage;
-    qDebug() << "Background Color:" << bgColor;
     qDebug() << "Boot Animation:" << (bootAnimation ? "yes" : "no");
     qDebug() << "Show FPS:" << (showFps ? "yes" : "no");
     qDebug() << "Log redirection:" << (logcat ? "yes" : "no");
@@ -113,8 +107,6 @@ int main(int argc, char **argv)
     Engine engine;
     engine.setWindow(&view);
     engine.setFpsEnabled(showFps);
-    engine.setBackgroundImage(QUrl::fromLocalFile(bgImage));
-    engine.setBackgroundColor(bgColor);
     engine.setQmlEngine(view.engine());
     engine.setBootAnimationEnabled(bootAnimation);
 

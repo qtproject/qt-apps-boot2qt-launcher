@@ -19,12 +19,10 @@ class Engine : public QObject
     Q_PROPERTY(QString state READ state WRITE setState NOTIFY stateChanged)
 
     Q_PROPERTY(bool bootAnimationEnabled READ isBootAnimationEnabled WRITE setBootAnimationEnabled NOTIFY bootAnimationEnabledChanged)
-    Q_PROPERTY(QString backgroundColor READ backgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
-    Q_PROPERTY(QUrl backgroundImage READ backgroundImage WRITE setBackgroundImage NOTIFY backgroundImageChanged)
 
-    Q_PROPERTY(QQuickItem *activeIcon READ activeIcon NOTIFY activeIconChanged)
     Q_PROPERTY(QUrl applicationMain READ applicationMain NOTIFY applicationMainChanged)
     Q_PROPERTY(QUrl applicationUrl READ applicationUrl NOTIFY applicationUrlChanged)
+    Q_PROPERTY(QString applicationName READ applicationName NOTIFY applicationNameChanged)
 
     Q_PROPERTY(bool fpsEnabled READ isFpsEnabled WRITE setFpsEnabled NOTIFY fpsEnabledChanged)
     Q_PROPERTY(qreal fps READ fps NOTIFY fpsChanged)
@@ -37,12 +35,6 @@ public:
     QString state() const { return m_state; }
     void setState(const QString &state);
 
-    QUrl backgroundImage() const { return m_bgImage; }
-    void setBackgroundImage(const QUrl &name);
-
-    QString backgroundColor() const { return m_bgColor; }
-    void setBackgroundColor(const QString &color);
-
     bool isFpsEnabled() const { return m_fps_enabled; }
     void setFpsEnabled(bool enabled);
 
@@ -54,12 +46,11 @@ public:
     bool isBootAnimationEnabled() const { return m_bootAnimationEnabled; }
     void setBootAnimationEnabled(bool enabled);
 
-    QQuickItem *activeIcon() const { return m_activeIcon; }
-
     QString qtVersion() const { return QT_VERSION_STR; }
 
     QUrl applicationUrl() const { return m_applicationUrl; }
     QUrl applicationMain() const { return m_applicationMain; }
+    QString applicationName() const { return m_applicationName; }
 
     void setWindow(QQuickWindow *window) { m_window = window; }
 
@@ -68,16 +59,16 @@ public:
     Q_INVOKABLE int smallFontSize() const { return m_dpcm * 0.3; }
     Q_INVOKABLE int fontSize() const { return m_dpcm * 0.4; }
     Q_INVOKABLE int titleFontSize() const { return m_dpcm * 0.7; }
+    Q_INVOKABLE int centimeter() const { return m_dpcm; }
 
 protected:
 
 signals:
     void stateChanged(const QString &state);
-    void backgroundImageChanged(const QUrl &name);
-    void backgroundColorChanged(const QString &color);
     void activeIconChanged(QQuickItem *item);
     void applicationUrlChanged(const QUrl &applicationUrl);
     void applicationMainChanged(const QUrl &applicationMain);
+    void applicationNameChanged(const QString &applicationName);
     void bootAnimationEnabledChanged(bool enabled);
     void fpsChanged(qreal fps);
     void fpsEnabledChanged(bool enabled);
@@ -86,7 +77,7 @@ public slots:
     void markApplicationsModelReady() { m_apps_ready = true; updateReadyness(); }
     void markIntroAnimationDone() { m_intro_done = true; updateReadyness(); }
 
-    void launchApplication(const QUrl &location, const QString &mainFile, QQuickItem *appIcon);
+    void launchApplication(const QUrl &location, const QString &mainFile, const QString &name);
     void closeApplication();
 
     void setFps(qreal fps);
@@ -99,12 +90,9 @@ private:
 
     QString m_state;
 
-    QUrl m_bgImage;
-    QString m_bgColor;
-
-    QQuickItem *m_activeIcon;
     QUrl m_applicationUrl;
     QUrl m_applicationMain;
+    QString m_applicationName;
 
     QSize m_screenSize;
     qreal m_dpcm;

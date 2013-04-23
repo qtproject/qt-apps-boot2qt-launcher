@@ -55,12 +55,10 @@ public:
             if (file.open(QFile::ReadOnly))
                 data.description = QString::fromUtf8(file.readAll());
 
-            data.iconName = QFile::exists(path + "/icon.png")
-                    ? QStringLiteral("icon.png")
-                    : QString();
-            data.largeIconName = QFile::exists(path + "/icon-large.png")
-                    ? QStringLiteral("icon-large.png")
-                    : data.iconName;
+            QString imageName = path + "/preview_l.jpg";
+            data.icon = QFile::exists(imageName)
+                    ? QUrl::fromLocalFile(imageName)
+                    : QUrl("qrc:///qml/images/preview_fallback_landscape.jpg");
 
             results << data;
         }
@@ -84,8 +82,7 @@ QHash<int, QByteArray> ApplicationsModel::roleNames() const
     names[DescriptionRole] = "description";
     names[MainFileRole] = "mainFile";
     names[LocationRole] = "location";
-    names[IconNameRole] = "iconName";
-    names[LargeIconNameRole] = "largeIconName";
+    names[IconRole] = "icon";
     return names;
 }
 
@@ -121,13 +118,46 @@ QVariant ApplicationsModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case NameRole: return ad.name;
-    case DescriptionRole: return ad.name;
+    case DescriptionRole: return ad.description;
     case LocationRole: return ad.location;
     case MainFileRole: return ad.main;
-    case IconNameRole: return ad.iconName;
-    case LargeIconNameRole: return ad.largeIconName;
+    case IconRole: return ad.icon;
     default: qDebug() << "ApplicationsModel::data: unhandled role" << role;
     }
 
     return QVariant();
+}
+
+QString ApplicationsModel::nameAt(int i) const
+{
+    if (i < 0 || i >= m_data.size()) {
+        return "ERROR: out-of-range";
+    }
+    return m_data[i].name;
+}
+
+QString ApplicationsModel::locationAt(int i) const
+{
+    if (i < 0 || i >= m_data.size()) {
+        return "ERROR: out-of-range";
+    }
+    return m_data[i].location.toLocalFile();
+}
+
+QVariant ApplicationsModel::query(int i, const QString &name) const
+{
+    if (i < 0 || i >= m_data.size()) {
+        QVariant();
+    }
+
+    const AppData &ad = m_data.at(i);
+    if (name == QStringLiteral("description")) return ad.description;
+    else if (name == QStringLiteral("name")) return ad.name;
+    else if (name == QStringLiteral("location")) return ad.location;
+    else if (name == QStringLiteral("mainFile")) return ad.main;
+    else if (name == QStringLiteral("icon")) return ad.icon;
+
+    return QVariant();
+
+    qWarning("ApplicationsModel::query: Asking for bad name %s", qPrintable(name));
 }

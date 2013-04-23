@@ -11,6 +11,9 @@ Item {
     SequentialAnimation {
         id: entryAnimation
         NumberAnimation { target: logo; property: "opacity"; to: 1; duration: 500 }
+
+//        NumberAnimation { target: logo; property: "t"; from: 0; to: 5; duration: 2000; easing.type: Easing.InCubic }
+
         PauseAnimation { duration: 500 }
         ParallelAnimation {
             ScriptAction { script: {
@@ -37,17 +40,20 @@ Item {
     Image {
         id: logo;
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: -root.size * 0.1
+        anchors.verticalCenterOffset: -root.size * 0.1 + Math.random() * t;
+        anchors.horizontalCenterOffset: Math.random() * t;
         source: "images/qt-logo.png"
         opacity: 0
+
+        property real t;
 
     }
 
     Text {
         id: label
 
-        anchors.horizontalCenter: logo.horizontalCenter
-        anchors.top: logo.bottom
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: -root.size * 0.1 + logo.height / 2 + 20
 
         font.pixelSize: size * 0.04
         color: "white"
@@ -58,6 +64,8 @@ Item {
     ParticleSystem {
         id: sphereSystem;
         anchors.fill: logo
+
+        running: visible
 
         ImageParticle {
             id: sphereParticle
@@ -90,6 +98,9 @@ Item {
     ParticleSystem {
         id: starSystem;
         anchors.fill: logo
+
+        running: visible
+
 
         ImageParticle {
             id: starParticle

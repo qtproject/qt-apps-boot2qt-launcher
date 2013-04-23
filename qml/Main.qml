@@ -14,53 +14,29 @@ Item {
             name: "booting"
             PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
-            PropertyChanges { target: titleBar; opacity: 0 }
-            PropertyChanges { target: background; opacity: 0 }
-            PropertyChanges { target: settings; opacity: 0 }
         },
         State {
             name: "running"
             PropertyChanges { target: appGrid; opacity: 1 }
             PropertyChanges { target: applicationLoader; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
-            PropertyChanges { target: titleBar; opacity: 1 }
-            PropertyChanges { target: background; opacity: 1 }
-            PropertyChanges { target: settings; opacity: 0 }
         },
-        State {
-            name: "settings"
-            PropertyChanges { target: appGrid; opacity: 0 }
-            PropertyChanges { target: splashScreen; opacity: 0 }
-            PropertyChanges { target: titleBar; opacity: 1 }
-            PropertyChanges { target: background; opacity: 1 }
-            PropertyChanges { target: settings; opacity: 1 }
-        },
-
         State {
             name: "app-launching"
             PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 1 }
-            PropertyChanges { target: titleBar; opacity: 0 }
-            PropertyChanges { target: background; opacity: 0 }
-            PropertyChanges { target: settings; opacity: 0 }
         },
         State {
             name: "app-running"
             PropertyChanges { target: applicationLoader; opacity: 1 }
             PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
-            PropertyChanges { target: titleBar; opacity: 0 }
-            PropertyChanges { target: background; opacity: 0 }
-            PropertyChanges { target: settings; opacity: 0 }
         },
         State {
             name: "app-closing"
             PropertyChanges { target: applicationLoader; opacity: 0 }
-            PropertyChanges { target: appGrid; opacity: 1 }
+            PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
-            PropertyChanges { target: titleBar; opacity: 1 }
-            PropertyChanges { target: background; opacity: 1 }
-            PropertyChanges { target: settings; opacity: 0 }
         }
     ]
 
@@ -71,8 +47,6 @@ Item {
             SequentialAnimation {
                 ParallelAnimation {
                     NumberAnimation { target: appGrid; property: "opacity"; duration: root.bootDelay; easing.type: Easing.InOutQuad }
-                    NumberAnimation { target: background; property: "opacity"; duration: root.bootDelay; easing.type: Easing.InOutQuad }
-                    NumberAnimation { target: titleBar; property: "opacity"; duration: root.bootDelay; easing.type: Easing.InOutQuad }
                 }
 
                 ScriptAction { script: bootScreenLoader.sourceComponent = undefined }
@@ -86,7 +60,7 @@ Item {
             to: "app-launching"
             SequentialAnimation {
                 NumberAnimation { property: "opacity"; duration: root.stateDelay }
-                PauseAnimation { duration: 300 }
+                PauseAnimation { duration: 500 }
                 ScriptAction { script: {
                         applicationLoader.source = engine.applicationMain;
                     }
@@ -125,41 +99,18 @@ Item {
 
     ]
 
-//    Timer {
-//        running: true
-//        interval: 1000
-//        onTriggered: engine.state = "settings"
-//    }
-
     state: engine.state
-
-    onStateChanged: {
-        print("-- state: " + state + " --");
-    }
-
-    Background {
-        id: background
-        anchors.fill: parent
-    }
+//    onStateChanged: print("---state: " + engine.state);
 
     LaunchScreen {
         id: appGrid
-        anchors.top: titleBar.bottom
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-    }
-
-    SettingsScreen {
-        id: settings
-        anchors.top: titleBar.bottom
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
+        visible: opacity > 0
+        anchors.fill: parent
     }
 
     Loader {
         id: bootScreenLoader
+        visible: opacity > 0
         anchors.fill: parent
         sourceComponent: BootScreen {}
     }
@@ -177,10 +128,10 @@ Item {
     Loader {
         id: applicationLoader
         opacity: 0;
+        visible: opacity > 0
 
         anchors.fill: parent
-
-        asynchronous: true;
+        asynchronous: false;
 
         onStatusChanged: {
 //            switch (status) {
@@ -201,13 +152,33 @@ Item {
             engine.state = "app-running";
         }
 
-        Image {
+        Rectangle {
             id: applicationCloseButton;
-            source: "images/application-close.png"
-            width: engine.titleBarSize();
-            height: width
-            anchors.right: parent.right
-            anchors.top: parent.top
+
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.horizontalCenterOffset: parent.width / 4
+            y: -height / 2;
+
+            width: closeLabel.width + engine.centimeter() * 2
+            height: engine.fontSize() * 3;
+            radius: height / 2;
+
+            gradient: Gradient {
+                GradientStop { position: 0.5; color: "gray" }
+                GradientStop { position: 1; color: "black"; }
+            }
+
+//            border.color: "gray"
+
+            Text {
+                id: closeLabel
+                color: "white"
+                text: "Close"
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: parent.height / 4;
+                font.pixelSize: engine.fontSize();
+            }
+
             enabled: engine.state == "app-running"
             MouseArea {
                 anchors.fill: parent
@@ -221,36 +192,26 @@ Item {
 
     Item {
         id: splashScreen
+        visible: opacity > 0
 
         anchors.fill: parent
-
-        Image {
-            id: splashIcon
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: splashLabel.top
-            anchors.bottomMargin: splashLabel.height
-            source: engine.applicationUrl != "" ? engine.applicationUrl + "/icon.png" : ""
-            asynchronous: true;
-            opacity: status == Image.Ready ? 1 : 0;
-            Behavior on opacity { NumberAnimation { duration: 50; } }
-        }
 
         Text {
             id: splashLabel
             color: "white"
-            anchors.centerIn: parent;
-            anchors.verticalCenterOffset: height
             text: "Loading..."
-            font.pixelSize: parent.height * 0.02;
+            anchors.centerIn: parent;
+            anchors.verticalCenterOffset: -height
+            font.pixelSize: engine.titleFontSize()
         }
 
-    }
+        Image {
+            source: "images/codeless.png"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom;
+            anchors.margins: parent.height * 0.1;
+        }
 
-    TitleBar {
-        id: titleBar
-        height: engine.titleBarSize();
-        width: parent.width
-        visible: parent.visible
     }
 
     Item {

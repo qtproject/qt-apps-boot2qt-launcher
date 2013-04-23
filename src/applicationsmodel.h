@@ -10,8 +10,7 @@ struct AppData {
     QString description;
     QString main;
     QUrl location;
-    QString iconName;
-    QString largeIconName;
+    QUrl icon;
 };
 
 
@@ -24,7 +23,7 @@ public:
         DescriptionRole,
         MainFileRole,
         LocationRole,
-        IconNameRole,
+        IconRole,
         LargeIconNameRole
     };
 
@@ -40,8 +39,15 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
+    Q_INVOKABLE QString nameAt(int i) const;
+    Q_INVOKABLE QString locationAt(int i) const;
+
+    Q_INVOKABLE QVariant query(int i, const QString &name) const;
+
 signals:
     void ready();
+
+
 
 protected:
     bool event(QEvent *e);

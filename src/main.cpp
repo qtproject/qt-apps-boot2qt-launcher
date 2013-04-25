@@ -49,8 +49,8 @@ int main(int argc, char **argv)
     if (QFile::exists(fontName)) {
         QFontDatabase::addApplicationFont(fontName);
         QFont font("Open Sans");
-        font.setBold(true);
-        QGuiApplication::setFont(QFont("Open Sans"));
+        font.setPixelSize(12);
+        QGuiApplication::setFont(font);
     } else {
         QFont font;
         font.setStyleHint(QFont::SansSerif);

@@ -4,7 +4,6 @@ Item {
 
     id: appIcon;
 
-    property size rootSize;
     property real offset;
 
     property real x1: (x - offset) / ListView.view.width * Math.PI;
@@ -74,8 +73,6 @@ Item {
                 gl_FragColor = texture2D(source, v_TexCoord) * qt_Opacity * selection;
             }
             "
-
-        onLogChanged: print(log);
     }
 
     ShaderEffect {

@@ -15,15 +15,16 @@ Item {
 
         orientation: ListView.Horizontal
 
+        maximumFlickVelocity: 5000
+
         model: applicationsModel;
 
         spacing: 10
 
         delegate: ApplicationIcon {
+
             width: (list.width - (root.itemsPerScreen - 1) * list.spacing) / root.itemsPerScreen
             height: list.height
-
-            rootSize: Qt.size(root.width, root.height);
 
             offset: list.contentX;
 

@@ -13,6 +13,8 @@ Item {
         width: parent.width
         height: parent.height / root.itemsPerScreen
 
+        property real cellWidth: (list.width - (root.itemsPerScreen - 1) * list.spacing) / root.itemsPerScreen
+
         orientation: ListView.Horizontal
 
         maximumFlickVelocity: 5000
@@ -21,25 +23,39 @@ Item {
 
         spacing: 10
 
-        delegate: ApplicationIcon {
+        leftMargin: width / 2 - cellWidth / 2
+        rightMargin: width / 2 - cellWidth / 2
 
-            width: (list.width - (root.itemsPerScreen - 1) * list.spacing) / root.itemsPerScreen
+        highlight: Rectangle { color: "red" }
+        highlightFollowsCurrentItem: false
+        highlightMoveDuration: 10
+
+        delegate: ApplicationIcon {
+            id: iconRoot;
+
+            width: list.cellWidth
             height: list.height
 
             offset: list.contentX;
 
             onClicked: {
-                list.currentIndex = index;
-                list.startOffset = list.contentX;
+                list.targetContentX = iconRoot.x - (list.width / 2 - list.cellWidth / 2);
+                list.targetIndex = index;
+                if (Math.abs(list.targetContentX - list.contentX) < 50) {
+                    moveAnimation.duration = 50
+                } else {
+                    moveAnimation.duration = 500
+                }
+                animateToCenter.running = true;
             }
-
         }
 
-        property int startOffset: 0;
-        onContentXChanged: {
-            if (list.currentIndex >= 0 && Math.abs(startOffset - contentX) > list.width / root.itemsPerScreen) {
-                list.currentIndex = -1;
-            }
+        property int targetIndex;
+        property real targetContentX: 0
+        SequentialAnimation {
+            id: animateToCenter;
+            NumberAnimation { id: moveAnimation; target: list; property: "contentX"; to: list.targetContentX; duration: 300; easing.type: Easing.InOutCubic }
+            PropertyAction { target: list; property: "currentIndex"; value: list.targetIndex }
         }
 
         onCurrentIndexChanged: {

@@ -28,7 +28,7 @@ Item {
         property variant source: preview
 
         property real x1: appIcon.x1;
-        property real x2: appIcon.x2;
+        property real x2: appIcon.x2 - appIcon.x1;
         property real shift: appIcon.shift;
 
         property real selection: appIcon.ListView.isCurrentItem ? 1.1 + 0.3 * Math.sin(_t) : 1;
@@ -44,21 +44,16 @@ Item {
             attribute highp vec2 qt_MultiTexCoord0;
 
             uniform highp mat4 qt_Matrix;
-            uniform lowp float x1;
-            uniform lowp float x2;
-            uniform lowp float shift;
+            uniform highp float x1;
+            uniform highp float x2;
+            uniform highp float shift;
 
             varying highp vec2 v_TexCoord;
-            varying float v_Opacity;
 
             void main() {
                 v_TexCoord = qt_MultiTexCoord0;
-
-                vec4 pos = qt_Vertex;
-                float modShift = shift * sin(x1 + qt_MultiTexCoord0.x * (x2 - x1));
-                pos.y += mix(modShift, -modShift, qt_MultiTexCoord0.y);
-
-                gl_Position = qt_Matrix * pos;
+                highp float modShift = shift * sin(x1 + qt_MultiTexCoord0.x * x2);
+                gl_Position = qt_Matrix * (qt_Vertex + vec4(0, mix(modShift, -modShift, qt_MultiTexCoord0.y), 0, 0));
             }
             "
 
@@ -89,7 +84,7 @@ Item {
         opacity: 0.5
 
         property real x1: appIcon.x1;
-        property real x2: appIcon.x2;
+        property real x2: appIcon.x2 - appIcon.x1;
         property real shift: appIcon.shift;
 
         visible: shader.visible
@@ -103,21 +98,17 @@ Item {
             attribute highp vec2 qt_MultiTexCoord0;
 
             uniform highp mat4 qt_Matrix;
-            uniform lowp float x1;
-            uniform lowp float x2;
-            uniform lowp float shift;
+            uniform highp float x1;
+            uniform highp float x2;
+            uniform highp float shift;
 
             varying highp vec2 v_TexCoord;
             varying float v_Opacity;
 
             void main() {
                 v_TexCoord = vec2(qt_MultiTexCoord0.x, 1.0 - qt_MultiTexCoord0.y);
-
-                vec4 pos = qt_Vertex;
-                float modShift = shift * sin(x1 + qt_MultiTexCoord0.x * (x2 - x1));
-                pos.y -= modShift;
-
-                gl_Position = qt_Matrix * pos;
+                highp float modShift = shift * sin(x1 + qt_MultiTexCoord0.x * x2);
+                gl_Position = qt_Matrix * (qt_Vertex - vec4(0, modShift, 0, 0));
             }
             "
 

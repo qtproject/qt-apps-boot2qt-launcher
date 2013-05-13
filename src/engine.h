@@ -29,6 +29,8 @@ class Engine : public QObject
 
     Q_PROPERTY(const QString qtVersion READ qtVersion)
 
+    Q_PROPERTY(bool runningInEmulator READ runningInEmulator CONSTANT)
+
 public:
     explicit Engine(QObject *parent = 0);
     
@@ -54,11 +56,13 @@ public:
 
     void setWindow(QQuickWindow *window) { m_window = window; }
 
+    bool runningInEmulator() const;
+
     Q_INVOKABLE int sensibleButtonSize() const;
     Q_INVOKABLE int titleBarSize() const;
-    Q_INVOKABLE int smallFontSize() const { return m_dpcm * 0.3; }
-    Q_INVOKABLE int fontSize() const { return m_dpcm * 0.4; }
-    Q_INVOKABLE int titleFontSize() const { return m_dpcm * 0.7; }
+    Q_INVOKABLE int smallFontSize() const { return qMax<int>(m_dpcm * 0.45, 10); }
+    Q_INVOKABLE int fontSize() const { return qMax<int>(m_dpcm * 0.6, 14); }
+    Q_INVOKABLE int titleFontSize() const { return qMax<int>(m_dpcm * 0.9, 20); }
     Q_INVOKABLE int centimeter() const { return m_dpcm; }
 
 protected:

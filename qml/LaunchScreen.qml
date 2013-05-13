@@ -71,13 +71,13 @@ Item {
 
     Text {
         id: nameLabel
-        font.pixelSize: engine.fontSize()
+        font.pixelSize: engine.titleFontSize()
         color: "white"
         font.bold: true
 
         anchors.horizontalCenter: parent.horizontalCenter;
         anchors.top: list.bottom
-        anchors.topMargin: engine.centimeter() * 2;
+        anchors.topMargin: engine.centimeter() * 0.5
 
         wrapMode: Text.WordWrap
     }

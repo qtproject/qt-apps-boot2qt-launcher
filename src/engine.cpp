@@ -47,6 +47,12 @@ Engine::Engine(QObject *parent)
 }
 
 
+bool Engine::runningInEmulator() const
+{
+    return QFile::exists("/system/lib/egl_gallium.so");
+}
+
+
 void Engine::updateReadyness()
 {
     if (!m_intro_done)

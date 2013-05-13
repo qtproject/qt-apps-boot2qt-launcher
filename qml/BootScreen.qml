@@ -57,7 +57,7 @@ Item {
 
         font.pixelSize: size * 0.04
         color: "white"
-        text: "Boot2Qt"
+        text: "Boot to Qt"
         opacity: logo.opacity * 0.5
     }
 

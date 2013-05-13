@@ -16,13 +16,14 @@ Item {
         id: preview;
         source: icon
         asynchronous: true
-        visible: false
+        anchors.fill: parent
+        visible: engine.runningInEmulator
    }
 
     ShaderEffect {
         id: shader
 
-        visible: preview.status == Image.Ready;
+        visible: preview.status == Image.Ready && !engine.runningInEmulator;
 
         anchors.fill: parent
         property variant source: preview
@@ -90,7 +91,7 @@ Item {
         visible: shader.visible
         property variant source: shader.source
 
-        mesh: "8x1"
+        mesh: "5x1"
 
         vertexShader:
             "

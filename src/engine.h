@@ -60,7 +60,7 @@ public:
 
     Q_INVOKABLE int sensibleButtonSize() const;
     Q_INVOKABLE int titleBarSize() const;
-    Q_INVOKABLE int smallFontSize() const { return qMax<int>(m_dpcm * 0.45, 10); }
+    Q_INVOKABLE int smallFontSize() const { return qMax<int>(m_dpcm * 0.4, 10); }
     Q_INVOKABLE int fontSize() const { return qMax<int>(m_dpcm * 0.6, 14); }
     Q_INVOKABLE int titleFontSize() const { return qMax<int>(m_dpcm * 0.9, 20); }
     Q_INVOKABLE int centimeter() const { return m_dpcm; }

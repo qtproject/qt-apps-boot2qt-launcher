@@ -71,7 +71,7 @@ Item {
 
     Text {
         id: nameLabel
-        font.pixelSize: engine.titleFontSize()
+        font.pixelSize: engine.fontSize()
         color: "white"
         font.bold: true
 

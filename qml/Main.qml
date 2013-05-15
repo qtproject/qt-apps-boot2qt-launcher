@@ -72,6 +72,11 @@ Item {
             to: "running"
             SequentialAnimation {
                 NumberAnimation { target: appGrid; property: "opacity"; duration: root.stateDelay }
+                ScriptAction { script: {
+                        engine.closeApplication();
+                        applicationLoader.source = "";
+                    }
+                }
             }
         },
         Transition {

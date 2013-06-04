@@ -4,6 +4,7 @@
 #include <QtGui/QFont>
 #include <QtGui/QFontDatabase>
 #include <QtGui/QScreen>
+#include <QtGui/QPalette>
 
 #include <QtQuick/QQuickView>
 
@@ -44,6 +45,13 @@ int main(int argc, char **argv)
     qputenv("QT_IM_MODULE", QByteArray("b2qtinputcontext"));
 
     QGuiApplication app(argc, argv);
+
+    QPalette pal;
+    pal.setColor(QPalette::Text, Qt::black);
+    pal.setColor(QPalette::WindowText, Qt::black);
+    pal.setColor(QPalette::ButtonText, Qt::black);
+    pal.setColor(QPalette::Base, Qt::white);
+    QGuiApplication::setPalette(pal);
 
     QString fontName = QStringLiteral("/system/lib/fonts/OpenSans-Regular.ttf");
     if (QFile::exists(fontName)) {

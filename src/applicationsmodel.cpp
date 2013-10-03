@@ -48,7 +48,15 @@ public:
 
             AppData data;
             data.location = QUrl::fromLocalFile(path);
-            data.name = iterator.fileName();
+
+            if (QFile::exists(path + "/title.txt")) {
+                QFile titleFile(path + "/title.txt");
+                    if (titleFile.open(QFile::ReadOnly))
+                        data.name = QString::fromUtf8(titleFile.readAll());
+            }
+            if (data.name.isEmpty())
+                data.name = iterator.fileName();
+
             data.main = "main.qml";
 
             QFile file(path + "/description.txt");

@@ -28,6 +28,7 @@ public:
     {
         QList<AppData> results;
         QList<QString> roots = root.split(":");
+        target = qgetenv("B2QT_BASE") + "-" + qgetenv("B2QT_PLATFORM");
         foreach (const QString &root, roots) {
             results += indexDirectory(root);
         }
@@ -46,14 +47,20 @@ public:
             if (!QFile::exists(path + "/main.qml"))
                 continue;
 
+            QFile excludeFile(path + "/exclude.txt");
+            if (excludeFile.open(QFile::ReadOnly)) {
+                const QStringList excludeList = QString::fromUtf8(excludeFile.readAll()).split(":");
+                if (excludeList.contains(target))
+                    continue;
+            }
+
             AppData data;
             data.location = QUrl::fromLocalFile(path);
 
-            if (QFile::exists(path + "/title.txt")) {
-                QFile titleFile(path + "/title.txt");
-                    if (titleFile.open(QFile::ReadOnly))
-                        data.name = QString::fromUtf8(titleFile.readAll());
-            }
+            QFile titleFile(path + "/title.txt");
+            if (titleFile.open(QFile::ReadOnly))
+                data.name = QString::fromUtf8(titleFile.readAll());
+
             if (data.name.isEmpty())
                 data.name = iterator.fileName();
 
@@ -76,6 +83,7 @@ public:
 
     QString root;
     ApplicationsModel *model;
+    QString target;
 };
 
 ApplicationsModel::ApplicationsModel(QObject *parent) :

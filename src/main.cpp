@@ -42,8 +42,6 @@ void displayHelp(const char *appName)
 
 int main(int argc, char **argv)
 {
-    qputenv("QT_IM_MODULE", QByteArray("b2qtinputcontext"));
-
     QGuiApplication app(argc, argv);
 
     QPalette pal;

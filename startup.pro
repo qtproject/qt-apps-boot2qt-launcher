@@ -49,7 +49,6 @@ OTHER_FILES += \
     qml/DeviceSettings.qml \
     qml/Button.qml \
     qml/Slider.qml \
-    qml/KeyboardLoader.qml \
     open-sans/fonts.pri \
     qml/GlimmeringQtLogo.qml \
     qml/HighlightShader.qml \

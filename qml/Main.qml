@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtVkb 1.0
 
 Item {
     id: root
@@ -135,7 +136,10 @@ Item {
         opacity: 0;
         visible: opacity > 0
 
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.bottom: inputPanel.top
         asynchronous: false;
 
         onStatusChanged: {
@@ -195,6 +199,35 @@ Item {
         }
     }
 
+    InputPanel {
+        id: inputPanel
+        z: 99
+        y: root.height
+        anchors.left: root.left
+        anchors.right: root.right
+
+        states: State {
+            name: "visible"
+            when: Qt.inputMethod.visible
+            PropertyChanges {
+                target: inputPanel
+                y: root.height - inputPanel.height
+            }
+        }
+        transitions: Transition {
+            from: ""
+            to: "visible"
+            reversible: true
+            ParallelAnimation {
+                NumberAnimation {
+                    properties: "y"
+                    duration: 250
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        }
+    }
+
     Item {
         id: splashScreen
         visible: opacity > 0
@@ -241,12 +274,6 @@ Item {
             text: "FPS: " + engine.fps
             font.pixelSize: engine.sensibleButtonSize() * 0.2
         }
-    }
-
-    Loader {
-        anchors.fill: parent
-        asynchronous: false;
-        source: "KeyboardLoader.qml"
     }
 
 }

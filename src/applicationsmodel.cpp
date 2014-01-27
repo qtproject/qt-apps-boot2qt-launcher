@@ -22,6 +22,7 @@
 #include <QEvent>
 #include <QThread>
 #include <QDebug>
+#include <QRegExp>
 #include <QJsonDocument>
 #include <QJsonObject>
 
@@ -66,7 +67,7 @@ public:
 
             QFile excludeFile(path + "/exclude.txt");
             if (excludeFile.open(QFile::ReadOnly)) {
-                const QStringList excludeList = QString::fromUtf8(excludeFile.readAll()).split(":");
+                const QStringList excludeList = QString::fromUtf8(excludeFile.readAll()).split(QRegExp(":|\\s+"));
                 if (excludeList.contains(target))
                     continue;
             }

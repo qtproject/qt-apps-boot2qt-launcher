@@ -4,7 +4,7 @@ SOURCES += src/main.cpp \
     src/logmanager.cpp \
     src/fpscounter.cpp
 
-QT += quick
+QT += quick widgets
 TARGET = qtlauncher
 
 QML_FILES += qml

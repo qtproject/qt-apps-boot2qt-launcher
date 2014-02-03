@@ -4,7 +4,7 @@ SOURCES += src/main.cpp \
     src/logmanager.cpp \
     src/fpscounter.cpp
 
-QT += quick
+QT += quick widgets
 TARGET = qtlauncher
 
 QML_FILES += qml
@@ -49,7 +49,6 @@ OTHER_FILES += \
     qml/DeviceSettings.qml \
     qml/Button.qml \
     qml/Slider.qml \
-    qml/KeyboardLoader.qml \
     open-sans/fonts.pri \
     qml/GlimmeringQtLogo.qml \
     qml/HighlightShader.qml \

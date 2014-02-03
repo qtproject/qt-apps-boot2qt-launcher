@@ -5,7 +5,6 @@
         <file>qml/ApplicationIcon.qml</file>
         <file>qml/BootScreen.qml</file>
         <file>qml/LaunchScreen.qml</file>
-        <file>qml/KeyboardLoader.qml</file>
         <file>qml/images/codeless.png</file>
         <file>qml/images/particle.png</file>
         <file>qml/images/particle_star.png</file>

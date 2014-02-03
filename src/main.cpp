@@ -17,7 +17,7 @@
 ****************************************************************************/
 #include <QtCore/QDebug>
 
-#include <QtGui/QGuiApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QFontDatabase>
 #include <QtGui/QScreen>
@@ -59,9 +59,7 @@ void displayHelp(const char *appName)
 
 int main(int argc, char **argv)
 {
-    qputenv("QT_IM_MODULE", QByteArray("b2qtinputcontext"));
-
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     QPalette pal;
     pal.setColor(QPalette::Text, Qt::black);

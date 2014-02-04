@@ -31,23 +31,21 @@ Item {
         height: width * sourceSize.height / sourceSize.width;
 
         source: "images/qt-logo.png"
-        visible: engine.runningInEmulator
+        visible: false
     }
 
     HighlightShader {
         source: image
-        running: !engine.runningInEmulator
+        running: true
         interval: 10000
         anchors.fill: image;
-        visible: !engine.runningInEmulator
-
     }
 
     ParticleSystem {
         id: starSystem;
 
         anchors.fill: image
-        running: visible && !engine.runningInEmulator
+        running: visible
 
         ImageParticle {
             id: starParticle

@@ -38,6 +38,11 @@ public:
     QList<AppData> results;
 };
 
+static bool appOrder(const AppData& a, const AppData& b)
+{
+    return a.name < b.name;
+}
+
 class IndexingThread : public QThread
 {
 public:
@@ -96,6 +101,7 @@ public:
             results << data;
         }
 
+        std::sort(results.begin(), results.end(), appOrder);
         return results;
     }
 

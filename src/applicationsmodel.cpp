@@ -102,6 +102,12 @@ public:
         }
 
         std::sort(results.begin(), results.end(), appOrder);
+
+        // Remove any leading digits followed by '.' from the name
+        for (int i = 0; i < results.count(); ++i) {
+            results[i].name.remove(QRegExp("^\\d+\\.\\s*"));
+        }
+
         return results;
     }
 

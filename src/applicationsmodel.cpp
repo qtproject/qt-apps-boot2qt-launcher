@@ -73,7 +73,7 @@ public:
             QFile excludeFile(path + "/exclude.txt");
             if (excludeFile.open(QFile::ReadOnly)) {
                 const QStringList excludeList = QString::fromUtf8(excludeFile.readAll()).split(QRegExp(":|\\s+"));
-                if (excludeList.contains(target))
+                if (excludeList.contains(target) || excludeList.contains(QStringLiteral("all")))
                     continue;
             }
 

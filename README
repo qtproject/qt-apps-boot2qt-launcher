@@ -1,20 +1,20 @@
-This is the Boot to Qt launcher, it is can launch in-process QML applcations
+This is the Boot to Qt launcher, it can launch in-process QML applications
 
 Command line options:
  --main-file [.qml file]        Specify an optional qml file
- --applications-root [dir]      The root of your directories, multiple can be
-                                given, separated by ':'
- --no-boot-animation            If you think it is booring, disable it
+ --applications-root [dir]      The root of your directories, multiple can
+                                be given, separated by ':'
+ --no-boot-animation            If you think it is boring, disable it
 
 
 Generating new screenshots:
 ---------------------------
 
-First, cd into screenshot/plugin and compile/make install that plugin, then run
-the launcher with the command line options:
+First, cd into screenshot/plugin and compile/make install that plugin, then
+run the launcher with the command line options:
 
 > qtlauncher --main-file screenshot/Main.qml --applications-root [your apps]
 
 When you hit the "grab" button, it will grab a highres "preview_l.jpg" and
 a lowres copy into the application's directory. Resize to portrait to get
-portrait version, named "preview_p.jpg".
+a portrait version, named "preview_p.jpg".

@@ -1,3 +1,20 @@
+/****************************************************************************
+**
+** Copyright (C) 2014 Digia Plc
+** All rights reserved.
+** For any questions to Digia, please use contact form at http://qt.digia.com
+**
+** This file is part of Qt Enterprise Embedded.
+**
+** Licensees holding valid Qt Enterprise licenses may use this file in
+** accordance with the Qt Enterprise License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and Digia.
+**
+** If you have questions regarding the use of this file, please use
+** contact form at http://qt.digia.com
+**
+****************************************************************************/
 #include "applicationsmodel.h"
 
 #include <QCoreApplication>
@@ -5,6 +22,7 @@
 #include <QEvent>
 #include <QThread>
 #include <QDebug>
+#include <QRegExp>
 #include <QJsonDocument>
 #include <QJsonObject>
 
@@ -20,6 +38,11 @@ public:
     QList<AppData> results;
 };
 
+static bool appOrder(const AppData& a, const AppData& b)
+{
+    return a.name < b.name;
+}
+
 class IndexingThread : public QThread
 {
 public:
@@ -28,6 +51,7 @@ public:
     {
         QList<AppData> results;
         QList<QString> roots = root.split(":");
+        target = qgetenv("B2QT_BASE") + "-" + qgetenv("B2QT_PLATFORM");
         foreach (const QString &root, roots) {
             results += indexDirectory(root);
         }
@@ -46,14 +70,20 @@ public:
             if (!QFile::exists(path + "/main.qml"))
                 continue;
 
+            QFile excludeFile(path + "/exclude.txt");
+            if (excludeFile.open(QFile::ReadOnly)) {
+                const QStringList excludeList = QString::fromUtf8(excludeFile.readAll()).split(QRegExp(":|\\s+"));
+                if (excludeList.contains(target) || excludeList.contains(QStringLiteral("all")))
+                    continue;
+            }
+
             AppData data;
             data.location = QUrl::fromLocalFile(path);
 
-            if (QFile::exists(path + "/title.txt")) {
-                QFile titleFile(path + "/title.txt");
-                    if (titleFile.open(QFile::ReadOnly))
-                        data.name = QString::fromUtf8(titleFile.readAll());
-            }
+            QFile titleFile(path + "/title.txt");
+            if (titleFile.open(QFile::ReadOnly))
+                data.name = QString::fromUtf8(titleFile.readAll());
+
             if (data.name.isEmpty())
                 data.name = iterator.fileName();
 
@@ -71,11 +101,19 @@ public:
             results << data;
         }
 
+        std::sort(results.begin(), results.end(), appOrder);
+
+        // Remove any leading digits followed by '.' from the name
+        for (int i = 0; i < results.count(); ++i) {
+            results[i].name.remove(QRegExp("^\\d+\\.\\s*"));
+        }
+
         return results;
     }
 
     QString root;
     ApplicationsModel *model;
+    QString target;
 };
 
 ApplicationsModel::ApplicationsModel(QObject *parent) :

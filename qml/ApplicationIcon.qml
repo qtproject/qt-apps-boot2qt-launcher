@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -34,13 +34,13 @@ Item {
         source: icon
         asynchronous: true
         anchors.fill: parent
-        visible: engine.runningInEmulator
+        visible: false
    }
 
     ShaderEffect {
         id: shader
 
-        visible: preview.status == Image.Ready && !engine.runningInEmulator;
+        visible: preview.status == Image.Ready
 
         anchors.fill: parent
         property variant source: preview

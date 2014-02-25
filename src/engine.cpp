@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -61,12 +61,6 @@ Engine::Engine(QObject *parent)
     float high = 20;
     float screenSizeCM = qMax<float>(qMin(m_screenSize.width(), m_screenSize.height()) / m_dpcm, low);
     m_dpcm *= (screenSizeCM - low) / (high - low) * 0.5 + 0.5;
-}
-
-
-bool Engine::runningInEmulator() const
-{
-    return QFile::exists("/system/lib/egl_gallium.so");
 }
 
 

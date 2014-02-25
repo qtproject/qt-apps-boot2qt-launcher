@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -38,6 +38,11 @@ public:
     QList<AppData> results;
 };
 
+static bool appOrder(const AppData& a, const AppData& b)
+{
+    return a.name < b.name;
+}
+
 class IndexingThread : public QThread
 {
 public:
@@ -68,7 +73,7 @@ public:
             QFile excludeFile(path + "/exclude.txt");
             if (excludeFile.open(QFile::ReadOnly)) {
                 const QStringList excludeList = QString::fromUtf8(excludeFile.readAll()).split(QRegExp(":|\\s+"));
-                if (excludeList.contains(target))
+                if (excludeList.contains(target) || excludeList.contains(QStringLiteral("all")))
                     continue;
             }
 
@@ -94,6 +99,13 @@ public:
                     : QUrl("qrc:///qml/images/preview_fallback_landscape.jpg");
 
             results << data;
+        }
+
+        std::sort(results.begin(), results.end(), appOrder);
+
+        // Remove any leading digits followed by '.' from the name
+        for (int i = 0; i < results.count(); ++i) {
+            results[i].name.remove(QRegExp("^\\d+\\.\\s*"));
         }
 
         return results;

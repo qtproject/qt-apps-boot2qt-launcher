@@ -68,10 +68,10 @@ int main(int argc, char **argv)
     pal.setColor(QPalette::Base, Qt::white);
     QGuiApplication::setPalette(pal);
 
-    QString fontName = QStringLiteral("/system/lib/fonts/OpenSans-Regular.ttf");
+    QString fontName = QStringLiteral("/system/lib/fonts/DejaVuSans.ttf");
     if (QFile::exists(fontName)) {
         QFontDatabase::addApplicationFont(fontName);
-        QFont font("Open Sans");
+        QFont font("DejaVu Sans");
         font.setPixelSize(12);
         QGuiApplication::setFont(font);
     } else {

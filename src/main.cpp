@@ -23,6 +23,9 @@
 #include <QtGui/QScreen>
 #include <QtGui/QPalette>
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 3, 0))
+#include <QtQuick/QQuickItem>
+#endif
 #include <QtQuick/QQuickView>
 
 #include <QtQml/QQmlEngine>
@@ -68,10 +71,10 @@ int main(int argc, char **argv)
     pal.setColor(QPalette::Base, Qt::white);
     QGuiApplication::setPalette(pal);
 
-    QString fontName = QStringLiteral("/system/lib/fonts/OpenSans-Regular.ttf");
+    QString fontName = QStringLiteral("/system/lib/fonts/DejaVuSans.ttf");
     if (QFile::exists(fontName)) {
         QFontDatabase::addApplicationFont(fontName);
-        QFont font("Open Sans");
+        QFont font("DejaVu Sans");
         font.setPixelSize(12);
         QGuiApplication::setFont(font);
     } else {
@@ -126,6 +129,11 @@ int main(int argc, char **argv)
     qDebug() << "Log redirection:" << (logcat ? "yes" : "no");
 
     QQuickView view;
+#if (QT_VERSION < QT_VERSION_CHECK(5, 3, 0))
+    // Ensure the width and height are valid because of QTBUG-36938.
+    QObject::connect(&view, SIGNAL(widthChanged(int)), view.contentItem(), SLOT(setWidth(int)));
+    QObject::connect(&view, SIGNAL(heightChanged(int)), view.contentItem(), SLOT(setHeight(int)));
+#endif
 
     Engine engine;
     engine.setWindow(&view);

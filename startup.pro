@@ -9,6 +9,11 @@ TARGET = qtlauncher
 
 QML_FILES += qml
 
+qtHaveModule(webengine) {
+    DEFINES += USE_QTWEBENGINE
+    QT += webengine
+}
+
 HEADERS += \
     src/engine.h \
     src/applicationsmodel.h \

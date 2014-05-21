@@ -55,7 +55,7 @@ Item {
 
             offset: list.contentX;
 
-            onClicked: {
+            function select() {
                 list.targetContentX = iconRoot.x - (list.width / 2 - list.cellWidth / 2);
                 list.targetIndex = index;
                 if (Math.abs(list.targetContentX - list.contentX) < 50) {
@@ -65,6 +65,7 @@ Item {
                 }
                 animateToCenter.running = true;
             }
+            onClicked: select()
         }
 
         property int targetIndex;
@@ -84,6 +85,13 @@ Item {
                 nameLabel.text = ""
             }
         }
+
+        onMovementEnded: {
+            var center = mapToItem(contentItem, width / 2, height / 2)
+            itemAt(center.x, center.y).select()
+        }
+
+        onCountChanged: if (count > 0 && currentIndex < 0) currentIndex = 0
     }
 
     Text {

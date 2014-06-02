@@ -83,7 +83,7 @@ Item {
 
             varying highp vec2 v_TexCoord;
             void main() {
-                gl_FragColor = texture2D(source, v_TexCoord) * qt_Opacity * selection;
+                gl_FragColor = vec4(texture2D(source, v_TexCoord).rgb * selection, 1.0) * qt_Opacity;
             }
             "
     }

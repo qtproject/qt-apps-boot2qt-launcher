@@ -32,6 +32,7 @@ Item {
             name: "booting"
             PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
+            PropertyChanges { target: url; opacity: 0 }
         },
         State {
             name: "running"
@@ -49,6 +50,7 @@ Item {
             PropertyChanges { target: applicationLoader; opacity: 1 }
             PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
+            PropertyChanges { target: url; opacity: 0 }
         },
         State {
             name: "app-closing"
@@ -293,4 +295,26 @@ Item {
         }
     }
 
+    Item {
+        id: url
+        anchors.bottom: parent.bottom;
+        anchors.horizontalCenter: parent.horizontalCenter;
+        anchors.margins: height/2
+        width: urlLabel.width
+        height: urlLabel.height
+
+        Rectangle {
+            color: "black"
+            opacity: 0.7
+            anchors.fill: urlLabel
+        }
+
+        Text {
+            id: urlLabel;
+            textFormat: Text.StyledText
+            text: "<a href=\"qt.digia.com/try-buy\">qt.digia.com/try-buy</a>"
+            font.pixelSize: engine.sensibleButtonSize() * 0.2
+            font.bold: true
+        }
+    }
 }

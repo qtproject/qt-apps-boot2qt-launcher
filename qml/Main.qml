@@ -27,6 +27,8 @@ Item {
     property int stateDelay: 400;
     property int bootDelay: 1000;
 
+    property color qtpurple: '#ae32a0'
+
     states: [
         State {
             name: "booting"
@@ -311,8 +313,8 @@ Item {
 
         Text {
             id: urlLabel;
-            textFormat: Text.StyledText
-            text: "<a href=\"qt.digia.com/try-buy\">qt.digia.com/try-buy</a>"
+            text: "qt.digia.com/QtEnterpriseEmbedded"
+            color: qtpurple
             font.pixelSize: engine.sensibleButtonSize() * 0.2
             font.bold: true
         }

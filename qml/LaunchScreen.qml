@@ -92,6 +92,14 @@ Item {
         }
 
         onCountChanged: if (count > 0 && currentIndex < 0) currentIndex = 0
+
+        MouseArea {
+            anchors.fill: parent
+            onPressed: {
+                animateToCenter.stop()
+                mouse.accepted = false
+            }
+        }
     }
 
     Text {

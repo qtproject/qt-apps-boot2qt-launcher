@@ -16,7 +16,7 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 1.0
+import QtQuick.Enterprise.VirtualKeyboard 1.1
 
 Item {
     id: root
@@ -27,11 +27,14 @@ Item {
     property int stateDelay: 400;
     property int bootDelay: 1000;
 
+    property color qtpurple: '#ae32a0'
+
     states: [
         State {
             name: "booting"
             PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
+            PropertyChanges { target: url; opacity: 0 }
         },
         State {
             name: "running"
@@ -49,6 +52,7 @@ Item {
             PropertyChanges { target: applicationLoader; opacity: 1 }
             PropertyChanges { target: appGrid; opacity: 0 }
             PropertyChanges { target: splashScreen; opacity: 0 }
+            PropertyChanges { target: url; opacity: 0 }
         },
         State {
             name: "app-closing"
@@ -293,4 +297,26 @@ Item {
         }
     }
 
+    Item {
+        id: url
+        anchors.bottom: parent.bottom;
+        anchors.horizontalCenter: parent.horizontalCenter;
+        anchors.margins: height/2
+        width: urlLabel.width
+        height: urlLabel.height
+
+        Rectangle {
+            color: "black"
+            opacity: 0.7
+            anchors.fill: urlLabel
+        }
+
+        Text {
+            id: urlLabel;
+            text: "qt.digia.com/QtEnterpriseEmbedded"
+            color: qtpurple
+            font.pixelSize: engine.sensibleButtonSize() * 0.2
+            font.bold: true
+        }
+    }
 }

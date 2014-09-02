@@ -83,7 +83,7 @@ Item {
 
             varying highp vec2 v_TexCoord;
             void main() {
-                gl_FragColor = texture2D(source, v_TexCoord) * qt_Opacity * selection;
+                gl_FragColor = vec4(texture2D(source, v_TexCoord).rgb * selection, 1.0) * qt_Opacity;
             }
             "
     }
@@ -92,14 +92,12 @@ Item {
         id: reflection
 
         width: shader.width
-        height: shader.height * reflectionRatio
+        height: shader.height
 
         anchors.top: shader.bottom;
         anchors.topMargin: height * 0.05;
 
-        property real reflectionRatio: 0.7
-
-        opacity: 0.5
+        opacity: 0.4
 
         property real x1: appIcon.x1;
         property real x2: appIcon.x2 - appIcon.x1;
@@ -136,7 +134,10 @@ Item {
             uniform sampler2D source;
             varying highp vec2 v_TexCoord;
             void main() {
-                gl_FragColor = texture2D(source, v_TexCoord) * qt_Opacity * v_TexCoord.y;
+                if (v_TexCoord.y < 0.3)
+                    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+                else
+                    gl_FragColor = texture2D(source, v_TexCoord) * qt_Opacity * ( v_TexCoord.y - 0.3);
             }
             "
     }

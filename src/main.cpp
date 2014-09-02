@@ -32,6 +32,10 @@
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlComponent>
 
+#if defined(USE_QTWEBENGINE)
+#include <qtwebengineglobal.h>
+#endif
+
 #include "engine.h"
 #include "applicationsmodel.h"
 #include "logmanager.h"
@@ -63,6 +67,14 @@ void displayHelp(const char *appName)
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+
+#if defined(USE_QTWEBENGINE)
+    // This is currently needed by all QtWebEngine applications using the HW accelerated QQuickWebView.
+    // It enables sharing the QOpenGLContext of all QQuickWindows of the application.
+    // We have to do so until we expose a public API for it in Qt or choose to enable it
+    // by default earliest in Qt 5.4.0.
+    QWebEngine::initialize();
+#endif
 
     QPalette pal;
     pal.setColor(QPalette::Text, Qt::black);

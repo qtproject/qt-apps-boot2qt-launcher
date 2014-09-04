@@ -54,16 +54,6 @@ void displayHelp(const char *appName)
            );
 }
 
-/*
- * TODO:
- *  - add fps counter
- *  - settings screen
- *    - Qt logo with glitter and particles
- *    - Brightness control (when applicable)
- *    - Toggle FPS measurement
- *    - power off
- */
-
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
@@ -75,13 +65,6 @@ int main(int argc, char **argv)
     // by default earliest in Qt 5.4.0.
     QWebEngine::initialize();
 #endif
-
-    QPalette pal;
-    pal.setColor(QPalette::Text, Qt::black);
-    pal.setColor(QPalette::WindowText, Qt::black);
-    pal.setColor(QPalette::ButtonText, Qt::black);
-    pal.setColor(QPalette::Base, Qt::white);
-    QGuiApplication::setPalette(pal);
 
     QString fontName = QStringLiteral("/system/lib/fonts/DejaVuSans.ttf");
     if (QFile::exists(fontName)) {
@@ -102,9 +85,7 @@ int main(int argc, char **argv)
         : QStringLiteral("qrc:///qml/Main.qml");
     QString appsRoot = QStringLiteral("/data/user/qt");
 
-    QString bgImage = QStringLiteral(":/qml/images/bg_1280x800.jpg");
     bool logcat = false;
-    QString bgColor;
     bool bootAnimation = true;
     bool showFps = false;
 

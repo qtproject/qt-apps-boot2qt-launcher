@@ -33,6 +33,7 @@ Item {
         property real cellWidth: (list.width - (root.itemsPerScreen - 1) * list.spacing) / root.itemsPerScreen
         property real cellHeight: (list.height / root.itemsPerScreen)
 
+        cacheBuffer: count * (cellWidth + spacing)
         orientation: ListView.Horizontal
 
         maximumFlickVelocity: 5000

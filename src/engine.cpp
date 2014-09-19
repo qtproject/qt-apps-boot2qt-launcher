@@ -61,6 +61,8 @@ Engine::Engine(QObject *parent)
     float high = 20;
     float screenSizeCM = qMax<float>(qMin(m_screenSize.width(), m_screenSize.height()) / m_dpcm, low);
     m_dpcm *= (screenSizeCM - low) / (high - low) * 0.5 + 0.5;
+    m_screenWidth = m_screenSize.width();
+    m_screenHeight = m_screenSize.height();
 }
 
 

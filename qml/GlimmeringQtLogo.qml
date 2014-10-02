@@ -27,7 +27,7 @@ Item {
     Image {
         id: image
 
-        width: engine.centimeter() * 1.5;
+        width: engine.centimeter() * 1.2;
         height: width * sourceSize.height / sourceSize.width;
 
         source: "images/qt-logo.png"

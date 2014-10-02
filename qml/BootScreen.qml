@@ -56,6 +56,9 @@ Item {
 
     Image {
         id: logo;
+
+        width: engine.centimeter() * 3;
+        height: width * sourceSize.height / sourceSize.width;
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -root.size * 0.1 + Math.random() * t;
         anchors.horizontalCenterOffset: Math.random() * t;
@@ -70,7 +73,7 @@ Item {
         id: label
 
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: -root.size * 0.1 + logo.height / 2 + 20
+        anchors.verticalCenterOffset: -root.size * 0.1 + logo.width;
 
         font.pixelSize: size * 0.04
         color: "white"

@@ -132,7 +132,7 @@ Item {
         id: logo
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.margins: width / 4;
+        anchors.margins: width / 3;
     }
 
 }

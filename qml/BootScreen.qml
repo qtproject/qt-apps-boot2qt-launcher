@@ -20,16 +20,11 @@ import QtQuick.Particles 2.0
 
 Item {
     id: root
-
-    property real size: Math.min(root.width, root.height);
-
     property int particleLifeTime: 2000;
 
     SequentialAnimation {
         id: entryAnimation
         NumberAnimation { target: logo; property: "opacity"; to: 1; duration: 500 }
-
-//        NumberAnimation { target: logo; property: "t"; from: 0; to: 5; duration: 2000; easing.type: Easing.InCubic }
 
         PauseAnimation { duration: 500 }
         ParallelAnimation {
@@ -60,22 +55,18 @@ Item {
         width: engine.centimeter() * 3;
         height: width * sourceSize.height / sourceSize.width;
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: -root.size * 0.1 + Math.random() * t;
-        anchors.horizontalCenterOffset: Math.random() * t;
+        anchors.verticalCenterOffset: -Math.min(engine.screenWidth(), engine.screenHeight()) * 0.1
         source: "images/qt-logo.png"
         opacity: 0
-
-        property real t;
-
     }
 
     Text {
         id: label
 
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: -root.size * 0.1 + logo.width;
-
-        font.pixelSize: size * 0.04
+        anchors.top: logo.bottom
+        anchors.topMargin: engine.mm(4)
+        anchors.horizontalCenter: logo.horizontalCenter
+        font.pixelSize: engine.fontSize() * 1.2
         color: "white"
         text: "Boot to Qt"
         opacity: logo.opacity * 0.5

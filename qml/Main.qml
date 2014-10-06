@@ -313,7 +313,7 @@ Item {
 
         Text {
             id: urlLabel;
-            text: "http://www.qt.io"
+            text: "http://www.qt.io/qt-for-device-creation"
             color: qtpurple
             font.pixelSize: engine.sensibleButtonSize() * 0.2
             font.bold: true

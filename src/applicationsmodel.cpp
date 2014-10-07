@@ -96,7 +96,7 @@ public:
             QString imageName = path + "/preview_l.jpg";
             data.icon = QFile::exists(imageName)
                     ? QUrl::fromLocalFile(imageName)
-                    : QUrl("qrc:///qml/images/preview_fallback_landscape.jpg");
+                    : QUrl("qrc:///qml/images/codeless.png");
 
             results << data;
         }

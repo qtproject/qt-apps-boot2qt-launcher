@@ -2,7 +2,7 @@
 **
 ** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
-** For any questions to Digia, please use contact form at http://qt.digia.com
+** For any questions to Digia, please use contact form at http://www.qt.io
 **
 ** This file is part of Qt Enterprise Embedded.
 **
@@ -12,7 +12,7 @@
 ** a written agreement between you and Digia.
 **
 ** If you have questions regarding the use of this file, please use
-** contact form at http://qt.digia.com
+** contact form at http://www.qt.io
 **
 ****************************************************************************/
 import QtQuick 2.0
@@ -27,7 +27,7 @@ Item {
     Image {
         id: image
 
-        width: engine.centimeter() * 1.5;
+        width: engine.centimeter() * 1.2;
         height: width * sourceSize.height / sourceSize.width;
 
         source: "images/qt-logo.png"

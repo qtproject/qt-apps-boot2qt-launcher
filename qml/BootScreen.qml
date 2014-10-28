@@ -2,7 +2,7 @@
 **
 ** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
-** For any questions to Digia, please use contact form at http://qt.digia.com
+** For any questions to Digia, please use contact form at http://www.qt.io
 **
 ** This file is part of Qt Enterprise Embedded.
 **
@@ -12,7 +12,7 @@
 ** a written agreement between you and Digia.
 **
 ** If you have questions regarding the use of this file, please use
-** contact form at http://qt.digia.com
+** contact form at http://www.qt.io
 **
 ****************************************************************************/
 import QtQuick 2.0
@@ -20,16 +20,11 @@ import QtQuick.Particles 2.0
 
 Item {
     id: root
-
-    property real size: Math.min(root.width, root.height);
-
     property int particleLifeTime: 2000;
 
     SequentialAnimation {
         id: entryAnimation
         NumberAnimation { target: logo; property: "opacity"; to: 1; duration: 500 }
-
-//        NumberAnimation { target: logo; property: "t"; from: 0; to: 5; duration: 2000; easing.type: Easing.InCubic }
 
         PauseAnimation { duration: 500 }
         ParallelAnimation {
@@ -56,23 +51,22 @@ Item {
 
     Image {
         id: logo;
+
+        width: engine.centimeter() * 3;
+        height: width * sourceSize.height / sourceSize.width;
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: -root.size * 0.1 + Math.random() * t;
-        anchors.horizontalCenterOffset: Math.random() * t;
+        anchors.verticalCenterOffset: -Math.min(engine.screenWidth(), engine.screenHeight()) * 0.1
         source: "images/qt-logo.png"
         opacity: 0
-
-        property real t;
-
     }
 
     Text {
         id: label
 
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: -root.size * 0.1 + logo.height / 2 + 20
-
-        font.pixelSize: size * 0.04
+        anchors.top: logo.bottom
+        anchors.topMargin: engine.mm(4)
+        anchors.horizontalCenter: logo.horizontalCenter
+        font.pixelSize: engine.fontSize() * 1.2
         color: "white"
         text: "Boot to Qt"
         opacity: logo.opacity * 0.5

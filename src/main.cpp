@@ -2,7 +2,7 @@
 **
 ** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
-** For any questions to Digia, please use contact form at http://qt.digia.com
+** For any questions to Digia, please use contact form at http://www.qt.io
 **
 ** This file is part of Qt Enterprise Embedded.
 **
@@ -12,7 +12,7 @@
 ** a written agreement between you and Digia.
 **
 ** If you have questions regarding the use of this file, please use
-** contact form at http://qt.digia.com
+** contact form at http://www.qt.io
 **
 ****************************************************************************/
 #include <QtCore/QDebug>
@@ -54,16 +54,6 @@ void displayHelp(const char *appName)
            );
 }
 
-/*
- * TODO:
- *  - add fps counter
- *  - settings screen
- *    - Qt logo with glitter and particles
- *    - Brightness control (when applicable)
- *    - Toggle FPS measurement
- *    - power off
- */
-
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
@@ -74,13 +64,6 @@ int main(int argc, char **argv)
     // We have to do so until we expose public API for it in Qt or choose to enable it by default.
     QtWebEngine::initialize();
 #endif
-
-    QPalette pal;
-    pal.setColor(QPalette::Text, Qt::black);
-    pal.setColor(QPalette::WindowText, Qt::black);
-    pal.setColor(QPalette::ButtonText, Qt::black);
-    pal.setColor(QPalette::Base, Qt::white);
-    QGuiApplication::setPalette(pal);
 
     QString fontName = QStringLiteral("/system/lib/fonts/DejaVuSans.ttf");
     if (QFile::exists(fontName)) {
@@ -101,9 +84,7 @@ int main(int argc, char **argv)
         : QStringLiteral("qrc:///qml/Main.qml");
     QString appsRoot = QStringLiteral("/data/user/qt");
 
-    QString bgImage = QStringLiteral(":/qml/images/bg_1280x800.jpg");
     bool logcat = false;
-    QString bgColor;
     bool bootAnimation = true;
     bool showFps = false;
 

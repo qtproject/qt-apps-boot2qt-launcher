@@ -9,12 +9,10 @@
         <file>qml/images/particle.png</file>
         <file>qml/images/particle_star.png</file>
         <file>qml/images/qt-logo-green-mask.png</file>
-        <file>qml/images/qt-logo-small.png</file>
         <file>qml/images/qt-logo-white-mask.png</file>
         <file>qml/images/qt-logo.png</file>
         <file>qml/GlimmeringQtLogo.qml</file>
         <file>qml/HighlightShader.qml</file>
         <file>qml/images/play.png</file>
-        <file>qml/images/preview_fallback_landscape.jpg</file>
     </qresource>
 </RCC>

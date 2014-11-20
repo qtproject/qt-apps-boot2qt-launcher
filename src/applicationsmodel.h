@@ -46,7 +46,7 @@ public:
 
     explicit ApplicationsModel(QObject *parent = 0);
     
-    void initialize(const QString &appsRoot);
+    Q_INVOKABLE void initialize(const QString &appsRoot);
 
     QModelIndex index(int r, int c, const QModelIndex &) const { return createIndex(r, c); }
     QModelIndex parent(const QModelIndex&) const { return QModelIndex(); }

@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/Main.qml</file>
-        <file>qml/main_landscape.qml</file>
         <file>qml/ApplicationIcon.qml</file>
         <file>qml/BootScreen.qml</file>
         <file>qml/LaunchScreen.qml</file>

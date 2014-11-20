@@ -33,6 +33,3 @@ void FpsCounter::timerEvent(QTimerEvent *)
     m_frameCounter = 0;
     m_timer.start();
 }
-
-
-

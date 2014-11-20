@@ -18,18 +18,17 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include <QObject>
+#include <QQuickItem>
 #include <QUrl>
 #include <QSize>
 
 #include <QColor>
 
 class QQmlEngine;
-class QQuickItem;
 class FpsCounter;
 class QQuickWindow;
 
-class Engine : public QObject
+class Engine : public QQuickItem
 {
     Q_OBJECT
 
@@ -47,7 +46,7 @@ class Engine : public QObject
     Q_PROPERTY(const QString qtVersion READ qtVersion)
 
 public:
-    explicit Engine(QObject *parent = 0);
+    explicit Engine(QQuickItem *parent = 0);
     
     QString state() const { return m_state; }
     void setState(const QString &state);
@@ -57,9 +56,6 @@ public:
 
     qreal fps() const { return m_fps; }
 
-    QQmlEngine *qmlEngine() const { return m_qmlEngine; }
-    void setQmlEngine(QQmlEngine *engine) { m_qmlEngine = engine; }
-
     bool isBootAnimationEnabled() const { return m_bootAnimationEnabled; }
     void setBootAnimationEnabled(bool enabled);
 
@@ -68,8 +64,6 @@ public:
     QUrl applicationUrl() const { return m_applicationUrl; }
     QUrl applicationMain() const { return m_applicationMain; }
     QString applicationName() const { return m_applicationName; }
-
-    void setWindow(QQuickWindow *window) { m_window = window; }
 
     Q_INVOKABLE QUrl fromUserInput(const QString& userInput) { return QUrl::fromUserInput(userInput); }
     Q_INVOKABLE int sensibleButtonSize() const;
@@ -103,11 +97,12 @@ public slots:
 
     void setFps(qreal fps);
 
+private slots:
+    void windowChanged(QQuickWindow *window);
+
 private:
     void updateReadyness();
-
-    QQuickWindow *m_window;
-    QQmlEngine *m_qmlEngine;
+    void updateFPSCounter();
 
     QString m_state;
 

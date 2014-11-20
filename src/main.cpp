@@ -20,15 +20,9 @@
 #include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QFontDatabase>
-#include <QtGui/QScreen>
-#include <QtGui/QPalette>
+#include <QtCore/QFile>
 
-#if (QT_VERSION < QT_VERSION_CHECK(5, 3, 0))
-#include <QtQuick/QQuickItem>
-#endif
-#include <QtQuick/QQuickView>
-
-#include <QtQml/QQmlEngine>
+#include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlComponent>
 
@@ -39,6 +33,7 @@
 #include "engine.h"
 #include "applicationsmodel.h"
 #include "logmanager.h"
+#include "applicationsettings.h"
 
 void displayHelp(const char *appName)
 {
@@ -77,72 +72,30 @@ int main(int argc, char **argv)
         QGuiApplication::setFont(font);
     }
 
-    QSize screenSize = QGuiApplication::primaryScreen()->size();
+    ApplicationSettings applicationSettings;
 
-    QString mainFile = screenSize.width() < screenSize.height()
-        ? QStringLiteral("qrc:///qml/main_landscape.qml")
-        : QStringLiteral("qrc:///qml/Main.qml");
-    QString appsRoot = QStringLiteral("/data/user/qt");
-
-    bool logcat = false;
-    bool bootAnimation = true;
-    bool showFps = false;
-
-    QStringList args = app.arguments();
-    for (int i=0; i<args.size(); ++i) {
-        if (args.at(i) == QStringLiteral("--main-file")) {
-            ++i;
-            mainFile = args.at(i);
-        } else if (args.at(i) == QStringLiteral("--applications-root")) {
-            ++i;
-            appsRoot = args.at(i);
-        } else if (args.at(i) == QStringLiteral("--no-boot-animation")) {
-            bootAnimation = false;
-        } else if (args.at(i) == QStringLiteral("--show-fps")) {
-            showFps = true;
-        } else if (args.at(i) == QStringLiteral("--logcat")) {
-            logcat = true;
-        } else if (args.at(i) == QStringLiteral("-h")
-                   || args.at(i) == QStringLiteral("--help")
-                   || args.at(i) == QStringLiteral("-?")) {
-            displayHelp(argv[0]);
-            return 0;
-        }
+    if (!applicationSettings.parseCommandLineArguments()) {
+        displayHelp(argv[0]);
+        return 0;
     }
 
-    if (logcat) {
+    if (applicationSettings.isLogcatEnable()) {
         LogManager::install();
     }
 
-    qDebug() << "Main File:" << mainFile;
-    qDebug() << "Applications Root:" << appsRoot;
-    qDebug() << "Boot Animation:" << (bootAnimation ? "yes" : "no");
-    qDebug() << "Show FPS:" << (showFps ? "yes" : "no");
-    qDebug() << "Log redirection:" << (logcat ? "yes" : "no");
+    qDebug() << "Main File:" << applicationSettings.mainFile();
+    qDebug() << "Applications Root:" << applicationSettings.appsRoot();
+    qDebug() << "Boot Animation:" << (applicationSettings.isBootAnimationEnabled() ? "yes" : "no");
+    qDebug() << "Show FPS:" << (applicationSettings.isShowFPSEnabled() ? "yes" : "no");
+    qDebug() << "Log redirection:" << (applicationSettings.isLogcatEnable() ? "yes" : "no");
 
-    QQuickView view;
-#if (QT_VERSION < QT_VERSION_CHECK(5, 3, 0))
-    // Ensure the width and height are valid because of QTBUG-36938.
-    QObject::connect(&view, SIGNAL(widthChanged(int)), view.contentItem(), SLOT(setWidth(int)));
-    QObject::connect(&view, SIGNAL(heightChanged(int)), view.contentItem(), SLOT(setHeight(int)));
-#endif
 
-    Engine engine;
-    engine.setWindow(&view);
-    engine.setFpsEnabled(showFps);
-    engine.setQmlEngine(view.engine());
-    engine.setBootAnimationEnabled(bootAnimation);
+    qmlRegisterType<ApplicationsModel>("com.qtcompany.B2QtLauncher", 1, 0, "LauncherApplicationsModel");
+    qmlRegisterType<Engine>("com.qtcompany.B2QtLauncher", 1, 0, "LauncherEngine");
 
-    ApplicationsModel appsModel;
-    QObject::connect(&appsModel, SIGNAL(ready()), &engine, SLOT(markApplicationsModelReady()));
-    appsModel.initialize(appsRoot);
-
-    view.rootContext()->setContextProperty("engine", &engine);
-    view.rootContext()->setContextProperty("applicationsModel", &appsModel);
-    view.setColor(Qt::black);
-    view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.setSource(QUrl(mainFile));
-    view.show();
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("applicationSettings", &applicationSettings);
+    engine.load(applicationSettings.mainFile());
 
     app.exec();
 }

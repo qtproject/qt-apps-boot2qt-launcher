@@ -39,9 +39,8 @@
 #define ENGINE_STATE_APPRUNNING QStringLiteral("app-running")
 #define ENGINE_STATE_APPCLOSING QStringLiteral("app-closing")
 
-Engine::Engine(QObject *parent)
-    : QObject(parent)
-    , m_qmlEngine(0)
+Engine::Engine(QQuickItem *parent)
+    : QQuickItem(parent)
     , m_fpsCounter(0)
     , m_fps(0)
     , m_intro_done(false)
@@ -63,6 +62,8 @@ Engine::Engine(QObject *parent)
     m_dpcm *= (screenSizeCM - low) / (high - low) * 0.5 + 0.5;
     m_screenWidth = m_screenSize.width();
     m_screenHeight = m_screenSize.height();
+
+    connect(this, SIGNAL(windowChanged(QQuickWindow*)), this, SLOT(windowChanged(QQuickWindow*)));
 }
 
 
@@ -75,6 +76,19 @@ void Engine::updateReadyness()
 
     m_state = ENGINE_STATE_RUNNING;
     emit stateChanged(m_state);
+}
+
+void Engine::updateFPSCounter()
+{
+    if (m_fpsCounter) {
+        delete m_fpsCounter;
+        m_fpsCounter = 0;
+    }
+
+    if (m_fps_enabled && window()) {
+        m_fpsCounter = new FpsCounter(window());
+        connect(m_fpsCounter, SIGNAL(fps(qreal)), this, SLOT(setFps(qreal)));
+    }
 }
 
 void Engine::setState(const QString &state)
@@ -109,19 +123,20 @@ void Engine::setFps(qreal fps)
     emit fpsChanged(m_fps);
 }
 
+void Engine::windowChanged(QQuickWindow *window)
+{
+    Q_UNUSED(window)
+    //When window changes we need to recreate the fps counters
+    updateFPSCounter();
+}
+
 void Engine::setFpsEnabled(bool enabled)
 {
     if (m_fps_enabled == enabled)
         return;
     m_fps_enabled = enabled;
 
-    if (m_fps_enabled) {
-        m_fpsCounter = new FpsCounter(m_window);
-        connect(m_fpsCounter, SIGNAL(fps(qreal)), this, SLOT(setFps(qreal)));
-    } else {
-        delete m_fpsCounter;
-        m_fpsCounter = 0;
-    }
+    updateFPSCounter();
 
     emit fpsEnabledChanged(m_fps_enabled);
 }

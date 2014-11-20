@@ -47,6 +47,7 @@ Engine::Engine(QQuickItem *parent)
     , m_apps_ready(false)
     , m_fps_enabled(false)
     , m_bootAnimationEnabled(true)
+    , m_glAvailable(true)
 {
     m_state = ENGINE_STATE_BOOTING;
 
@@ -64,8 +65,14 @@ Engine::Engine(QQuickItem *parent)
     m_screenHeight = m_screenSize.height();
 
     connect(this, SIGNAL(windowChanged(QQuickWindow*)), this, SLOT(windowChanged(QQuickWindow*)));
-}
 
+    //Check for software renderer
+    QString renderer = qgetenv("QMLSCENE_DEVICE");
+    if (renderer.toLower() == "softwarecontext") {
+        m_glAvailable = false;
+        emit glAvailableChanged(false);
+    }
+}
 
 void Engine::updateReadyness()
 {

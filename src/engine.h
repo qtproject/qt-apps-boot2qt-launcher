@@ -45,6 +45,8 @@ class Engine : public QQuickItem
 
     Q_PROPERTY(const QString qtVersion READ qtVersion)
 
+    Q_PROPERTY(bool glAvailable READ glAvailable NOTIFY glAvailableChanged)
+
 public:
     explicit Engine(QQuickItem *parent = 0);
     
@@ -75,6 +77,7 @@ public:
     Q_INVOKABLE int mm(int val) const { return (int)(m_dpcm * val * 0.1); }
     Q_INVOKABLE int screenWidth() const { return m_screenWidth; }
     Q_INVOKABLE int screenHeight() const { return m_screenHeight; }
+    Q_INVOKABLE bool glAvailable() const { return m_glAvailable; }
 
 protected:
 
@@ -87,6 +90,7 @@ signals:
     void bootAnimationEnabledChanged(bool enabled);
     void fpsChanged(qreal fps);
     void fpsEnabledChanged(bool enabled);
+    void glAvailableChanged(bool available);
 
 public slots:
     void markApplicationsModelReady() { m_apps_ready = true; updateReadyness(); }
@@ -121,6 +125,7 @@ private:
     uint m_apps_ready : 1;
     uint m_fps_enabled : 1;
     uint m_bootAnimationEnabled : 1;
+    bool m_glAvailable;
 };
 
 #endif // ENGINE_H

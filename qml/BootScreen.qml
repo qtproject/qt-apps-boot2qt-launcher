@@ -76,7 +76,7 @@ Item {
         id: sphereSystem;
         anchors.fill: logo
 
-        running: visible
+        running: visible && engine.glAvailable
 
         ImageParticle {
             id: sphereParticle
@@ -110,8 +110,7 @@ Item {
         id: starSystem;
         anchors.fill: logo
 
-        running: visible
-
+        running: visible && engine.glAvailable
 
         ImageParticle {
             id: starParticle

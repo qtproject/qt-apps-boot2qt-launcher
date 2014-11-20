@@ -31,12 +31,12 @@ Item {
         height: width * sourceSize.height / sourceSize.width;
 
         source: "images/qt-logo.png"
-        visible: false
+        visible: false || !engine.glAvailable
     }
 
     HighlightShader {
         source: image
-        running: true
+        running: engine.glAvailable
         interval: 10000
         anchors.fill: image;
     }
@@ -45,7 +45,7 @@ Item {
         id: starSystem;
 
         anchors.fill: image
-        running: visible
+        running: visible && engine.glAvailable
 
         ImageParticle {
             id: starParticle
@@ -62,7 +62,7 @@ Item {
             emitRate: 3
             size: 20
             sizeVariation: 4
-            enabled: visible
+            enabled: visible && engine.glAvailable
 
             velocity: PointDirection { xVariation: 0; yVariation: 0; }
             acceleration: PointDirection {

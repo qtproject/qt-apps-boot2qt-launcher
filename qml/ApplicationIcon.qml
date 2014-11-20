@@ -34,7 +34,7 @@ Item {
         source: icon
         asynchronous: true
         anchors.fill: parent
-        visible: false
+        visible: false || !engine.glAvailable
    }
 
     ShaderEffect {

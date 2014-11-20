@@ -15,7 +15,7 @@
 ** contact form at http://www.qt.io
 **
 ****************************************************************************/
-import QtQuick 2.3
+import QtQuick 2.4
 import QtQuick.Window 2.2
 import QtQuick.Enterprise.VirtualKeyboard 1.2
 import com.qtcompany.B2QtLauncher 1.0

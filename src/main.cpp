@@ -53,6 +53,9 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
+    //Use Flat style for Qt Quick Controls by default
+    qputenv("QT_QUICK_CONTROLS_STYLE", "Flat");
+
 #if defined(USE_QTWEBENGINE)
     // This is currently needed by all QtWebEngine applications using the HW accelerated QQuickWebView.
     // It enables sharing the QOpenGLContext of all QQuickWindows of the application.

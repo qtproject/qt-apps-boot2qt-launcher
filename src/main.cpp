@@ -98,6 +98,7 @@ int main(int argc, char **argv)
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("applicationSettings", &applicationSettings);
+    engine.rootContext()->setContextProperty("qpa_platform", qGuiApp->platformName());
     engine.load(applicationSettings.mainFile());
 
     app.exec();

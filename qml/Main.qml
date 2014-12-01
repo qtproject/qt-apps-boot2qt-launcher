@@ -25,8 +25,8 @@ Window {
     id: window
 
     visible: true
-    width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+    width: qpa_platform == "wayland" ? 800 : Screen.desktopAvailableWidth
+    height: qpa_platform == "wayland" ? 600 : Screen.desktopAvailableHeight
 
     color: "black"
     property color qtpurple: '#ae32a0'

@@ -18,17 +18,33 @@
 import QtQuick 2.0
 
 import Qt.labs.screenshot 1.0
+import QtQuick.Window 2.0
+import com.qtcompany.B2QtLauncher 1.0
 
-Item
+
+Window
 {
-    id: root;
+    id: root
+    visible: true
 
     width: 1280
     height: 720
 
-    Connections {
-        target: applicationsModel
-        onReady: listView.listIndex = 0;
+    LauncherApplicationsModel {
+        id: applicationsModel
+        onReady: {
+            engine.markApplicationsModelReady();
+        }
+        Component.onCompleted: {
+            //Set the directory to parse for apps
+            initialize(applicationSettings.appsRoot);
+        }
+    }
+
+    LauncherEngine {
+        id: engine
+        bootAnimationEnabled: applicationSettings.isBootAnimationEnabled
+        fpsEnabled: applicationSettings.isShowFPSEnabled
     }
 
     ListView {
@@ -75,7 +91,7 @@ Item
             script: {
                 var isPortrait = root.width < root.height;
 
-                var size = Qt.size(400, 225);
+                var size = Qt.size(800, 450);
                 var smallSize = Qt.size(128, 72);
                 var loc = applicationsModel.locationAt(listView.listIndex) + "/"
                 var name = "preview_l"
@@ -88,7 +104,7 @@ Item
                 }
 
                 screenshot.grab(loc + name + ext, size); // medium resolution
-                screenshot.grab(loc + name + "_lr" + ext, smallSize); // low resolution
+                //screenshot.grab(loc + name + "_lr" + ext, smallSize); // low resolution
             }
         }
         PauseAnimation { duration: 100 }

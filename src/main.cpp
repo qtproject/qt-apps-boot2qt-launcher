@@ -67,7 +67,6 @@ int main(int argc, char **argv)
     if (QFile::exists(fontName)) {
         QFontDatabase::addApplicationFont(fontName);
         QFont font("DejaVu Sans");
-        font.setPixelSize(12);
         QGuiApplication::setFont(font);
     } else {
         QFont font;

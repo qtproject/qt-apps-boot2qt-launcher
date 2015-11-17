@@ -161,8 +161,18 @@ Window
     Rectangle {
         id: blackOutLine
         anchors.fill: parent
+        anchors.margins: 3
         color: "transparent"
         border.color: "black"
+        border.width: 3
+        visible: !controls.visible
+    }
+
+    Rectangle {
+        id: whiteOutLine
+        anchors.fill: parent
+        color: "transparent"
+        border.color: "white"
         border.width: 3
         visible: !controls.visible
     }

@@ -67,7 +67,7 @@ Item {
         anchors.topMargin: engine.mm(4)
         anchors.horizontalCenter: logo.horizontalCenter
         font.pixelSize: engine.fontSize() * 1.2
-        color: "white"
+        color: "black"
         text: "Boot to Qt"
         opacity: logo.opacity * 0.5
     }
@@ -114,10 +114,7 @@ Item {
 
         ImageParticle {
             id: starParticle
-            source: "images/particle_star.png"
-            color: "#ffffff"
-            alpha: 0
-            colorVariation: 0
+            source: "images/particle_star2.png"
         }
 
         Emitter {

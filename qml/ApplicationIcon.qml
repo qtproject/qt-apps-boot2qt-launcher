@@ -88,68 +88,6 @@ Item {
             "
     }
 
-    ShaderEffect {
-        id: reflection
-
-        width: shader.width
-        height: shader.height
-
-        anchors.top: shader.bottom;
-        anchors.topMargin: height * 0.05;
-
-        opacity: 0.4
-
-        property real x1: appIcon.x1;
-        property real x2: appIcon.x2 - appIcon.x1;
-        property real shift: appIcon.shift;
-
-        visible: shader.visible
-        property variant source: shader.source
-
-        mesh: "5x1"
-
-        vertexShader:
-            "
-            attribute highp vec4 qt_Vertex;
-            attribute highp vec2 qt_MultiTexCoord0;
-
-            uniform highp mat4 qt_Matrix;
-            uniform highp float x1;
-            uniform highp float x2;
-            uniform highp float shift;
-
-            varying highp vec2 v_TexCoord;
-            varying float v_Opacity;
-
-            void main() {
-                v_TexCoord = vec2(qt_MultiTexCoord0.x, 1.0 - qt_MultiTexCoord0.y);
-                highp float modShift = shift * sin(x1 + qt_MultiTexCoord0.x * x2);
-                gl_Position = qt_Matrix * (qt_Vertex - vec4(0, modShift, 0, 0));
-            }
-            "
-
-        fragmentShader:
-            "
-            uniform lowp float qt_Opacity;
-            uniform sampler2D source;
-            varying highp vec2 v_TexCoord;
-            void main() {
-                if (v_TexCoord.y < 0.3)
-                    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
-                else
-                    gl_FragColor = texture2D(source, v_TexCoord) * qt_Opacity * ( v_TexCoord.y - 0.3);
-            }
-            "
-    }
-
-    Image {
-        id: playButton
-        source: "images/play.png"
-        anchors.centerIn: parent
-        opacity: appIcon.ListView.isCurrentItem ? 1 : 0
-        Behavior on opacity { NumberAnimation { duration: 300 } }
-    }
-
     MouseArea {
         id: mouse
         anchors.fill: parent

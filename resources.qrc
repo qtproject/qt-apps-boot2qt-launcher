@@ -13,5 +13,7 @@
         <file>qml/GlimmeringQtLogo.qml</file>
         <file>qml/HighlightShader.qml</file>
         <file>qml/images/play.png</file>
+        <file>qml/images/particle_star2.png</file>
+        <file>qml/images/Play_btn.png</file>
     </qresource>
 </RCC>

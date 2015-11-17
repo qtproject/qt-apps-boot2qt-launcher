@@ -28,8 +28,8 @@ Window {
     width: qpa_platform == "wayland" ? 800 : Screen.desktopAvailableWidth
     height: qpa_platform == "wayland" ? 600 : Screen.desktopAvailableHeight
 
-    color: "black"
-    property color qtpurple: '#ae32a0'
+    color: "white"
+    property color qtgreen: '#80c342'
 
     Item {
         id: root
@@ -335,16 +335,10 @@ Window {
             width: urlLabel.width
             height: urlLabel.height
 
-            Rectangle {
-                color: "black"
-                opacity: 0.7
-                anchors.fill: urlLabel
-            }
-
             Text {
                 id: urlLabel;
                 text: "http://www.qt.io/qt-for-device-creation"
-                color: qtpurple
+                color: qtgreen
                 font.pixelSize: engine.sensibleButtonSize() * 0.2
                 font.bold: true
             }

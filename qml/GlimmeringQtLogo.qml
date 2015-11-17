@@ -49,7 +49,7 @@ Item {
 
         ImageParticle {
             id: starParticle
-            source: "images/particle_star.png"
+            source: "images/particle_star2.png"
             color: "#ffffff"
             alpha: 0
             colorVariation: 0

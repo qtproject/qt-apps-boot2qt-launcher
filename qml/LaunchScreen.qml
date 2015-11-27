@@ -106,48 +106,23 @@ Item {
         }
     }
 
-    Image {
-        id: playButton
-        source: "images/Play_btn.png"
-        x: list.width/3.5
-        y: list.cellHeight + engine.mm(2)
-        MouseArea {
-            id: mouse
-            anchors.fill: parent
-            onClicked: {
-                engine.launchApplication(applicationsModel.query(list.currentIndex, "location"),
-                                        applicationsModel.query(list.currentIndex, "mainFile"),
-                                         applicationsModel.query(list.currentIndex, "name"))
-            }
-        }
-    }
-    Text {
-        id: playText
-        text: "LAUNCH DEMO"
-        color: window.qtgreen
-        font.pixelSize: engine.fontSize()
-        anchors.verticalCenter: playButton.verticalCenter
-        anchors.left: playButton.right
-        anchors.leftMargin: engine.mm(4)
-    }
-
     Text {
         id: nameLabel
-        x: playButton.x
+        x: list.width/4 + engine.mm(2)
+        y: list.cellHeight + engine.mm(10)
+        width: list.cellWidth - engine.mm(2)
         font.pixelSize: engine.fontSize()
         color: "black"
         font.bold: true
-        anchors.top: playButton.bottom
-        anchors.topMargin: engine.mm(4)
         wrapMode: Text.WordWrap
     }
 
     Text {
         id: descriptionLabel
-        width: list.cellWidth - engine.mm(4)//list.width/2.5
+        width: nameLabel.width
         font.pixelSize: engine.smallFontSize()
         color: "black"
-        x: playButton.x
+        x: nameLabel.x
         anchors.top: nameLabel.bottom
         anchors.bottom: parent.bottom
         wrapMode: Text.WordWrap

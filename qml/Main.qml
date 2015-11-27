@@ -329,18 +329,17 @@ Window {
 
         Item {
             id: url
+            x: appGrid.width/4 + engine.mm(2)
             anchors.bottom: parent.bottom;
-            anchors.horizontalCenter: parent.horizontalCenter;
             anchors.margins: height/2
             width: urlLabel.width
             height: urlLabel.height
 
             Text {
                 id: urlLabel;
-                text: "http://www.qt.io/qt-for-device-creation"
+                text: "Visit Qt.io/qt-for-device-creation"
                 color: qtgreen
                 font.pixelSize: engine.sensibleButtonSize() * 0.2
-                font.bold: true
             }
         }
     }

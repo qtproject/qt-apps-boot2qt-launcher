@@ -23,8 +23,8 @@ Item {
 
     property real offset;
 
-    property real x1: (x - offset) / ListView.view.width * Math.PI;
-    property real x2: (x + width - offset) / ListView.view.width * Math.PI;
+    property real x1: (x - offset) / PathView.view.width * Math.PI;
+    property real x2: (x + width - offset) / PathView.view.width * Math.PI;
     property real shift: Math.min(height, width) * 0.05
 
     signal clicked;
@@ -49,9 +49,9 @@ Item {
         property real x2: appIcon.x2 - appIcon.x1;
         property real shift: appIcon.shift;
 
-        property real selection: appIcon.ListView.isCurrentItem ? 1.1 + 0.3 * Math.sin(_t) : 1;
+        property real selection: appIcon.PathView.isCurrentItem ? 1.1 + 0.3 * Math.sin(_t) : 1;
         property real _t;
-        NumberAnimation on _t { from: 0; to: 2 * Math.PI; duration: 3000; loops: Animation.Infinite; running: appIcon.ListView.isCurrentItem && shader.visible }
+        NumberAnimation on _t { from: 0; to: 2 * Math.PI; duration: 3000; loops: Animation.Infinite; running: appIcon.PathView.isCurrentItem && shader.visible }
 
         mesh: "5x2"
         blending: false
@@ -87,12 +87,11 @@ Item {
             }
             "
     }
-
     MouseArea {
         id: mouse
         anchors.fill: parent
         onClicked: {
-            if (appIcon.ListView.isCurrentItem) {
+            if (appIcon.PathView.isCurrentItem) {
                 engine.launchApplication(location, mainFile, name)
             } else {
                 appIcon.clicked();

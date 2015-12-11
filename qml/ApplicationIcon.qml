@@ -49,9 +49,12 @@ Item {
         property real x2: appIcon.x2 - appIcon.x1;
         property real shift: appIcon.shift;
 
-        property real selection: appIcon.PathView.isCurrentItem ? 1.1 + 0.3 * Math.sin(_t) : 1;
-        property real _t;
-        NumberAnimation on _t { from: 0; to: 2 * Math.PI; duration: 3000; loops: Animation.Infinite; running: appIcon.PathView.isCurrentItem && shader.visible }
+        property real selection: appIcon.PathView.isCurrentItem ? 1 : 0.7;
+
+        Behavior on selection {
+            NumberAnimation { duration: 2000; }
+            enabled: shader.visible
+        }
 
         mesh: "5x2"
         blending: false

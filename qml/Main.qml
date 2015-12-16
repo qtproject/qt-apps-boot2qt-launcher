@@ -212,33 +212,11 @@ Window {
                 engine.state = "app-running";
             }
 
-            Rectangle {
-                id: applicationCloseButton;
-
+            Image {
+                id: applicationCloseButton
+                source: "images/close-button.png"
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.horizontalCenterOffset: parent.width / 4
-                y: -height / 2;
-
-                width: closeLabel.width + engine.centimeter() * 2
-                height: engine.fontSize() * 3;
-                radius: height / 2;
-
-                gradient: Gradient {
-                    GradientStop { position: 0.5; color: "gray" }
-                    GradientStop { position: 1; color: "black"; }
-                }
-
-    //            border.color: "gray"
-
-                Text {
-                    id: closeLabel
-                    color: "white"
-                    text: "Close"
-                    anchors.centerIn: parent
-                    anchors.verticalCenterOffset: parent.height / 4;
-                    font.pixelSize: engine.fontSize();
-                }
-
                 enabled: engine.state == "app-running"
                 MouseArea {
                     anchors.fill: parent

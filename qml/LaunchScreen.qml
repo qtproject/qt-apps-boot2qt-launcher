@@ -23,6 +23,7 @@ Item {
 
     property real size: Math.min(root.width, root.height);
     property int itemsPerScreen: 2
+    property int offset: 10
 
     PathView {
         id: list
@@ -42,8 +43,8 @@ Item {
         currentIndex: -1
 
         path: Path {
-            startX:-list.cellWidth; startY: list.y + list.cellHeight/2
-            PathLine{x: list.cellWidth*list.count - list.cellWidth; y: list.y + list.cellHeight/2}
+            startX: -list.cellWidth - offset*2; startY: list.y + list.cellHeight/2
+            PathLine{ x: (list.cellWidth + offset)*list.count - list.cellWidth - offset*2; y: list.y + list.cellHeight/2}
         }
 
         highlightMoveDuration: 700

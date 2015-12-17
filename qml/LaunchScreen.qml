@@ -97,12 +97,4 @@ Item {
         anchors.bottom: parent.bottom
         wrapMode: Text.WordWrap
     }
-
-    GlimmeringQtLogo {
-        id: logo
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.margins: width / 3;
-    }
-
 }

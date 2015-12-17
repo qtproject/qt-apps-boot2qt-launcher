@@ -307,17 +307,47 @@ Window {
 
         Item {
             id: url
-            x: appGrid.width/4 + engine.mm(2)
             anchors.bottom: parent.bottom;
-            anchors.margins: height/2
-            width: urlLabel.width
-            height: urlLabel.height
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 20
+            GlimmeringQtLogo {
+                id: logo
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+            }
 
             Text {
                 id: urlLabel;
+                anchors.bottom: parent.bottom
+                x: appGrid.width/4
                 text: "Visit Qt.io/qt-for-device-creation"
                 color: qtgreen
                 font.pixelSize: engine.sensibleButtonSize() * 0.2
+            }
+            Image{
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                source:"images/settings.png"
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        //TODO is there a better way?
+                        //find launchersettings application, it is under basicsuite
+                        //There can be several roots which are split with ':'
+                        var fileArray = applicationSettings.appsRoot.split(":")
+                        for ( var i = 0; i < fileArray.length; i++ ) {
+                            var file = fileArray[i]
+                            if ( file.search("basicsuite") > -1 ) {
+                                var prepend = "file://"
+                                file = prepend.concat(file)
+                                file += "/launchersettings"
+                                engine.launchApplication(file, "main.qml", "Launcher Settings")
+                                break
+                            }
+                        }
+                    }
+                }
             }
         }
     }

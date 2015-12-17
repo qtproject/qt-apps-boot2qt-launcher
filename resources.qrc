@@ -16,5 +16,6 @@
         <file>qml/images/particle_star2.png</file>
         <file>qml/images/Play_btn.png</file>
         <file>qml/images/close-button.png</file>
+        <file>qml/images/settings.png</file>
     </qresource>
 </RCC>

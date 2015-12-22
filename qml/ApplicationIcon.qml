@@ -52,7 +52,7 @@ Item {
         property real selection: appIcon.PathView.isCurrentItem ? 1 : 0.7;
 
         Behavior on selection {
-            NumberAnimation { duration: 2000; }
+            NumberAnimation { duration: 300; }
             enabled: shader.visible
         }
 

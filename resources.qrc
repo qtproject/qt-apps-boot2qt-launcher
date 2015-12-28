@@ -19,5 +19,10 @@
         <file>qml/images/settings.png</file>
         <file>qml/BusyIndicator.qml</file>
         <file>qml/images/spinner.png</file>
+        <file>qml/AutoScroller.qml</file>
+        <file>qml/HandwritingModeButton.qml</file>
+        <file>qml/images/FloatingButton_Active.svg</file>
+        <file>qml/images/FloatingButton_Available.svg</file>
+        <file>qml/images/FloatingButton_Unavailable.svg</file>
     </qresource>
 </RCC>

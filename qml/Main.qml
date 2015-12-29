@@ -20,7 +20,6 @@ import QtQuick.Window 2.2
 import QtQuick.Enterprise.VirtualKeyboard 1.2
 import com.qtcompany.B2QtLauncher 1.0
 
-
 Window {
     id: window
 
@@ -260,25 +259,33 @@ Window {
         Item {
             id: splashScreen
             visible: opacity > 0
-
             anchors.fill: parent
+
+            BusyIndicator {
+                id: busyIndicator
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: splashLabel.top
+                anchors.bottomMargin: height * .5
+                width: parent.width * .1
+            }
 
             Text {
                 id: splashLabel
-                color: "white"
-                text: "Loading..."
-                anchors.centerIn: parent;
-                anchors.verticalCenterOffset: -height
-                font.pixelSize: engine.titleFontSize()
+                color: "black"
+                text: qsTr("Loading %1...").arg(engine.applicationName.slice(0, -1))
+                anchors.bottom: codeLessImage.top
+                anchors.bottomMargin: font.pixelSize
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pixelSize: engine.fontSize() * 1.2
             }
 
             Image {
+                id: codeLessImage
                 source: "images/codeless.png"
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom;
                 anchors.margins: parent.height * 0.1;
             }
-
         }
 
         Item {

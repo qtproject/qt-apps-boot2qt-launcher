@@ -17,5 +17,7 @@
         <file>qml/images/Play_btn.png</file>
         <file>qml/images/close-button.png</file>
         <file>qml/images/settings.png</file>
+        <file>qml/BusyIndicator.qml</file>
+        <file>qml/images/spinner.png</file>
     </qresource>
 </RCC>

@@ -27,7 +27,8 @@ OTHER_FILES += \
     qml/Main.qml \
     qml/ApplicationIcon.qml \
     qml/GlimmeringQtLogo.qml \
-    qml/BootScreen.qml
+    qml/BootScreen.qml \
+    qml/BusyIndicator.qml
 
 android {
     target.path = $$[INSTALL_ROOT]/system/bin

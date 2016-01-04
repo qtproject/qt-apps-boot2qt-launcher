@@ -35,21 +35,38 @@ Item {
         asynchronous: true
         anchors.fill: parent
         visible: false || !engine.glAvailable
-   }
-
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: "white"
+            border.width: 2
+        }
+        Rectangle {
+            anchors.fill: parent
+            anchors.margins: 2
+            color: "transparent"
+            border.color: "black"
+            border.width: 2
+        }
+    }
+    ShaderEffectSource {
+        id: source
+        sourceItem: preview
+    }
     ShaderEffect {
         id: shader
 
         visible: preview.status == Image.Ready
 
         anchors.fill: parent
-        property variant source: preview
+        property variant source: source
 
         property real x1: appIcon.x1;
         property real x2: appIcon.x2 - appIcon.x1;
         property real shift: appIcon.shift;
 
         property real selection: appIcon.PathView.isCurrentItem ? 1 : 0.7;
+        property real border: 1.0 / height * 3
 
         Behavior on selection {
             NumberAnimation { duration: 300; }
@@ -84,9 +101,16 @@ Item {
             uniform sampler2D source;
             uniform lowp float selection;
 
+            uniform lowp float border;
             varying highp vec2 v_TexCoord;
             void main() {
+                lowp float b_max = 1.0 - border;
+                lowp float b_min = border;
+                if (v_TexCoord.x < b_max && v_TexCoord.x > b_min && v_TexCoord.y < b_max && v_TexCoord.y > b_min) {
                 gl_FragColor = vec4(texture2D(source, v_TexCoord).rgb * selection, 1.0) * qt_Opacity;
+                } else {
+                    gl_FragColor = vec4(texture2D(source, v_TexCoord).rgb * 1.0, 1.0) * qt_Opacity;
+                }
             }
             "
     }

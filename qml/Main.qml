@@ -215,15 +215,31 @@ Window {
                 id: applicationCloseButton
                 source: "images/close-button.png"
                 anchors.horizontalCenter: parent.horizontalCenter
-                anchors.horizontalCenterOffset: parent.width / 4
                 enabled: engine.state == "app-running"
+                y: -height * .6
+                z: 1
+
+                Behavior on y { NumberAnimation { duration: 100 } }
+
                 MouseArea {
                     anchors.fill: parent
+                    drag.target: applicationCloseButton
+                    drag.axis: Drag.YAxis
+                    drag.minimumX: -applicationCloseButton.height * .6
+                    drag.maximumY: 0
+
                     onClicked: {
+                        if (applicationCloseButton.y < -applicationCloseButton.height / 2)
+                            return;
+
                         engine.state = "app-closing"
+                        applicationCloseButton.y = -applicationCloseButton.height * .6
                     }
+
+                    onReleased: applicationCloseButton.y = applicationCloseButton.y > -applicationCloseButton.height / 2 ?
+                                    0 :
+                                    -applicationCloseButton.height * .6
                 }
-                z: 1
             }
         }
 

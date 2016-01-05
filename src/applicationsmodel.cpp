@@ -193,7 +193,7 @@ QString ApplicationsModel::locationAt(int i) const
 QVariant ApplicationsModel::query(int i, const QString &name) const
 {
     if (i < 0 || i >= m_data.size()) {
-        QVariant();
+        return QVariant();
     }
 
     const AppData &ad = m_data.at(i);

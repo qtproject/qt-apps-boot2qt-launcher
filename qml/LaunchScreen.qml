@@ -49,10 +49,8 @@ Item {
 
         highlightMoveDuration: 700
 
-
         delegate: ApplicationIcon {
             id: iconRoot;
-
             width: list.cellWidth
             height: list.cellHeight
             function select() {
@@ -85,6 +83,8 @@ Item {
         color: "black"
         font.bold: true
         wrapMode: Text.WordWrap
+        textFormat: Text.PlainText
+        renderType: Text.NativeRendering
     }
 
     Text {
@@ -96,5 +96,7 @@ Item {
         anchors.top: nameLabel.bottom
         anchors.bottom: parent.bottom
         wrapMode: Text.WordWrap
+        textFormat: Text.PlainText
+        renderType: Text.NativeRendering
     }
 }

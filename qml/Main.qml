@@ -355,16 +355,16 @@ Window {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        //TODO is there a better way?
-                        //find launchersettings application, it is under basicsuite
+                        //Find launchersettings application from appsRoots
                         //There can be several roots which are split with ':'
                         var fileArray = applicationSettings.appsRoot.split(":")
                         for ( var i = 0; i < fileArray.length; i++ ) {
                             var file = fileArray[i]
-                            if ( file.search("basicsuite") > -1 ) {
-                                var prepend = "file://"
-                                file = prepend.concat(file)
-                                file += "/launchersettings"
+                            var prepend = "file://"
+                            file = prepend.concat(file)
+                            file += "/launchersettings"
+
+                            if (engine.fileExists(file + "/main.qml")) {
                                 engine.launchApplication(file, "main.qml", "Launcher Settings")
                                 break
                             }

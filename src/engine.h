@@ -101,6 +101,8 @@ public slots:
 
     void setFps(qreal fps);
 
+    bool fileExists(const QUrl &fileName);
+
 private slots:
     void windowChanged(QQuickWindow *window);
 

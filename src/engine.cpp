@@ -163,6 +163,12 @@ int Engine::sensibleButtonSize() const
     return buttonSize;
 }
 
+bool Engine::fileExists(const QUrl &fileName)
+{
+    QFile file(fileName.toLocalFile());
+    return file.exists();
+}
+
 void Engine::launchApplication(const QUrl &path, const QString &mainFile, const QString &name)
 {
     // only launch apps when in the homescreen...

@@ -31,7 +31,8 @@ Item {
         height: width * sourceSize.height / sourceSize.width;
 
         source: "images/qt-logo.png"
-        visible: false || !engine.glAvailable
+        visible: !engine.glAvailable
+        layer.enabled: true
     }
 
     HighlightShader {
@@ -77,7 +78,4 @@ Item {
             }
         }
     }
-
-
-
 }

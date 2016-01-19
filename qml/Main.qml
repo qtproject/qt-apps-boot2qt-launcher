@@ -223,6 +223,7 @@ Window {
 
                 MouseArea {
                     anchors.fill: parent
+                    anchors.bottomMargin: applicationCloseButton.y < -applicationCloseButton.height / 2 ? 0 : -parent.height * .5
                     drag.target: applicationCloseButton
                     drag.axis: Drag.YAxis
                     drag.minimumX: -applicationCloseButton.height * .6
@@ -236,7 +237,7 @@ Window {
                         applicationCloseButton.y = -applicationCloseButton.height * .6
                     }
 
-                    onReleased: applicationCloseButton.y = applicationCloseButton.y > -applicationCloseButton.height / 2 ?
+                    onReleased: applicationCloseButton.y = applicationCloseButton.y > -applicationCloseButton.height / 5 ?
                                     0 :
                                     -applicationCloseButton.height * .6
                 }

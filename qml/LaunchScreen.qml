@@ -94,6 +94,7 @@ Item {
         color: "black"
         x: nameLabel.x
         anchors.top: nameLabel.bottom
+        anchors.topMargin: engine.fontSize()
         anchors.bottom: parent.bottom
         wrapMode: Text.WordWrap
         textFormat: Text.PlainText

@@ -348,7 +348,7 @@ Window {
             Text {
                 id: splashLabel
                 color: "black"
-                text: qsTr("Loading %1...").arg(engine.applicationName.slice(0, -1))
+                text: qsTr("Loading %1...").arg(engine.applicationName)
                 anchors.bottom: codeLessImage.top
                 anchors.bottomMargin: font.pixelSize
                 anchors.horizontalCenter: parent.horizontalCenter

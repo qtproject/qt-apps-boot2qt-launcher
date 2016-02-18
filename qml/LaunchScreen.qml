@@ -34,6 +34,7 @@ Item {
         property real cellHeight: (list.height / root.itemsPerScreen)
 
         maximumFlickVelocity: 5000
+
         pathItemCount: list.count
 
         model: applicationsModel;
@@ -75,7 +76,8 @@ Item {
 
     Text {
         id: nameLabel
-        x: list.width/4 + engine.mm(2)
+        anchors.horizontalCenter: parent.horizontalCenter
+        horizontalAlignment: Text.AlignHCenter
         y: list.cellHeight + engine.mm(10)
         width: list.cellWidth - engine.mm(2)
         font.pixelSize: engine.fontSize()

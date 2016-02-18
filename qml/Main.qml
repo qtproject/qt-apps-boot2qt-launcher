@@ -403,7 +403,7 @@ Window {
             Text {
                 id: urlLabel;
                 anchors.bottom: parent.bottom
-                x: appGrid.width/4
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: "Visit Qt.io/qt-for-device-creation"
                 color: qtgreen
                 font.pixelSize: engine.sensibleButtonSize() * 0.2

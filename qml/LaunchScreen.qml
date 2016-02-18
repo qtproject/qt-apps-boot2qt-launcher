@@ -30,7 +30,6 @@ Item {
         y: 10
         width: parent.width
         height: parent.height
-
         property real cellWidth: (list.width - (root.itemsPerScreen - 1) /** list.spacing*/) / root.itemsPerScreen
         property real cellHeight: (list.height / root.itemsPerScreen)
 
@@ -49,7 +48,7 @@ Item {
         }
 
         highlightMoveDuration: 700
-
+        dragMargin: list.height
         delegate: ApplicationIcon {
             id: iconRoot;
             width: list.cellWidth

@@ -25,6 +25,7 @@
 #include <QRegExp>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QXmlStreamReader>
 
 const QEvent::Type RESULT_EVENT = (QEvent::Type) (QEvent::User + 1);
 class ResultEvent : public QEvent
@@ -40,7 +41,10 @@ public:
 
 static bool appOrder(const AppData& a, const AppData& b)
 {
-    return a.name < b.name;
+    if (a.priority != b.priority)
+        return a.priority > b.priority;
+    else
+        return a.name < b.name;
 }
 
 class IndexingThread : public QThread
@@ -53,8 +57,69 @@ public:
         QList<QString> roots = root.split(":");
         target = qgetenv("B2QT_BASE") + "-" + qgetenv("B2QT_PLATFORM");
         foreach (const QString &root, roots) {
-            results += indexDirectory(root);
+            if (QFile::exists(root + "/demos.xml")) {
+
+                QFile file(root + "/demos.xml");
+
+                if (!file.open(QIODevice::ReadOnly))
+                    break;
+
+                QXmlStreamReader xml(&file);
+
+                AppData data;
+                bool exclude = false;
+
+                while (!xml.atEnd()) {
+                    switch (xml.readNext()) {
+
+                    case QXmlStreamReader::StartElement:
+                        if (xml.name().toString().toLower() == "application") {
+
+                            const QStringList excludeList = xml.attributes().value("exclude").toString().split(QRegExp(":|\\s+"));
+
+                            exclude = excludeList.contains(target) || excludeList.contains(QStringLiteral("all"));
+
+                            if (exclude)
+                                break;
+
+                            data.name = xml.attributes().value("title").toString().trimmed();
+
+                            QString path = xml.attributes().value("location").toString();
+                            data.location = QUrl::fromLocalFile(path);
+
+                            data.main = QString("/%1").arg(xml.attributes().value("main").toString());
+
+                            QString imageName = xml.attributes().value("icon").toString();
+
+                            data.icon = QFile::exists(imageName)
+                                    ? QUrl::fromLocalFile(imageName)
+                                    : QUrl("qrc:///qml/images/codeless.png");
+
+
+                            data.priority = xml.attributes().value("priority").toInt();
+
+                        } else if (xml.name().toString().toLower() == "description") {
+                            data.description = xml.readElementText().trimmed();
+                        }
+                        break;
+
+                    case QXmlStreamReader::EndElement:
+                        if (xml.name().toString().toLower() == "application" && !exclude)
+                            results << data;
+                        break;
+
+                    default:
+                        break;
+                    }
+                }
+
+                if (xml.error() != QXmlStreamReader::NoError)
+                    qWarning("XML Parser error: %s", qPrintable(xml.errorString()));
+            }
         }
+
+        std::sort(results.begin(), results.end(), appOrder);
+
         qDebug() << "Indexer: all done... total:" << results.size();
         QCoreApplication::postEvent(model, new ResultEvent(results));
     }
@@ -129,10 +194,9 @@ QHash<int, QByteArray> ApplicationsModel::roleNames() const
     names[MainFileRole] = "mainFile";
     names[LocationRole] = "location";
     names[IconRole] = "icon";
+    names[PriorityRole] = "priority";
     return names;
 }
-
-
 
 void ApplicationsModel::initialize(const QString &appsRoot)
 {
@@ -168,6 +232,7 @@ QVariant ApplicationsModel::data(const QModelIndex &index, int role) const
     case LocationRole: return ad.location;
     case MainFileRole: return ad.main;
     case IconRole: return ad.icon;
+    case PriorityRole: return ad.priority;
     default: qDebug() << "ApplicationsModel::data: unhandled role" << role;
     }
 
@@ -202,8 +267,9 @@ QVariant ApplicationsModel::query(int i, const QString &name) const
     else if (name == QStringLiteral("location")) return ad.location;
     else if (name == QStringLiteral("mainFile")) return ad.main;
     else if (name == QStringLiteral("icon")) return ad.icon;
-
-    return QVariant();
+    else if (name == QStringLiteral("priority")) return ad.priority;
 
     qWarning("ApplicationsModel::query: Asking for bad name %s", qPrintable(name));
+
+    return QVariant();
 }

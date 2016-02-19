@@ -28,6 +28,7 @@ struct AppData {
     QString main;
     QUrl location;
     QUrl icon;
+    int priority;
 };
 
 
@@ -41,7 +42,8 @@ public:
         MainFileRole,
         LocationRole,
         IconRole,
-        LargeIconNameRole
+        LargeIconNameRole,
+        PriorityRole
     };
 
     explicit ApplicationsModel(QObject *parent = 0);

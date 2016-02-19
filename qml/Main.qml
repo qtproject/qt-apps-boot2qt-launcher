@@ -230,8 +230,10 @@ Window {
                     drag.maximumY: 0
 
                     onClicked: {
-                        if (applicationCloseButton.y < -applicationCloseButton.height / 2)
+                        if (applicationCloseButton.y < -applicationCloseButton.height / 2) {
+                            applicationCloseButton.y = 0
                             return;
+                        }
 
                         engine.state = "app-closing"
                         applicationCloseButton.y = -applicationCloseButton.height * .6

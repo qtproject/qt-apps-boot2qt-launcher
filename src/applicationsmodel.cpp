@@ -78,7 +78,7 @@ public:
                     case QXmlStreamReader::StartElement:
                         if (xml.name().toString().toLower() == "application") {
 
-                            const QStringList excludeList = xml.attributes().value("exclude").toString().split(QRegExp(":|\\s+"));
+                            const QStringList excludeList = xml.attributes().value("exclude").toString().split(QStringLiteral(";"));
 
                             exclude = excludeList.contains(target) || excludeList.contains(QStringLiteral("all"));
 

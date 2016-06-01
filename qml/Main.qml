@@ -20,7 +20,7 @@
 ******************************************************************************/
 import QtQuick 2.4
 import QtQuick.Window 2.2
-import QtQuick.Enterprise.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.0
 import com.qtcompany.B2QtLauncher 1.0
 
 Window {

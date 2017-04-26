@@ -135,58 +135,6 @@ public:
         QCoreApplication::postEvent(model, new ResultEvent(results));
     }
 
-    QList<AppData> indexDirectory(const QString &root) {
-        QDirIterator iterator(root);
-
-        QList<AppData> results;
-
-        while (iterator.hasNext()) {
-            QString path = iterator.next();
-
-            if (!QFile::exists(path + "/main.qml"))
-                continue;
-
-            QFile excludeFile(path + "/exclude.txt");
-            if (excludeFile.open(QFile::ReadOnly)) {
-                const QStringList excludeList = QString::fromUtf8(excludeFile.readAll()).split(QRegExp(":|\\s+"));
-                if (excludeList.contains(target) || excludeList.contains(QStringLiteral("all")))
-                    continue;
-            }
-
-            AppData data;
-            data.location = QUrl::fromLocalFile(path);
-
-            QFile titleFile(path + "/title.txt");
-            if (titleFile.open(QFile::ReadOnly))
-                data.name = QString::fromUtf8(titleFile.readAll());
-
-            if (data.name.isEmpty())
-                data.name = iterator.fileName();
-
-            data.main = "main.qml";
-
-            QFile file(path + "/description.txt");
-            if (file.open(QFile::ReadOnly))
-                data.description = QString::fromUtf8(file.readAll());
-
-            QString imageName = path + "/preview_l.jpg";
-            data.icon = QFile::exists(imageName)
-                    ? QUrl::fromLocalFile(imageName)
-                    : QUrl("qrc:///qml/images/codeless.png");
-
-            results << data;
-        }
-
-        std::sort(results.begin(), results.end(), appOrder);
-
-        // Remove any leading digits followed by '.' from the name
-        for (int i = 0; i < results.count(); ++i) {
-            results[i].name.remove(QRegExp("^\\d+\\.\\s*"));
-        }
-
-        return results;
-    }
-
     QString root;
     ApplicationsModel *model;
     QString target;

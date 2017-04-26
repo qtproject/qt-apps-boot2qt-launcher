@@ -34,7 +34,6 @@ ApplicationSettings::ApplicationSettings(QObject *parent)
     : QObject(parent)
     , m_mainFile(QUrl(QStringLiteral("qrc:///qml/Main.qml")))
     , m_appsRoot("/data/user/qt")
-    , m_isLogcatEnabled(false)
     , m_isBootAnimationEnabled(true)
     , m_isShowFPSEnabled(false)
 {
@@ -43,11 +42,6 @@ ApplicationSettings::ApplicationSettings(QObject *parent)
 QString ApplicationSettings::appsRoot() const
 {
     return m_appsRoot;
-}
-
-bool ApplicationSettings::isLogcatEnable() const
-{
-    return m_isLogcatEnabled;
 }
 
 bool ApplicationSettings::isBootAnimationEnabled() const
@@ -74,8 +68,6 @@ bool ApplicationSettings::parseCommandLineArguments()
             m_isBootAnimationEnabled = false;
         } else if (args.at(i) == QStringLiteral("--show-fps")) {
             m_isShowFPSEnabled = true;
-        } else if (args.at(i) == QStringLiteral("--logcat")) {
-            m_isLogcatEnabled = true;
         } else if (args.at(i) == QStringLiteral("-h")
                    || args.at(i) == QStringLiteral("--help")
                    || args.at(i) == QStringLiteral("-?")) {

@@ -9,14 +9,12 @@ qtHaveModule(webengine) {
 HEADERS += \
     src/engine.h \
     src/applicationsmodel.h \
-    src/logmanager.h \
     src/fpscounter.h \
     src/applicationsettings.h
 
 SOURCES += src/main.cpp \
     src/engine.cpp \
     src/applicationsmodel.cpp \
-    src/logmanager.cpp \
     src/fpscounter.cpp \
     src/applicationsettings.cpp
 

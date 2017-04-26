@@ -43,7 +43,6 @@
 
 #include "engine.h"
 #include "applicationsmodel.h"
-#include "logmanager.h"
 #include "applicationsettings.h"
 
 void displayHelp(const char *appName)
@@ -92,15 +91,10 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    if (applicationSettings.isLogcatEnable()) {
-        LogManager::install();
-    }
-
     qDebug() << "Main File:" << applicationSettings.mainFile();
     qDebug() << "Applications Root:" << applicationSettings.appsRoot();
     qDebug() << "Boot Animation:" << (applicationSettings.isBootAnimationEnabled() ? "yes" : "no");
     qDebug() << "Show FPS:" << (applicationSettings.isShowFPSEnabled() ? "yes" : "no");
-    qDebug() << "Log redirection:" << (applicationSettings.isLogcatEnable() ? "yes" : "no");
 
 
     qmlRegisterType<ApplicationsModel>("com.qtcompany.B2QtLauncher", 1, 0, "LauncherApplicationsModel");

@@ -38,7 +38,6 @@ class ApplicationSettings : public QObject
     Q_OBJECT
     Q_PROPERTY(QUrl mainFile READ mainFile NOTIFY mainFileChanged)
     Q_PROPERTY(QString appsRoot READ appsRoot NOTIFY appsRootChanged)
-    Q_PROPERTY(bool isLogcatEnabled READ isLogcatEnable NOTIFY isLogcatEnabledChanged)
     Q_PROPERTY(bool isBootAnimationEnabled READ isBootAnimationEnabled NOTIFY isBootAnimationEnabledChanged)
     Q_PROPERTY(bool isShowFPSEnabled READ isShowFPSEnabled NOTIFY isShowFPSEnabledChanged)
 public:
@@ -46,7 +45,6 @@ public:
 
     QUrl mainFile() const;
     QString appsRoot() const;
-    bool isLogcatEnable() const;
     bool isBootAnimationEnabled() const;
     bool isShowFPSEnabled() const;
 
@@ -57,14 +55,12 @@ public:
 signals:
     void mainFileChanged(QUrl newFile);
     void appsRootChanged(QString appRoot);
-    void isLogcatEnabledChanged(bool isEnabled);
     void isBootAnimationEnabledChanged(bool isEnabled);
     void isShowFPSEnabledChanged(bool isEnabled);
 
 private:
     QUrl m_mainFile;
     QString m_appsRoot;
-    bool m_isLogcatEnabled;
     bool m_isBootAnimationEnabled;
     bool m_isShowFPSEnabled;
 

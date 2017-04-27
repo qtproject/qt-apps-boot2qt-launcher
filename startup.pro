@@ -30,11 +30,7 @@ OTHER_FILES += \
     qml/BootScreen.qml \
     qml/BusyIndicator.qml
 
-android {
-    target.path = $$[INSTALL_ROOT]/system/bin
-} else {
-    target.path = $$[INSTALL_ROOT]/usr/bin
-}
+target.path = $$[INSTALL_ROOT]/usr/bin
 
 INSTALLS += target
 

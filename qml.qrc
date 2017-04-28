@@ -22,5 +22,6 @@
         <file>qml/BusyIndicator.qml</file>
         <file>qml/MainWindow.qml</file>
         <file>qml/FlickSlider.qml</file>
+        <file>qml/FpsIndicator.qml</file>
     </qresource>
 </RCC>

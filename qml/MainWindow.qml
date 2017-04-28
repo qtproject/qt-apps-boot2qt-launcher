@@ -319,28 +319,8 @@ Item {
             }
         }
 
-        Item {
-            id: fps
-            opacity: engine.fpsEnabled ? 1 : 0
-            Behavior on opacity { NumberAnimation { duration: 500 } }
-
-            anchors.bottom: parent.bottom;
-            anchors.left: parent.left;
-            width: fpsLabel.width
-            height: fpsLabel.height
-
-            Rectangle {
-                color: "black"
-                opacity: 0.5
-                anchors.fill: fpsLabel
-            }
-
-            Text {
-                id: fpsLabel;
-                color: "white"
-                text: "FPS: " + engine.fps
-                font.pixelSize: engine.sensibleButtonSize() * 0.2
-            }
+        FpsIndicator {
+            enabled: engine.fpsEnabled
         }
     }
 }

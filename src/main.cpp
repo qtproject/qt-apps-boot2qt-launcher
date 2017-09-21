@@ -44,6 +44,9 @@
 #include "engine.h"
 #include "applicationsmodel.h"
 #include "applicationsettings.h"
+#include "settingsmanager.h"
+#include "imageproviders.h"
+#include "circularindicator.h"
 
 void displayHelp(const char *appName)
 {
@@ -53,7 +56,6 @@ void displayHelp(const char *appName)
            "Options:\n"
            " --main-file [qml-file]             Launches an alternative QML file\n"
            " --applications-root [path]         Specify a different applications root\n"
-           " --no-boot-animation                Disable startup animation\n"
            " --show-fps                         Show FPS\n"
            , appName
            );
@@ -61,10 +63,9 @@ void displayHelp(const char *appName)
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
+    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
-    //Use Flat style for Qt Quick Controls by default
-    qputenv("QT_QUICK_CONTROLS_STYLE", "Flat");
+    QApplication app(argc, argv);
 
 #if defined(USE_QTWEBENGINE)
     // This is currently needed by all QtWebEngine applications using the HW accelerated QQuickWebView.
@@ -73,16 +74,11 @@ int main(int argc, char **argv)
     QtWebEngine::initialize();
 #endif
 
-    QString fontName = QStringLiteral("/system/lib/fonts/DejaVuSans.ttf");
-    if (QFile::exists(fontName)) {
-        QFontDatabase::addApplicationFont(fontName);
-        QFont font("DejaVu Sans");
-        QGuiApplication::setFont(font);
-    } else {
-        QFont font;
-        font.setStyleHint(QFont::SansSerif);
-        QGuiApplication::setFont(font);
-    }
+    QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-Light.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-Regular.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-SemiBold.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-Bold.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-Black.ttf");
 
     ApplicationSettings applicationSettings;
 
@@ -93,17 +89,26 @@ int main(int argc, char **argv)
 
     qDebug() << "Main File:" << applicationSettings.mainFile();
     qDebug() << "Applications Root:" << applicationSettings.appsRoot();
-    qDebug() << "Boot Animation:" << (applicationSettings.isBootAnimationEnabled() ? "yes" : "no");
     qDebug() << "Show FPS:" << (applicationSettings.isShowFPSEnabled() ? "yes" : "no");
 
 
     qmlRegisterType<ApplicationsModel>("com.qtcompany.B2QtLauncher", 1, 0, "LauncherApplicationsModel");
     qmlRegisterType<Engine>("com.qtcompany.B2QtLauncher", 1, 0, "LauncherEngine");
+    qmlRegisterType<CircularIndicator>("Circle", 1, 0, "CircularIndicator");
 
     QQmlApplicationEngine engine;
+    SettingsManager settings;
+    QtImageProvider imageProvider;
+    QtSquareImageProvider squareImageProvider;
+    QtImageMaskProvider imageMaskProvider;
+
+    engine.addImageProvider("QtImage", &imageProvider);
+    engine.addImageProvider("QtSquareImage", &squareImageProvider);
+    engine.addImageProvider("QtImageMask", &imageMaskProvider);
+    engine.rootContext()->setContextProperty("globalSettings", &settings);
     engine.rootContext()->setContextProperty("applicationSettings", &applicationSettings);
     engine.rootContext()->setContextProperty("qpa_platform", qGuiApp->platformName());
     engine.load(applicationSettings.mainFile());
 
-    app.exec();
+    return app.exec();
 }

@@ -34,7 +34,6 @@ ApplicationSettings::ApplicationSettings(QObject *parent)
     : QObject(parent)
     , m_mainFile(QUrl(QStringLiteral("qrc:///qml/Main.qml")))
     , m_appsRoot("/data/user/qt")
-    , m_isBootAnimationEnabled(true)
     , m_isShowFPSEnabled(false)
 {
 }
@@ -42,11 +41,6 @@ ApplicationSettings::ApplicationSettings(QObject *parent)
 QString ApplicationSettings::appsRoot() const
 {
     return m_appsRoot;
-}
-
-bool ApplicationSettings::isBootAnimationEnabled() const
-{
-    return m_isBootAnimationEnabled;
 }
 
 bool ApplicationSettings::isShowFPSEnabled() const
@@ -64,8 +58,6 @@ bool ApplicationSettings::parseCommandLineArguments()
         } else if (args.at(i) == QStringLiteral("--applications-root")) {
             ++i;
             m_appsRoot = args.at(i);
-        } else if (args.at(i) == QStringLiteral("--no-boot-animation")) {
-            m_isBootAnimationEnabled = false;
         } else if (args.at(i) == QStringLiteral("--show-fps")) {
             m_isShowFPSEnabled = true;
         } else if (args.at(i) == QStringLiteral("-h")

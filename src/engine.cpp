@@ -42,7 +42,6 @@
 #include <QQuickWindow>
 
 
-#define ENGINE_STATE_BOOTING QStringLiteral("booting")
 #define ENGINE_STATE_RUNNING QStringLiteral("running")
 #define ENGINE_STATE_SETTINGS QStringLiteral("settings")
 
@@ -57,10 +56,9 @@ Engine::Engine(QQuickItem *parent)
     , m_intro_done(false)
     , m_apps_ready(false)
     , m_fps_enabled(false)
-    , m_bootAnimationEnabled(true)
     , m_glAvailable(true)
 {
-    m_state = ENGINE_STATE_BOOTING;
+    m_state = ENGINE_STATE_RUNNING;
 
     QScreen *screen = QGuiApplication::primaryScreen();
     m_screenSize = screen->size();
@@ -117,16 +115,6 @@ void Engine::setState(const QString &state)
     emit stateChanged(m_state);
 }
 
-
-void Engine::setBootAnimationEnabled(bool enabled)
-{
-    if (m_bootAnimationEnabled == enabled)
-        return;
-
-    m_bootAnimationEnabled = enabled;
-    emit bootAnimationEnabledChanged(enabled);
-}
-
 int Engine::titleBarSize() const
 {
     return int(QGuiApplication::primaryScreen()->physicalDotsPerInch() / 2.54f);
@@ -180,7 +168,7 @@ bool Engine::fileExists(const QUrl &fileName)
     return file.exists();
 }
 
-void Engine::launchApplication(const QUrl &path, const QString &mainFile, const QString &name)
+void Engine::launchApplication(const QUrl &path, const QString &mainFile, const QString &name, const QString &desc)
 {
     // only launch apps when in the homescreen...
     if (m_state != QStringLiteral("running"))
@@ -189,9 +177,11 @@ void Engine::launchApplication(const QUrl &path, const QString &mainFile, const 
     m_applicationMain = m_applicationUrl = path;
     m_applicationMain.setPath(path.path() + "/" + mainFile);
     m_applicationName = name;
+    m_applicationDescription = desc;
     emit applicationUrlChanged(m_applicationUrl);
     emit applicationMainChanged(m_applicationMain);
     emit applicationNameChanged(m_applicationName);
+    emit applicationDescriptionChanged(m_applicationName);
     setState(ENGINE_STATE_APPLAUNCHING);
 }
 
@@ -201,9 +191,11 @@ void Engine::closeApplication()
 
     m_applicationMain = m_applicationUrl = QUrl();
     m_applicationName = QString();
+    m_applicationDescription = QString();
     emit applicationUrlChanged(m_applicationUrl);
     emit applicationMainChanged(m_applicationMain);
     emit applicationNameChanged(m_applicationName);
+    emit applicationDescriptionChanged(m_applicationName);
 
     setState(ENGINE_STATE_RUNNING);
 }

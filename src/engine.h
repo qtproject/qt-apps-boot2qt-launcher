@@ -45,11 +45,10 @@ class Engine : public QQuickItem
 
     Q_PROPERTY(QString state READ state WRITE setState NOTIFY stateChanged)
 
-    Q_PROPERTY(bool bootAnimationEnabled READ isBootAnimationEnabled WRITE setBootAnimationEnabled NOTIFY bootAnimationEnabledChanged)
-
     Q_PROPERTY(QUrl applicationMain READ applicationMain NOTIFY applicationMainChanged)
     Q_PROPERTY(QUrl applicationUrl READ applicationUrl NOTIFY applicationUrlChanged)
     Q_PROPERTY(QString applicationName READ applicationName NOTIFY applicationNameChanged)
+    Q_PROPERTY(QString applicationDescription READ applicationDescription NOTIFY applicationDescriptionChanged)
 
     Q_PROPERTY(bool fpsEnabled READ isFpsEnabled WRITE setFpsEnabled NOTIFY fpsEnabledChanged)
     Q_PROPERTY(qreal fps READ fps NOTIFY fpsChanged)
@@ -69,14 +68,12 @@ public:
 
     qreal fps() const { return m_fps; }
 
-    bool isBootAnimationEnabled() const { return m_bootAnimationEnabled; }
-    void setBootAnimationEnabled(bool enabled);
-
     QString qtVersion() const { return QT_VERSION_STR; }
 
     QUrl applicationUrl() const { return m_applicationUrl; }
     QUrl applicationMain() const { return m_applicationMain; }
     QString applicationName() const { return m_applicationName; }
+    QString applicationDescription() const { return m_applicationDescription; }
 
     Q_INVOKABLE QUrl fromUserInput(const QString& userInput) { return QUrl::fromUserInput(userInput); }
     Q_INVOKABLE int sensibleButtonSize() const;
@@ -98,7 +95,7 @@ signals:
     void applicationUrlChanged(const QUrl &applicationUrl);
     void applicationMainChanged(const QUrl &applicationMain);
     void applicationNameChanged(const QString &applicationName);
-    void bootAnimationEnabledChanged(bool enabled);
+    void applicationDescriptionChanged(const QString &applicationName);
     void fpsChanged(qreal fps);
     void fpsEnabledChanged(bool enabled);
     void glAvailableChanged(bool available);
@@ -107,7 +104,7 @@ public slots:
     void markApplicationsModelReady() { m_apps_ready = true; updateReadyness(); }
     void markIntroAnimationDone() { m_intro_done = true; updateReadyness(); }
 
-    void launchApplication(const QUrl &location, const QString &mainFile, const QString &name);
+    void launchApplication(const QUrl &location, const QString &mainFile, const QString &name, const QString &desc);
     void closeApplication();
 
     void setFps(qreal fps);
@@ -126,6 +123,7 @@ private:
     QUrl m_applicationUrl;
     QUrl m_applicationMain;
     QString m_applicationName;
+    QString m_applicationDescription;
 
     QSize m_screenSize;
     qreal m_dpcm;
@@ -137,7 +135,6 @@ private:
     uint m_intro_done : 1;
     uint m_apps_ready : 1;
     uint m_fps_enabled : 1;
-    uint m_bootAnimationEnabled : 1;
     bool m_glAvailable;
 };
 

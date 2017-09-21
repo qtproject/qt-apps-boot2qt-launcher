@@ -27,47 +27,47 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtQuick.Controls 2.1
 
 Item {
-    id: gridroot
-    anchors.fill: parent
+    id: itt
+    property alias sourceSelected: img.source
+    property alias sourceDisabled: img2.source
+    property alias text: tt.text
+    property bool selected
 
-    GridView {
-        id: grid
+    signal clicked()
+
+    Image {
+        id: img
+        width: parent.width
+        height: width
+        sourceSize: Qt.size(width, height)
+        visible: selected
+    }
+
+    Image {
+        id: img2
+        width: parent.width
+        height: width
+        sourceSize: Qt.size(width, height)
+        visible: !selected
+    }
+
+    Text {
+        id: tt
+        width: parent.width
+        height: parent.height * 0.3
+        anchors.top: img.bottom
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignTop
+        fontSizeMode: Text.Fit
+        minimumPixelSize: 1
+        font.pixelSize: height
+        color: selected ? "white" : "#848895"
+        font.family: appFont
+    }
+    MouseArea {
         anchors.fill: parent
-        anchors.margins: viewSettings.pageMargin * 0.5
-        anchors.topMargin: viewSettings.pageMargin
-
-        cellWidth: width / 3
-        cellHeight: cellWidth
-        clip: true
-        model: applicationsModel;
-
-        delegate: GridViewIcon {
-            id: iconRoot2;
-            height: grid.cellHeight
-            width: grid.cellWidth
-            onClicked: root.launchApplication(sLocation, sMainFile, sName, sDescription)
-        }
-        ScrollBar.vertical: ScrollBar {
-            parent: gridroot
-            anchors.top: grid.top
-            anchors.bottom: grid.bottom
-            anchors.right: parent.right
-            anchors.rightMargin: viewSettings.pageMargin * 0.25
-            anchors.topMargin: viewSettings.pageMargin * 0.5
-            width: viewSettings.pageMargin * 0.5
-            size: 0.3
-            position: 0.2
-            active: true
-            orientation: Qt.Vertical
-
-            contentItem: Rectangle {
-                implicitWidth: viewSettings.pageMargin * 0.25
-                implicitHeight: root.height * 0.1
-                color: "#41cd52"
-            }
-        }
+        onClicked: itt.clicked()
     }
 }

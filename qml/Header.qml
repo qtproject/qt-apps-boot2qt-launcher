@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of Qt for Device Creation.
@@ -27,66 +27,35 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtQuick.Particles 2.0
 
 Item {
-    id: root
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.margins: viewSettings.pageMargin
+    height: viewSettings.headerHeight
 
-    width: image.width
-    height: image.height
+    signal menuClicked()
 
     Image {
-        id: image
+        anchors.left: parent.left
+        anchors.top: parent.top
+        source: "icons/settingsmenu_launcher_icon.svg"
+        height: parent.height * 0.7
+        width: height / sourceSize.height * sourceSize.width
 
-        width: engine.centimeter() * 1.2;
-        height: width * sourceSize.height / sourceSize.width;
-
-        source: "images/qt-logo.png"
-        visible: !engine.glAvailable
-        layer.enabled: true
-    }
-
-    HighlightShader {
-        source: image
-        running: engine.glAvailable
-        interval: 10000
-        anchors.fill: image;
-    }
-
-    ParticleSystem {
-        id: starSystem;
-
-        anchors.fill: image
-        running: visible && engine.glAvailable
-
-        ImageParticle {
-            id: starParticle
-            source: "images/particle_star2.png"
-            color: "#ffffff"
-            alpha: 0
-            colorVariation: 0
-        }
-
-        Emitter {
-            id: starEmitter
+        MouseArea {
             anchors.fill: parent
-            lifeSpan: 2000
-            emitRate: 3
-            size: 20
-            sizeVariation: 4
-            enabled: visible && engine.glAvailable
-
-            velocity: PointDirection { xVariation: 0; yVariation: 0; }
-            acceleration: PointDirection {
-                id: starAccel
-                y: -10
-                xVariation: 5
-                yVariation: 5
-            }
-
-            shape: MaskShape {
-                source: "images/qt-logo-white-mask.png"
-            }
+            anchors.margins: -parent.height*0.2
+            onClicked: menuClicked()
         }
+    }
+
+    Image {
+        anchors.right: parent.right
+        anchors.top: parent.top
+        source: "icons/qt_logo_green_rgb.svg"
+        height: parent.height
+        width: height / sourceSize.height * sourceSize.width
     }
 }

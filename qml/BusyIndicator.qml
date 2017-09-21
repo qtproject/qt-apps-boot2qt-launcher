@@ -27,18 +27,48 @@
 **
 ****************************************************************************/
 import QtQuick 2.4
+import Circle 1.0
 
-Image {
+CircularIndicator {
+    id: circularIndicator
+    //anchors.fill: parent
     height: width
-    source: "images/spinner.png"
-    sourceSize.width: Math.min(127, width)
-    sourceSize.height: Math.min(127, height)
+    startAngle: 0 //speedometer.minValueAngle
+    endAngle: 360  //speedometer.maxValueAngle
+    minimumValue: 0
+    maximumValue: 360//speedometer.maximumValue
+    value: 180//speedometer.value
+    padding: 23
+    backgroundColor: "#848895"
+    progressColor: "#41cd52"
+    lineWidth: width * 0.1
 
-    RotationAnimator on rotation {
-        duration: 800
+
+    SequentialAnimation {
+        running: true
         loops: Animation.Infinite
+        NumberAnimation {
+            target: circularIndicator
+            property: "value"
+            from: 0
+            to: 360
+            duration: 1000
+        }
+        NumberAnimation {
+            target: circularIndicator
+            property: "startAngle"
+            from: 0
+            to: 360
+            duration: 1000
+        }
+        ScriptAction {
+            script: circularIndicator.startAngle = 0
+        }
+    }
+    RotationAnimator on rotation{
+        loops: Animation.Infinite
+        duration: 5000
         from: 0
         to: 360
-        running: visible
     }
 }

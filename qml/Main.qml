@@ -28,18 +28,72 @@
 ****************************************************************************/
 import QtQuick 2.4
 import QtQuick.Window 2.2
-import QtQuick.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.1
+import QtDeviceUtilities.SettingsUI 1.0
 import com.qtcompany.B2QtLauncher 1.0
 
 Window {
     id: window
 
     visible: true
-    width: qpa_platform == "wayland" ? 800 : Screen.desktopAvailableWidth
-    height: qpa_platform == "wayland" ? 600 : Screen.desktopAvailableHeight
+    //width: qpa_platform === "wayland" ? 800 : Screen.desktopAvailableWidth
+    //height: qpa_platform === "wayland" ? 600 : Screen.desktopAvailableHeight
+    width: 800
+    height: 600
 
     color: "white"
-    property color qtgreen: '#80c342'
+    property alias appFont: viewSettings.appFont
+
+    ViewSettings {
+        id: viewSettings
+    }
+
+    Component {
+        id: emptyComponent
+        Item {
+            objectName: "empty"
+        }
+    }
+
+    Component {
+        id: gridComponent
+        LaunchScreen {
+            id: launchScreen
+        }
+    }
+
+    Component {
+        id: detailComponent
+        DetailView {
+            id: detailView
+        }
+    }
+
+    Component {
+        id: settingsUIComponent
+        SettingsUI {
+            id: settingsUI
+            objectName: "settingsView"
+            anchors.fill: parent
+            model: "settings.xml"
+            margin: viewSettings.pageMargin
+            onClosed: root.closeApplication()
+        }
+    }
+
+    LauncherApplicationsModel {
+        id: applicationsModel
+        onReady: engine.markApplicationsModelReady();
+        Component.onCompleted: {
+            //Set the directory to parse for apps
+            initialize(applicationSettings.appsRoot);
+        }
+    }
+
+    LauncherEngine {
+        id: engine
+        fpsEnabled: applicationSettings.isShowFPSEnabled
+    }
 
     Item {
         id: root
@@ -49,130 +103,112 @@ Window {
         width: portraitMode ? window.height : window.width
         height: portraitMode ? window.width : window.height
 
-        property int stateDelay: 400;
-        property int bootDelay: 1000;
-
-        LauncherApplicationsModel {
-            id: applicationsModel
-            onReady: {
-                engine.markApplicationsModelReady();
-            }
-            Component.onCompleted: {
-                //Set the directory to parse for apps
-                initialize(applicationSettings.appsRoot);
-            }
+        function closeApplication()
+        {
+            engine.closeApplication()
+            applicationLoader.setSource("")
+            applicationLoader.sourceComponent = emptyComponent
         }
 
-        LauncherEngine {
-            id: engine
-            bootAnimationEnabled: applicationSettings.isBootAnimationEnabled
-            fpsEnabled: applicationSettings.isShowFPSEnabled
+        function launchApplication(loc, mainFile, name, desc)
+        {
+            engine.launchApplication(loc, mainFile, name, desc)
+            applicationLoader.source = engine.applicationMain
+        }
+
+        function launchSettings()
+        {
+            engine.state = "app-launching"
+            applicationLoader.sourceComponent = settingsUIComponent
+        }
+
+        Background {}
+
+        Header {
+            id: header
+            onMenuClicked: root.launchSettings()
+        }
+
+        Loader {
+            id: contentLoader
+            anchors.fill: parent
+            anchors.topMargin: header.height + viewSettings.pageMargin
+            sourceComponent: globalSettings.gridSelected ? gridComponent : detailComponent
+            enabled: engine.state != "settings"
         }
 
         states: [
             State {
-                name: "booting"
-                PropertyChanges { target: appGrid; opacity: 0 }
-                PropertyChanges { target: splashScreen; opacity: 0 }
-                PropertyChanges { target: url; opacity: 0 }
-            },
-            State {
                 name: "running"
-                PropertyChanges { target: appGrid; opacity: 1 }
-                PropertyChanges { target: applicationLoader; opacity: 0 }
-                PropertyChanges { target: splashScreen; opacity: 0 }
+                PropertyChanges { target: applicationLoader; opacity: 0; }
+                PropertyChanges { target: contentLoader; opacity: 1 }
+                PropertyChanges { target: header; opacity: 1 }
+                PropertyChanges { target: bootScreenLoader; opacity: 0 }
             },
             State {
                 name: "app-launching"
-                PropertyChanges { target: appGrid; opacity: 0 }
-                PropertyChanges { target: splashScreen; opacity: 1 }
+                PropertyChanges { target: header; opacity: 0 }
+                PropertyChanges { target: bootScreenLoader; opacity: 1 }
             },
             State {
                 name: "app-running"
                 PropertyChanges { target: applicationLoader; opacity: 1 }
-                PropertyChanges { target: appGrid; opacity: 0 }
-                PropertyChanges { target: splashScreen; opacity: 0 }
-                PropertyChanges { target: url; opacity: 0 }
+                PropertyChanges { target: contentLoader; opacity: 0 }
+                PropertyChanges { target: header; opacity: 0 }
+                PropertyChanges { target: bootScreenLoader; opacity: 0 }
+            },
+            State {
+                name: "settings"
+                PropertyChanges { target: applicationLoader; opacity: 1 }
+                PropertyChanges { target: contentLoader; opacity: 1 }
+                PropertyChanges { target: header; opacity: 0 }
+                PropertyChanges { target: bootScreenLoader; opacity: 0 }
             },
             State {
                 name: "app-closing"
-                PropertyChanges { target: applicationLoader; opacity: 0 }
-                PropertyChanges { target: appGrid; opacity: 0 }
-                PropertyChanges { target: splashScreen; opacity: 0 }
+                PropertyChanges { target: applicationLoader; opacity: 0; source: "" }
+                PropertyChanges { target: contentLoader; opacity: 0 }
+                PropertyChanges { target: header; opacity: 0 }
+                PropertyChanges { target: bootScreenLoader; opacity: 0 }
             }
-        ]
-
-        transitions: [
-            Transition {
-                from: "booting"
-                to: "running"
-                SequentialAnimation {
-                    ParallelAnimation {
-                        NumberAnimation { target: appGrid; property: "opacity"; duration: root.bootDelay; easing.type: Easing.InOutQuad }
-                    }
-
-                    ScriptAction { script: bootScreenLoader.sourceComponent = undefined }
-                }
-            },
-            Transition {
-                NumberAnimation { property: "opacity"; duration: root.stateDelay }
-            },
-            Transition {
-                from: "running"
-                to: "app-launching"
-                SequentialAnimation {
-                    NumberAnimation { property: "opacity"; duration: root.stateDelay }
-                    PauseAnimation { duration: 500 }
-                    ScriptAction { script: {
-                            applicationLoader.source = engine.applicationMain;
-                        }
-                    }
-                }
-            },
-            Transition {
-                from: "app-launching"
-                to: "running"
-                SequentialAnimation {
-                    NumberAnimation { target: appGrid; property: "opacity"; duration: root.stateDelay }
-                    ScriptAction { script: {
-                            engine.closeApplication();
-                            applicationLoader.source = "";
-                        }
-                    }
-                }
-            },
-            Transition {
-                from: "app-launching"
-                to: "app-running"
-                NumberAnimation { property: "opacity"; duration: root.stateDelay }
-            },
-            Transition {
-                from: "app-running"
-                to: "app-closing"
-                SequentialAnimation {
-                    ParallelAnimation {
-                        NumberAnimation { target: appGrid; property: "opacity"; duration: root.stateDelay }
-                        NumberAnimation { target: applicationLoader; property: "opacity"; duration: root.stateDelay }
-                        NumberAnimation { target: applicationCloseButton; property: "opacity"; duration: root.stateDelay}
-                    }
-                    NumberAnimation { target: applicationLoader; property: "opacity"; duration: root.stateDelay }
-                    ScriptAction { script: {
-                            engine.closeApplication();
-                            applicationLoader.source = "";
-                        }
-                    }
-                }
-            }
-
         ]
 
         state: engine.state
-    //    onStateChanged: print("---state: " + engine.state);
 
-        LaunchScreen {
-            id: appGrid
-            visible: opacity > 0
-            anchors.fill: parent
+        Timer {
+            id: failedAppLaunchTrigger;
+            interval: viewSettings.stateDelay;
+            running: false
+            repeat: false
+            onTriggered: root.closeApplication()
+        }
+
+        Loader {
+            id: applicationLoader
+            opacity: 0;
+            visible: opacity > 0.1
+
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: inputPanel.top
+            asynchronous: true;
+            onStatusChanged: {
+                if (status == Loader.Error)
+                    failedAppLaunchTrigger.start();
+            }
+            onLoaded: {
+                if (applicationLoader.item.objectName == "settingsView")
+                    engine.state = "settings"
+                else if (applicationLoader.item.objectName !== "empty")
+                    engine.state = "app-running";
+            }
+
+            DemoHeader {
+                id: demoHeader
+                onInfoClicked: demoInfoPopup.open()
+                onCloseClicked: demoClosePopup.open()
+            }
         }
 
         Loader {
@@ -182,79 +218,14 @@ Window {
             sourceComponent: BootScreen {}
         }
 
-        Timer {
-            id: failedAppLaunchTrigger;
-            interval: 500;
-            running: false
-            repeat: false
-            onTriggered: {
-                engine.closeApplication()
-            }
+        DemoClosePopup {
+            id: demoClosePopup
+            visible: false
         }
 
-        Loader {
-            id: applicationLoader
-            opacity: 0;
-            visible: opacity > 0
-
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: inputPanel.top
-            asynchronous: false;
-
-            onStatusChanged: {
-    //            switch (status) {
-    //            case Loader.Null: print("applicationLoader status: Null"); break;
-    //            case Loader.Ready: print("applicationLoader status: Ready"); break;
-    //            case Loader.Error: print("applicationLoader status: Error"); break;
-    //            case Loader.Loading: print("applicationLoader status: Loading"); break;
-    //            default: print("applicationLoader: unknown status: " + status); break;
-    //            }
-                if (status == Loader.Error) {
-    //                print("applicationLoader: app failed, reverting to 'running' state");
-                    failedAppLaunchTrigger.running = true;
-                }
-
-            }
-
-            onLoaded: {
-                engine.state = "app-running";
-            }
-
-            Image {
-                id: applicationCloseButton
-                source: "images/close-button.png"
-                anchors.horizontalCenter: parent.horizontalCenter
-                enabled: engine.state == "app-running"
-                y: -height * .6
-                z: 1
-
-                Behavior on y { NumberAnimation { duration: 100 } }
-
-                MouseArea {
-                    anchors.fill: parent
-                    anchors.bottomMargin: applicationCloseButton.y < -applicationCloseButton.height / 2 ? 0 : -parent.height * .5
-                    drag.target: applicationCloseButton
-                    drag.axis: Drag.YAxis
-                    drag.minimumX: -applicationCloseButton.height * .6
-                    drag.maximumY: 0
-
-                    onClicked: {
-                        if (applicationCloseButton.y < -applicationCloseButton.height / 2) {
-                            applicationCloseButton.y = 0
-                            return;
-                        }
-
-                        engine.state = "app-closing"
-                        applicationCloseButton.y = -applicationCloseButton.height * .6
-                    }
-
-                    onReleased: applicationCloseButton.y = applicationCloseButton.y > -applicationCloseButton.height / 5 ?
-                                    0 :
-                                    -applicationCloseButton.height * .6
-                }
-            }
+        DemoInfoPopup {
+            id: demoInfoPopup
+            visible: false
         }
 
         /*  Handwriting input panel for full screen handwriting input.
@@ -346,38 +317,6 @@ Window {
         }
 
         Item {
-            id: splashScreen
-            visible: opacity > 0
-            anchors.fill: parent
-
-            BusyIndicator {
-                id: busyIndicator
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: splashLabel.top
-                anchors.bottomMargin: height * .5
-                width: parent.width * .1
-            }
-
-            Text {
-                id: splashLabel
-                color: "black"
-                text: qsTr("Loading %1...").arg(engine.applicationName)
-                anchors.bottom: codeLessImage.top
-                anchors.bottomMargin: font.pixelSize
-                anchors.horizontalCenter: parent.horizontalCenter
-                font.pixelSize: engine.fontSize() * 1.2
-            }
-
-            Image {
-                id: codeLessImage
-                source: "images/codeless.png"
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom;
-                anchors.margins: parent.height * 0.1;
-            }
-        }
-
-        Item {
             id: fps
             opacity: engine.fpsEnabled ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 500 } }
@@ -398,52 +337,6 @@ Window {
                 color: "white"
                 text: "FPS: " + engine.fps
                 font.pixelSize: engine.sensibleButtonSize() * 0.2
-            }
-        }
-
-        Item {
-            id: url
-            anchors.bottom: parent.bottom;
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: 20
-            GlimmeringQtLogo {
-                id: logo
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-            }
-
-            Text {
-                id: urlLabel;
-                anchors.bottom: parent.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "Visit Qt.io/qt-for-device-creation"
-                color: qtgreen
-                font.pixelSize: engine.sensibleButtonSize() * 0.2
-            }
-            Image{
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                source:"images/settings.png"
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        //Find launchersettings application from appsRoots
-                        //There can be several roots which are split with ':'
-                        var fileArray = applicationSettings.appsRoot.split(":")
-                        for ( var i = 0; i < fileArray.length; i++ ) {
-                            var file = fileArray[i]
-                            var prepend = "file://"
-                            file = prepend.concat(file)
-                            file += "/launchersettings"
-
-                            if (engine.fileExists(file + "/main.qml")) {
-                                engine.launchApplication(file, "main.qml", "Launcher Settings")
-                                break
-                            }
-                        }
-                    }
-                }
             }
         }
     }

@@ -26,48 +26,38 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtQuick.Controls 2.1
+#ifndef SETTINGSMANAGER_H
+#define SETTINGSMANAGER_H
 
-Item {
-    id: gridroot
-    anchors.fill: parent
+#include <QObject>
+#include <QSettings>
 
-    GridView {
-        id: grid
-        anchors.fill: parent
-        anchors.margins: viewSettings.pageMargin * 0.5
-        anchors.topMargin: viewSettings.pageMargin
+class SettingsManager : public QObject
+{
+    Q_OBJECT
+public:
+    explicit SettingsManager(QObject *parent = 0);
+    ~SettingsManager();
 
-        cellWidth: width / 3
-        cellHeight: cellWidth
-        clip: true
-        model: applicationsModel;
+    Q_INVOKABLE QVariant getValue(const QString& key, const QVariant &defaultValue);
+    Q_INVOKABLE void setValue(const QString& key, const QVariant &value);
 
-        delegate: GridViewIcon {
-            id: iconRoot2;
-            height: grid.cellHeight
-            width: grid.cellWidth
-            onClicked: root.launchApplication(sLocation, sMainFile, sName, sDescription)
-        }
-        ScrollBar.vertical: ScrollBar {
-            parent: gridroot
-            anchors.top: grid.top
-            anchors.bottom: grid.bottom
-            anchors.right: parent.right
-            anchors.rightMargin: viewSettings.pageMargin * 0.25
-            anchors.topMargin: viewSettings.pageMargin * 0.5
-            width: viewSettings.pageMargin * 0.5
-            size: 0.3
-            position: 0.2
-            active: true
-            orientation: Qt.Vertical
+    Q_PROPERTY(bool gridSelected READ gridSelected WRITE setGridSelected NOTIFY gridSelectedChanged)
 
-            contentItem: Rectangle {
-                implicitWidth: viewSettings.pageMargin * 0.25
-                implicitHeight: root.height * 0.1
-                color: "#41cd52"
-            }
-        }
-    }
-}
+    bool gridSelected();
+    void setGridSelected(bool enabled);
+
+    Q_PROPERTY (bool mouseSelected READ mouseSelected WRITE setMouseSelected NOTIFY mouseSelectedChanged)
+
+    bool mouseSelected();
+    void setMouseSelected(bool enabled);
+
+signals:
+    void gridSelectedChanged(bool enabled);
+    void mouseSelectedChanged(bool enabled);
+
+private:
+    QSettings m_settings;
+};
+
+#endif // SETTINGSMANAGER_H

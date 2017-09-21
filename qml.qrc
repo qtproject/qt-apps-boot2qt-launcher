@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/Main.qml</file>
+        <file>qml/ApplicationIcon.qml</file>
+        <file>qml/BootScreen.qml</file>
+        <file>qml/LaunchScreen.qml</file>
+        <file>qml/HighlightShader.qml</file>
+        <file>qml/AutoScroller.qml</file>
+        <file>qml/HandwritingModeButton.qml</file>
+        <file>qml/Background.qml</file>
+        <file>qml/Header.qml</file>
+        <file>qml/ViewSettings.qml</file>
+        <file>qml/DetailView.qml</file>
+        <file>qml/GridViewIcon.qml</file>
+        <file>qml/DetailViewIcon.qml</file>
+        <file>qml/DemoHeader.qml</file>
+        <file>qml/DemoClosePopup.qml</file>
+        <file>qml/DemoInfoPopup.qml</file>
+        <file>qml/AboutQt.qml</file>
+        <file>qml/LayoutSettings.qml</file>
+        <file>qml/settings.xml</file>
+        <file>qml/ImageTextDelegate.qml</file>
+        <file>qml/BusyIndicator.qml</file>
+    </qresource>
+</RCC>

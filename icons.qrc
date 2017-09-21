@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/icons/close_icon.svg</file>
+        <file>qml/icons/detail_icon.svg</file>
+        <file>qml/icons/grid_icon.svg</file>
+        <file>qml/icons/info_icon.svg</file>
+        <file>qml/icons/settingsmenu_launcher_icon.svg</file>
+        <file>qml/icons/qt_logo_green_rgb.svg</file>
+        <file>qml/icons/header_toggle_icon.svg</file>
+        <file>qml/icons/spinner.png</file>
+        <file>qml/icons/FloatingButton_Active.svg</file>
+        <file>qml/icons/FloatingButton_Available.svg</file>
+        <file>qml/icons/FloatingButton_Unavailable.svg</file>
+        <file>qml/icons/Built_with_Qt_RGB_logo_white.svg</file>
+        <file>qml/icons/mouse_icon.svg</file>
+        <file>qml/icons/touch_icon.svg</file>
+        <file>qml/icons/mouse_icon_disabled.svg</file>
+        <file>qml/icons/detail_icon_disabled.svg</file>
+        <file>qml/icons/touch_icon_disabled.svg</file>
+        <file>qml/icons/grid_icon_disabled.svg</file>
+    </qresource>
+</RCC>

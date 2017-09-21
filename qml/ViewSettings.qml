@@ -27,47 +27,15 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtQuick.Controls 2.1
 
 Item {
-    id: gridroot
-    anchors.fill: parent
+    id: viewSettings
 
-    GridView {
-        id: grid
-        anchors.fill: parent
-        anchors.margins: viewSettings.pageMargin * 0.5
-        anchors.topMargin: viewSettings.pageMargin
-
-        cellWidth: width / 3
-        cellHeight: cellWidth
-        clip: true
-        model: applicationsModel;
-
-        delegate: GridViewIcon {
-            id: iconRoot2;
-            height: grid.cellHeight
-            width: grid.cellWidth
-            onClicked: root.launchApplication(sLocation, sMainFile, sName, sDescription)
-        }
-        ScrollBar.vertical: ScrollBar {
-            parent: gridroot
-            anchors.top: grid.top
-            anchors.bottom: grid.bottom
-            anchors.right: parent.right
-            anchors.rightMargin: viewSettings.pageMargin * 0.25
-            anchors.topMargin: viewSettings.pageMargin * 0.5
-            width: viewSettings.pageMargin * 0.5
-            size: 0.3
-            position: 0.2
-            active: true
-            orientation: Qt.Vertical
-
-            contentItem: Rectangle {
-                implicitWidth: viewSettings.pageMargin * 0.25
-                implicitHeight: root.height * 0.1
-                color: "#41cd52"
-            }
-        }
-    }
+    property real pageMargin: 0.03 * Math.min(window.width, window.height)
+    property real headerHeight: 3 * pageMargin
+    property real demoHeaderHeight: 2.5 * pageMargin
+    property string appFont: "TitilliumWeb"
+    property int stateDelay: 200;
+    property string buttonGreenColor: "#41cd52"
+    property string buttonGrayColor: "#9d9faa"
 }

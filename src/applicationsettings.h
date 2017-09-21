@@ -38,30 +38,24 @@ class ApplicationSettings : public QObject
     Q_OBJECT
     Q_PROPERTY(QUrl mainFile READ mainFile NOTIFY mainFileChanged)
     Q_PROPERTY(QString appsRoot READ appsRoot NOTIFY appsRootChanged)
-    Q_PROPERTY(bool isBootAnimationEnabled READ isBootAnimationEnabled NOTIFY isBootAnimationEnabledChanged)
     Q_PROPERTY(bool isShowFPSEnabled READ isShowFPSEnabled NOTIFY isShowFPSEnabledChanged)
 public:
     explicit ApplicationSettings(QObject *parent = 0);
 
     QUrl mainFile() const;
     QString appsRoot() const;
-    bool isBootAnimationEnabled() const;
     bool isShowFPSEnabled() const;
 
     bool parseCommandLineArguments();
 
-
-
 signals:
     void mainFileChanged(QUrl newFile);
     void appsRootChanged(QString appRoot);
-    void isBootAnimationEnabledChanged(bool isEnabled);
     void isShowFPSEnabledChanged(bool isEnabled);
 
 private:
     QUrl m_mainFile;
     QString m_appsRoot;
-    bool m_isBootAnimationEnabled;
     bool m_isShowFPSEnabled;
 
 };

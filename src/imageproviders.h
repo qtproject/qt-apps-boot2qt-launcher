@@ -26,48 +26,30 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtQuick.Controls 2.1
+#ifndef IMAGEPROVIDERS_H
+#define IMAGEPROVIDERS_H
 
-Item {
-    id: gridroot
-    anchors.fill: parent
+#include <QQuickImageProvider>
 
-    GridView {
-        id: grid
-        anchors.fill: parent
-        anchors.margins: viewSettings.pageMargin * 0.5
-        anchors.topMargin: viewSettings.pageMargin
 
-        cellWidth: width / 3
-        cellHeight: cellWidth
-        clip: true
-        model: applicationsModel;
+class QtImageProvider : public QQuickImageProvider
+{
+public:
+    QtImageProvider();
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+};
 
-        delegate: GridViewIcon {
-            id: iconRoot2;
-            height: grid.cellHeight
-            width: grid.cellWidth
-            onClicked: root.launchApplication(sLocation, sMainFile, sName, sDescription)
-        }
-        ScrollBar.vertical: ScrollBar {
-            parent: gridroot
-            anchors.top: grid.top
-            anchors.bottom: grid.bottom
-            anchors.right: parent.right
-            anchors.rightMargin: viewSettings.pageMargin * 0.25
-            anchors.topMargin: viewSettings.pageMargin * 0.5
-            width: viewSettings.pageMargin * 0.5
-            size: 0.3
-            position: 0.2
-            active: true
-            orientation: Qt.Vertical
+class QtSquareImageProvider : public QQuickImageProvider
+{
+public:
+    QtSquareImageProvider();
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+};
 
-            contentItem: Rectangle {
-                implicitWidth: viewSettings.pageMargin * 0.25
-                implicitHeight: root.height * 0.1
-                color: "#41cd52"
-            }
-        }
-    }
-}
+class QtImageMaskProvider : public QQuickImageProvider
+{
+public:
+    QtImageMaskProvider();
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+};
+#endif // IMAGEPROVIDERS_H

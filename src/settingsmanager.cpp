@@ -26,48 +26,55 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtQuick.Controls 2.1
+#include "settingsmanager.h"
 
-Item {
-    id: gridroot
-    anchors.fill: parent
+SettingsManager::SettingsManager(QObject *parent) :
+    QObject(parent),
+    m_settings("The Qt Company", "Qt Demo Launcher")
+{
+}
 
-    GridView {
-        id: grid
-        anchors.fill: parent
-        anchors.margins: viewSettings.pageMargin * 0.5
-        anchors.topMargin: viewSettings.pageMargin
+SettingsManager::~SettingsManager()
+{
+    m_settings.sync();
+}
 
-        cellWidth: width / 3
-        cellHeight: cellWidth
-        clip: true
-        model: applicationsModel;
+QVariant SettingsManager::getValue(const QString &key, const QVariant &defaultValue)
+{
+    return m_settings.value(key, defaultValue);
+}
 
-        delegate: GridViewIcon {
-            id: iconRoot2;
-            height: grid.cellHeight
-            width: grid.cellWidth
-            onClicked: root.launchApplication(sLocation, sMainFile, sName, sDescription)
-        }
-        ScrollBar.vertical: ScrollBar {
-            parent: gridroot
-            anchors.top: grid.top
-            anchors.bottom: grid.bottom
-            anchors.right: parent.right
-            anchors.rightMargin: viewSettings.pageMargin * 0.25
-            anchors.topMargin: viewSettings.pageMargin * 0.5
-            width: viewSettings.pageMargin * 0.5
-            size: 0.3
-            position: 0.2
-            active: true
-            orientation: Qt.Vertical
+void SettingsManager::setValue(const QString &key, const QVariant &value)
+{
+    m_settings.setValue(key, value);
+    m_settings.sync();
+}
 
-            contentItem: Rectangle {
-                implicitWidth: viewSettings.pageMargin * 0.25
-                implicitHeight: root.height * 0.1
-                color: "#41cd52"
-            }
-        }
-    }
+
+bool SettingsManager::gridSelected()
+{
+    return getValue("gridSelected", false).toBool();
+}
+
+void SettingsManager::setGridSelected(bool enabled)
+{
+    if (gridSelected() == enabled)
+        return;
+
+    setValue("gridSelected", enabled);
+    emit gridSelectedChanged(enabled);
+}
+
+bool SettingsManager::mouseSelected()
+{
+    return getValue("mouseSelected", false).toBool();
+}
+
+void SettingsManager::setMouseSelected(bool enabled)
+{
+    if (mouseSelected() == enabled)
+        return;
+
+    setValue("mouseSelected", enabled);
+    emit mouseSelectedChanged(enabled);
 }

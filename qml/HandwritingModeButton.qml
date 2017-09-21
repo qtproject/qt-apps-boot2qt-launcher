@@ -48,7 +48,7 @@ Item {
             sourceSize.width: handwritingModeButton.__minWidthHeight
             sourceSize.height: handwritingModeButton.__minWidthHeight
             smooth: false
-            source: "qrc:/qml/images/FloatingButton_Unavailable.svg"
+            source: "qrc:/qml/icons/FloatingButton_Unavailable.svg"
         }
 
         back: Image {
@@ -56,7 +56,7 @@ Item {
             sourceSize.width: handwritingModeButton.__minWidthHeight
             sourceSize.height: handwritingModeButton.__minWidthHeight
             smooth: false
-            source: "qrc:/qml/images/FloatingButton_Available.svg"
+            source: "qrc:/qml/icons/FloatingButton_Available.svg"
         }
 
         states: State {
@@ -86,7 +86,7 @@ Item {
         State {
             name: "active"
             PropertyChanges { target: flipableImage; flipped: true }
-            PropertyChanges { target: buttonImage; source: "qrc:/qml/images/FloatingButton_Active.svg" }
+            PropertyChanges { target: buttonImage; source: "qrc:/qml/icons/FloatingButton_Active.svg" }
         }
     ]
 

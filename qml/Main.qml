@@ -188,10 +188,7 @@ Window {
             opacity: 0;
             visible: opacity > 0.1
 
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: inputPanel.top
+            anchors.fill: parent
             asynchronous: true;
             onStatusChanged: {
                 if (status == Loader.Error)

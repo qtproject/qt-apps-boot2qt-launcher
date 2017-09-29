@@ -54,11 +54,10 @@ Item {
         spacing: root.margin * 0.2
 
         Text {
-            font.pixelSize: root.height * 0.04
             color: "white"
             text: qsTr("Layout")
+            font.pixelSize: pluginMain.subTitleFontSize
             font.family: appFont
-            font.styleName: "Bold"
         }
 
         Row {
@@ -92,11 +91,10 @@ Item {
         }
 
         Text {
-            font.pixelSize: root.height * 0.04
             color: "white"
             text: qsTr("Input")
+            font.pixelSize: pluginMain.subTitleFontSize
             font.family: appFont
-            font.styleName: "Bold"
         }
 
         Row {

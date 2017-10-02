@@ -50,45 +50,53 @@ Item {
             source: ""
         }
 
-        Column {
-            id: descriptionHolder
+        Flickable {
             anchors.left: parent.left
             anchors.right: largeImg.left
-            anchors.margins: viewSettings.pageMargin * 0.5
-            anchors.rightMargin: viewSettings.pageMargin
-            spacing: viewSettings.pageMargin * 0.5
-
-            Text{
-                id: descriptionTitle
-                font.pixelSize: detailInformation.height * 0.11
-                width: descriptionHolder.width
-                text: "Demo Title"
-                color: "white"
-                font.family: viewSettings.appFont
-                font.styleName: "SemiBold"
-                wrapMode: Text.WordWrap
-            }
-
-            Rectangle {
-                id: btmLine
-                width: parent.width * 0.5
-                height: 2
-            }
-        }
-
-        Text {
-            id: descriptionText
-            anchors.top: descriptionHolder.bottom
+            anchors.top: parent.top
             anchors.bottom: startButton.top
-            anchors.left: parent.left
-            anchors.margins: viewSettings.pageMargin * 0.5
-            font.pixelSize: detailInformation.height * 0.05
-            font.family: viewSettings.appFont
-            width: descriptionHolder.width
-            wrapMode: Text.WordWrap
-            color: "white"
-            elide: Text.ElideRight
+            anchors.bottomMargin: viewSettings.pageMargin * 0.5
+            anchors.rightMargin: viewSettings.pageMargin
+            contentHeight: descriptionHolder.height
+            contentWidth: width
+            clip: true
+
+            Column {
+                id: descriptionHolder
+                width: parent.width
+
+                spacing: viewSettings.pageMargin * 0.5
+
+                Text {
+                    id: descriptionTitle
+                    font.pixelSize: detailInformation.height * 0.11
+                    width: descriptionHolder.width
+                    text: "Demo Title"
+                    color: "white"
+                    font.family: viewSettings.appFont
+                    font.styleName: "SemiBold"
+                    wrapMode: Text.WordWrap
+                }
+
+                Rectangle {
+                    id: btmLine
+                    width: parent.width * 0.5
+                    height: 2
+                }
+
+                Text {
+                    id: descriptionText
+                    anchors.margins: viewSettings.pageMargin * 0.5
+                    font.pixelSize: detailInformation.height * 0.05
+                    font.family: viewSettings.appFont
+                    width: descriptionHolder.width
+                    wrapMode: Text.WordWrap
+                    color: "white"
+                    elide: Text.ElideRight
+                }
+            }
         }
+
         QtButton {
             id: startButton
             height: detailInformation.height * 0.14

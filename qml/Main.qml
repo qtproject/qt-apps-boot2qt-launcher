@@ -126,6 +126,7 @@ Window {
 
         Header {
             id: header
+            enabled: engine.state == "running"
             onMenuClicked: root.launchSettings()
         }
 

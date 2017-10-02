@@ -41,7 +41,8 @@ Item {
         id: preview;
         anchors.fill: parent
         anchors.margins: viewSettings.pageMargin*0.5
-        source: "image://QtSquareImage/" + icon
+        source: highlight ? "image://QtSquareImage/" + icon :
+                            "image://QtSquareImage/gradient/" + icon
         sourceSize: Qt.size(width, height)
 
         Image {

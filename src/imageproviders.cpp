@@ -109,6 +109,7 @@ QPixmap QtSquareImageProvider::requestPixmap(const QString &id, QSize *size, con
 
     QString idd = id;
     idd.remove("file://");
+    idd.remove("gradient/");
 
     QImage image(idd);
     if (!image.isNull()) {
@@ -116,6 +117,16 @@ QPixmap QtSquareImageProvider::requestPixmap(const QString &id, QSize *size, con
         image = image.copy(BORDERSIZE, BORDERSIZE, min - BORDERSIZE * 2, min - BORDERSIZE * 2)
                 .scaled(requestedSize.width(), requestedSize.height())
                 .convertToFormat(QImage::Format_ARGB32);
+
+        if (id.contains("gradient")) {
+            QPainter p(&image);
+            QRect r = image.rect();
+            QLinearGradient gradient(r.topLeft(), r.bottomLeft());
+            gradient.setColorAt(0, QColor("#99FFFFFF"));
+            gradient.setColorAt(1, Qt::transparent);
+            p.fillRect(r, gradient);
+        }
+
         cutEdges(image, CORNER_CUTSIZE);
     }
 
@@ -141,7 +152,7 @@ QPixmap QtImageMaskProvider::requestPixmap(const QString &id, QSize *size, const
     if (id.contains("hover")) {
         QRect r = image.rect().adjusted(1, 1, -1, -1);
         QLinearGradient gradient(r.topLeft(), r.bottomRight());
-        gradient.setColorAt(0, Qt::transparent);
+        gradient.setColorAt(0, QColor("#99000000"));
         gradient.setColorAt(1, QColor("#9941cd52"));
         p.fillRect(r, gradient);
     }

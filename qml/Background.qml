@@ -33,6 +33,10 @@ Image {
     source: "images/backImg.jpg"
     fillMode: Image.PreserveAspectCrop
 
+    // QTBUG-63585, background image causes poor performance of flickable items
+    // on low-end gpu devices
+    visible: false
+
     Rectangle {
         anchors.fill: parent
         color: "#09102b"

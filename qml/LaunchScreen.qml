@@ -38,6 +38,7 @@ Item {
         anchors.fill: parent
         anchors.margins: viewSettings.pageMargin * 0.5
         anchors.topMargin: viewSettings.pageMargin
+        cacheBuffer: 10000
 
         cellWidth: width / 3
         cellHeight: cellWidth

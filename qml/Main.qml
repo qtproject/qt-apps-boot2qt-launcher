@@ -41,7 +41,7 @@ Window {
     width: 800
     height: 600
 
-    color: "white"
+    color: "#09102b"
     property alias appFont: viewSettings.appFont
 
     ViewSettings {
@@ -285,6 +285,7 @@ Window {
             y: root.height
             anchors.left: root.left
             anchors.right: root.right
+            visible: y < root.height
 
             states: State {
                 name: "visible"

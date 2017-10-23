@@ -28,7 +28,6 @@
 ****************************************************************************/
 import QtQuick 2.0
 import QtQuick.Controls 2.2
-import QtDeviceUtilities.QtButtonImageProvider 1.0
 
 Rectangle {
     id: demoInfoPopup

@@ -105,8 +105,6 @@ Item {
             anchors.bottom: parent.bottom
             anchors.margins: viewSettings.pageMargin * 0.5
             text: qsTr("START")
-            borderColor: "transparent"
-            fillColor: viewSettings.buttonGreenColor
             onClicked: root.launchApplication(startButton.loc, startButton.main, startButton.name, startButton.desc)
             property string loc
             property string main

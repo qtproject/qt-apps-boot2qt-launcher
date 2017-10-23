@@ -38,4 +38,5 @@ Item {
     property int stateDelay: 200;
     property string buttonGreenColor: "#41cd52"
     property string buttonGrayColor: "#9d9faa"
+    property string buttonActiveColor: "#216729"
 }

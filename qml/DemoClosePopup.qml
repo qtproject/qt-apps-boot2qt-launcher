@@ -79,8 +79,6 @@ Rectangle {
                 width: frame.width * 0.45
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("CONFIRM")
-                borderColor: "transparent"
-                fillColor: viewSettings.buttonGreenColor
                 onClicked: {
                     root.closeApplication();
                     demoClosePopup.close()

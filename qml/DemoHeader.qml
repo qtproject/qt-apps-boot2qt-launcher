@@ -32,7 +32,7 @@ Rectangle {
     id: demoHeaderBar
     width: parent.width
     height: viewSettings.demoHeaderHeight
-    color: "#09102b"
+    color: viewSettings.backgroundColor
     opacity: 0.9
     y: 0
     z: 1

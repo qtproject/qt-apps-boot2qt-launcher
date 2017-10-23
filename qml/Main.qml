@@ -41,7 +41,7 @@ Window {
     width: 800
     height: 600
 
-    color: "#09102b"
+    color: viewSettings.backgroundColor
     property alias appFont: viewSettings.appFont
 
     ViewSettings {

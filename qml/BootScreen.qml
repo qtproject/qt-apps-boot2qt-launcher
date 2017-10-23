@@ -30,7 +30,7 @@ import QtQuick 2.0
 
 Rectangle {
     id: bootScreen
-    color: "#09102b"
+    color: viewSettings.backgroundColor
     opacity: 0.95
 
     Column {

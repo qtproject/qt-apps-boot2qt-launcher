@@ -36,7 +36,12 @@ Item {
     property real demoHeaderHeight: 2.5 * pageMargin
     property string appFont: "TitilliumWeb"
     property int stateDelay: 200;
+    property string backgroundColor: "#09102b"
+    property string borderColor: "#9d9faa"
     property string buttonGreenColor: "#41cd52"
     property string buttonGrayColor: "#9d9faa"
     property string buttonActiveColor: "#216729"
+    property string loaderBackgroundColor: "#848895"
+    property string loaderForegroundColor: "#41cd52"
+    property string scrollBarColor: "#41cd52"
 }

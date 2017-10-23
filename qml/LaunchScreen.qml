@@ -67,7 +67,7 @@ Item {
             contentItem: Rectangle {
                 implicitWidth: viewSettings.pageMargin * 0.25
                 implicitHeight: root.height * 0.1
-                color: "#41cd52"
+                color: viewSettings.scrollBarColor
             }
         }
     }

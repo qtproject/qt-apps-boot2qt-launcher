@@ -39,7 +39,7 @@ Image {
 
     Rectangle {
         anchors.fill: parent
-        color: "#09102b"
+        color: viewSettings.backgroundColor
         opacity: 0.9
     }
 }

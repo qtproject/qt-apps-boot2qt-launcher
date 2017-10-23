@@ -33,7 +33,7 @@ Rectangle {
     id: demoInfoPopup
     width: parent.width
     height: parent.height
-    color: "#09102b"
+    color: viewSettings.backgroundColor
     opacity: 0.9
 
     // Prevent user from interacting with the transparent demo on the background
@@ -53,8 +53,8 @@ Rectangle {
 
     Rectangle {
         id: frame
-        color: "#09102b"
-        border.color: "#9d9faa"
+        color: viewSettings.backgroundColor
+        border.color: viewSettings.borderColor
         border.width: 3
         anchors.centerIn: parent
         width: parent.width * 0.5
@@ -138,7 +138,7 @@ Rectangle {
                 contentItem: Rectangle {
                     implicitWidth: root.margin * 0.3
                     implicitHeight: root.height * 0.1
-                    color: "#41cd52"
+                    color: viewSettings.scrollBarColor
                 }
             }
         }

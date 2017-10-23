@@ -157,7 +157,7 @@ Item {
                 anchors.rightMargin: viewSettings.pageMargin
                 size: 0.3
                 contentItem: Rectangle{
-                    color: "#41cd52"
+                    color: viewSettings.scrollBarColor
                     implicitHeight: thumbList.height * 0.03
                 }
             }

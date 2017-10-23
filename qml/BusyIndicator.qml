@@ -39,8 +39,8 @@ CircularIndicator {
     maximumValue: 360//speedometer.maximumValue
     value: 180//speedometer.value
     padding: 23
-    backgroundColor: "#848895"
-    progressColor: "#41cd52"
+    backgroundColor: viewSettings.loaderBackgroundColor
+    progressColor: viewSettings.loaderForegroundColor
     lineWidth: width * 0.1
 
 

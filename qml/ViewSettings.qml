@@ -33,6 +33,7 @@ Item {
 
     property real pageMargin: 0.03 * Math.min(window.width, window.height)
     property real headerHeight: 3 * pageMargin
+    property real spacing: pageMargin * 0.5
     property real demoHeaderHeight: 2.5 * pageMargin
     property string appFont: "TitilliumWeb"
     property int stateDelay: 200;

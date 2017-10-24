@@ -31,44 +31,53 @@ import Circle 1.0
 
 CircularIndicator {
     id: circularIndicator
-    //anchors.fill: parent
     height: width
-    startAngle: 0 //speedometer.minValueAngle
-    endAngle: 360  //speedometer.maxValueAngle
-    minimumValue: 0
-    maximumValue: 360//speedometer.maximumValue
-    value: 180//speedometer.value
     padding: 23
     backgroundColor: viewSettings.loaderBackgroundColor
     progressColor: viewSettings.loaderForegroundColor
-    lineWidth: width * 0.1
-
 
     SequentialAnimation {
         running: true
-        loops: Animation.Infinite
+
+        // Fill 1/5 of the circle before starting looping
         NumberAnimation {
             target: circularIndicator
-            property: "value"
+            property: "endAngle"
             from: 0
-            to: 360
-            duration: 1000
+            to: 72
+            duration: 200
         }
-        NumberAnimation {
-            target: circularIndicator
-            property: "startAngle"
-            from: 0
-            to: 360
-            duration: 1000
+
+        SequentialAnimation {
+            loops: Animation.Infinite
+
+            // Fill rest of the circle
+            NumberAnimation {
+                target: circularIndicator
+                property: "endAngle"
+                from: 72
+                to: 360
+                duration: 800
+            }
+
+            // Fill 1/5 of the circle and clear previous fill
+            ParallelAnimation {
+                NumberAnimation {
+                    target: circularIndicator
+                    property: "startAngle"
+                    from: -360
+                    to: 0
+                    duration: 200
+                    onStopped: circularIndicator.startAngle = 0
+                }
+                NumberAnimation {
+                    target: circularIndicator
+                    property: "endAngle"
+                    from: 360
+                    to: 72
+                    duration: 200
+                }
+            }
         }
-        ScriptAction {
-            script: circularIndicator.startAngle = 0
-        }
-    }
-    RotationAnimator on rotation{
-        loops: Animation.Infinite
-        duration: 5000
-        from: 0
-        to: 360
     }
 }

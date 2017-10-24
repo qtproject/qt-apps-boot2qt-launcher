@@ -30,15 +30,12 @@
 
 CircularIndicator::CircularIndicator(QQuickItem *parent)
     : QQuickPaintedItem(parent)
-    , mStartAngle(0)
-    , mEndAngle(360)
-    , mMinimumValue(0.0)
-    , mMaximumValue(360.0)
-    , mValue(0.0)
-    , mLineWidth(10)
-    , mProgressColor(QColor(255, 0, 0))
-    , mBackgroundColor(QColor(240, 240, 240))
-    , mPadding(1)
+    , m_startAngle(0)
+    , m_endAngle(360)
+    , m_lineWidth(10)
+    , m_progressColor(QColor(255, 0, 0))
+    , m_backgroundColor(QColor(240, 240, 240))
+    , m_padding(1)
 {
 }
 
@@ -48,156 +45,91 @@ CircularIndicator::~CircularIndicator()
 
 int CircularIndicator::startAngle() const
 {
-    return mStartAngle;
+    return m_startAngle;
 }
 
 void CircularIndicator::setStartAngle(int angle)
 {
-    if (angle == mStartAngle)
+    if (angle == m_startAngle)
         return;
 
-    mStartAngle = angle;
-    emit startAngleChanged(mStartAngle);
+    m_startAngle = angle;
+    emit startAngleChanged(m_startAngle);
     update();
 }
 
 int CircularIndicator::endAngle() const
 {
-    return mEndAngle;
+    return m_endAngle;
 }
 
 void CircularIndicator::setEndAngle(int angle)
 {
-    if (angle == mEndAngle)
+    if (angle == m_endAngle)
         return;
 
-    mEndAngle = angle;
-    emit endAngleChanged(mEndAngle);
-    update();
-}
-
-qreal CircularIndicator::minimumValue() const
-{
-    return mMinimumValue;
-}
-
-void CircularIndicator::setMinimumValue(qreal value)
-{
-    if (qFuzzyCompare(value, mMinimumValue))
-        return;
-
-    if (value > mMaximumValue) {
-        qWarning() << this << "\nMinimum value can't exceed maximum value.";
-        return;
-    }
-
-    mMinimumValue = value;
-    emit minimumValueChanged(mMinimumValue);
-    update();
-}
-
-qreal CircularIndicator::maximumValue() const
-{
-    return mMaximumValue;
-}
-
-void CircularIndicator::setMaximumValue(qreal value)
-{
-    if (qFuzzyCompare(value, mMaximumValue))
-        return;
-
-    if (value < mMinimumValue) {
-        qWarning() << this << "\nMaximum value can't be less than minimum value.";
-        return;
-    }
-
-    mMaximumValue = value;
-    emit maximumValueChanged(value);
-    update();
-}
-
-qreal CircularIndicator::value() const
-{
-    return mValue;
-}
-
-void CircularIndicator::setValue(qreal value)
-{
-    if (qFuzzyCompare(value, mValue))
-        return;
-
-    if (value < mMinimumValue) {
-        qWarning() << this << "\nValue can't be less than minimum value.";
-        return;
-    }
-
-    if (value > mMaximumValue) {
-        qWarning() << this << "\nValue can't exceed maximum value.";
-        return;
-    }
-
-    mValue = value;
-    emit valueChanged(mValue);
+    m_endAngle = angle;
+    emit endAngleChanged(m_endAngle);
     update();
 }
 
 int CircularIndicator::lineWidth() const
 {
-    return mLineWidth;
+    return m_lineWidth;
 }
 
 void CircularIndicator::setLineWidth(int width)
 {
-    if (width == mLineWidth)
+    if (width == m_lineWidth)
         return;
 
-    mLineWidth = width;
-    emit lineWidthChanged(mLineWidth);
+    m_lineWidth = width;
+    emit lineWidthChanged(m_lineWidth);
     update();
 }
 
 QColor CircularIndicator::progressColor() const
 {
-    return mProgressColor;
+    return m_progressColor;
 }
 
-void CircularIndicator::setProgressColor(QColor color)
+void CircularIndicator::setProgressColor(const QColor &color)
 {
-    if (color == mProgressColor)
+    if (color == m_progressColor)
         return;
 
-    mProgressColor = color;
-    emit progressColorChanged(mProgressColor);
+    m_progressColor = color;
+    emit progressColorChanged(m_progressColor);
     update();
 }
 
 QColor CircularIndicator::backgroundColor() const
 {
-    return mBackgroundColor;
+    return m_backgroundColor;
 }
 
-void CircularIndicator::setBackgroundColor(QColor color)
+void CircularIndicator::setBackgroundColor(const QColor &color)
 {
-    if (color == mBackgroundColor)
+    if (color == m_backgroundColor)
         return;
 
-    mBackgroundColor = color;
-    emit backgroundColorChanged(mBackgroundColor);
+    m_backgroundColor = color;
+    emit backgroundColorChanged(m_backgroundColor);
     update();
 }
 
 int CircularIndicator::padding() const
 {
-    return mPadding;
+    return m_padding;
 }
 
 void CircularIndicator::setPadding(int padding)
 {
-    if (padding == mPadding)
+    if (padding == m_padding)
         return;
 
-    mPadding = padding;
-    emit paddingChanged(mPadding);
+    m_padding = padding;
+    emit paddingChanged(m_padding);
     update();
 }
 
@@ -205,7 +137,7 @@ void CircularIndicator::paint(QPainter *painter)
 {
     painter->setRenderHint(QPainter::Antialiasing);
 
-    int indicatorSize = qMin(width(), height()) - mPadding * 2 - mLineWidth;
+    const int indicatorSize = qMin(width(), height()) - m_padding * 2 - m_lineWidth;
 
     if (indicatorSize <= 0)
         return;
@@ -216,26 +148,19 @@ void CircularIndicator::paint(QPainter *painter)
                         indicatorSize);
 
     QPen pen;
-    pen.setCapStyle(Qt::FlatCap);
-    pen.setWidth(mLineWidth);
-    pen.setColor(mBackgroundColor);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setWidth(m_lineWidth);
+
+    // Draw the background
+    pen.setColor(m_backgroundColor);
     painter->setPen(pen);
-
-    int endAngle = (qAbs(mEndAngle) > 360) ? mEndAngle % 360 : mEndAngle;
-
-    // See http://doc.qt.io/qt-5/qpainter.html#drawArc for details
-    int minimumAngle = (90 - mStartAngle) * 16;
-    int maximumAngle = (90 - endAngle) * 16 - minimumAngle;
-
     painter->drawArc(indicatorRect, 0, 360 * 16);
 
-    if (qFuzzyCompare(mValue, mMinimumValue))
+    if (m_startAngle == m_endAngle)
         return;
 
-    pen.setColor(mProgressColor);
+    // Draw the foreground
+    pen.setColor(m_progressColor);
     painter->setPen(pen);
-
-    int currentAngle = ((mValue - mMinimumValue) / (mMaximumValue - mMinimumValue)) * maximumAngle;
-
-    painter->drawArc(indicatorRect, minimumAngle, currentAngle);
+    painter->drawArc(indicatorRect, (90 - m_startAngle) * 16, -m_endAngle * 16);
 }

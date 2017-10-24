@@ -35,7 +35,6 @@ Rectangle {
 
     Column {
         anchors.centerIn: parent
-        spacing: viewSettings.pageMargin
 
         BusyIndicator {
             anchors.horizontalCenter: parent.horizontalCenter
@@ -44,16 +43,18 @@ Rectangle {
 
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
+            font.family: viewSettings.appFont
             font.pixelSize: bootScreen.height * 0.05
             color: "white"
-            text: "Loading"
+            text: qsTr("Loading")
         }
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            font.pixelSize: bootScreen.height * 0.06
+            font.family: viewSettings.appFont
+            font.pixelSize: bootScreen.height * 0.05
+            font.styleName: "Bold"
             color: "white"
             text: engine.applicationName
-            font.bold: true
         }
     }
 }

@@ -21,5 +21,7 @@
         <file>qml/settings.xml</file>
         <file>qml/ImageTextDelegate.qml</file>
         <file>qml/BusyIndicator.qml</file>
+        <file>qml/MainWindow.qml</file>
+        <file>qml/FlickSlider.qml</file>
     </qresource>
 </RCC>

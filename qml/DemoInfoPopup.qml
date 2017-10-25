@@ -121,26 +121,12 @@ Rectangle {
                 width: frame.width * 0.9
                 wrapMode: Text.WordWrap
             }
+        }
 
-            ScrollBar.vertical: ScrollBar {
-                parent: flickable.parent
-                anchors.top: flickable.top
-                anchors.bottom: flickable.bottom
-                anchors.right: parent.right
-                anchors.rightMargin: viewSettings.pageMargin * 0.2
-                anchors.topMargin: viewSettings.pageMargin * 0.5
-                width: viewSettings.pageMargin * 0.6
-                size: 0.3
-                position: 0.2
-                active: true
-                orientation: Qt.Vertical
-
-                contentItem: Rectangle {
-                    implicitWidth: root.margin * 0.3
-                    implicitHeight: root.height * 0.1
-                    color: viewSettings.scrollBarColor
-                }
-            }
+        FlickSlider {
+            flickItem: flickable
+            anchors.right: frame.right
+            width: viewSettings.pageMargin * 0.5
         }
     }
 }

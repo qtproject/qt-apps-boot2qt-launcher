@@ -59,7 +59,6 @@ Item {
             anchors.rightMargin: viewSettings.pageMargin
             contentHeight: descriptionHolder.height
             contentWidth: width
-            clip: true
 
             Column {
                 id: descriptionHolder
@@ -147,20 +146,12 @@ Item {
                     thumbList.currentIndex = index
                 }
             }
-            ScrollBar.horizontal: ScrollBar{
-                parent: thumbList.parent
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: viewSettings.pageMargin * 0.3
-                anchors.left: parent.left
-                anchors.leftMargin: viewSettings.pageMargin
-                anchors.right: parent.right
-                anchors.rightMargin: viewSettings.pageMargin
-                size: 0.3
-                contentItem: Rectangle{
-                    color: viewSettings.scrollBarColor
-                    implicitHeight: thumbList.height * 0.03
-                }
-            }
+        }
+
+        FlickSlider {
+            flickItem: thumbList
+            anchors.bottom: listHolder.bottom
+            isVertical: false
         }
     }
 }

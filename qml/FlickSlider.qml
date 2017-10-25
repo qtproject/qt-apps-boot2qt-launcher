@@ -28,34 +28,29 @@
 ****************************************************************************/
 import QtQuick 2.0
 
+// QTBUG-50992, using customized ScrollBar inside Loader does not work, implement with rectangle
 Rectangle {
-    id: bootScreen
-    color: viewSettings.backgroundColor
-    opacity: 0.95
-    property string applicationName: ""
+    property var flickItem
+    property bool isVertical: true
 
-    Column {
-        anchors.centerIn: parent
+    color: viewSettings.scrollBarColor
+    anchors.margins: viewSettings.pageMargin * 0.375
+    height: isVertical ? flickItem.height * 0.3 : viewSettings.pageMargin * 0.25
+    width: isVertical ? viewSettings.pageMargin * 0.25 : flickItem.width * 0.2
 
-        BusyIndicator {
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: bootScreen.width * 0.1
-        }
+    // How much (0...1) the view area covers from the content height/width
+    property real visibilityRatio: isVertical ? flickItem.visibleArea.heightRatio : flickItem.visibleArea.widthRatio
 
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.family: viewSettings.appFont
-            font.pixelSize: bootScreen.height * 0.05
-            color: "white"
-            text: qsTr("Loading")
-        }
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.family: viewSettings.appFont
-            font.pixelSize: bootScreen.height * 0.05
-            font.styleName: "Bold"
-            color: "white"
-            text: applicationName
-        }
-    }
+    // How many pixels the slider can move in the view area
+    property real moveSize: isVertical ? flickItem.height - height : flickItem.width - width
+
+    // Coefficient between x/y position (0...1) and slider move pixels
+    property real slideCoefficient: (visibilityRatio < 1) ? (moveSize)/(1 - visibilityRatio) : 1
+
+    // Slider is only visible if view area is smaller than the content
+    visible: (visibilityRatio < 1)
+
+    // Actual calculation of the slider position
+    x: isVertical ? 0 : slideCoefficient * flickItem.visibleArea.xPosition + flickItem.x
+    y: isVertical ? slideCoefficient * flickItem.visibleArea.yPosition + flickItem.y : 0
 }

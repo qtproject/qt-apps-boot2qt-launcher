@@ -53,7 +53,7 @@ class Engine : public QQuickItem
     Q_PROPERTY(bool fpsEnabled READ isFpsEnabled WRITE setFpsEnabled NOTIFY fpsEnabledChanged)
     Q_PROPERTY(qreal fps READ fps NOTIFY fpsChanged)
 
-    Q_PROPERTY(const QString qtVersion READ qtVersion)
+    Q_PROPERTY(const QString qtVersion READ qtVersion CONSTANT)
 
     Q_PROPERTY(bool glAvailable READ glAvailable NOTIFY glAvailableChanged)
 

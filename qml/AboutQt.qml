@@ -62,14 +62,14 @@ Item {
             }
 
             Text {
-                text: qsTr("Qt version: ") + "5.9"
+                text: qsTr("Qt version: ") + engine.qtVersion
                 color: "white"
                 font.pixelSize: pluginMain.valueFontSize
                 font.family: appFont
             }
 
             Text {
-                text: qsTr("Demo Launcher application version: ") + "2.0"
+                text: qsTr("Demo Launcher application version: ") + Qt.application.version
                 color: "white"
                 font.pixelSize: pluginMain.valueFontSize
                 font.family: appFont

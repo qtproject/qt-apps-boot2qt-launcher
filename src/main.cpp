@@ -66,6 +66,7 @@ int main(int argc, char **argv)
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     QApplication app(argc, argv);
+    app.setApplicationVersion(APPLICATION_VERSION);
 
 #if defined(USE_QTWEBENGINE)
     // This is currently needed by all QtWebEngine applications using the HW accelerated QQuickWebView.

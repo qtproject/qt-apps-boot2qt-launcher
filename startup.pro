@@ -1,6 +1,8 @@
 QT += qml quick widgets
 TARGET = qtlauncher
 
+DEFINES += APPLICATION_VERSION=\\\"2.0.1\\\"
+
 qtHaveModule(webengine) {
     DEFINES += USE_QTWEBENGINE
     QT += webengine

@@ -37,6 +37,8 @@
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlComponent>
 
+#include <QQuickStyle>
+
 #if defined(USE_QTWEBENGINE)
 #include <qtwebengineglobal.h>
 #endif
@@ -109,6 +111,7 @@ int main(int argc, char **argv)
     engine.rootContext()->setContextProperty("globalSettings", &settings);
     engine.rootContext()->setContextProperty("applicationSettings", &applicationSettings);
     engine.rootContext()->setContextProperty("qpa_platform", qGuiApp->platformName());
+    engine.rootContext()->setContextProperty("availableStyles", QQuickStyle::availableStyles());
     engine.load(applicationSettings.mainFile());
 
     return app.exec();

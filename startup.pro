@@ -1,4 +1,4 @@
-QT += qml quick widgets
+QT += qml quick widgets quickcontrols2
 TARGET = qtlauncher
 
 DEFINES += APPLICATION_VERSION=\\\"2.0.1\\\"

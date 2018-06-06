@@ -175,7 +175,11 @@ Item {
             opacity: 0;
             visible: opacity > 0.1
 
-            anchors.fill: parent
+            anchors.top: demoHeader.bottom
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+
             asynchronous: true;
             onStatusChanged: {
                 if (status == Loader.Error)
@@ -187,14 +191,14 @@ Item {
                 else if (applicationLoader.item.objectName !== "empty")
                     engine.state = "app-running";
             }
-
-            DemoHeader {
-                id: demoHeader
-                onInfoClicked: demoInfoPopup.open()
-                onCloseClicked: root.closeApplication();
-            }
         }
 
+        DemoHeader {
+            id: demoHeader
+            visible: applicationLoader.visible
+            onInfoClicked: demoInfoPopup.open()
+            onCloseClicked: root.closeApplication();
+        }
         Loader {
             id: bootScreenLoader
             visible: opacity > 0

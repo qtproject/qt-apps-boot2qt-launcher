@@ -191,7 +191,7 @@ Item {
             DemoHeader {
                 id: demoHeader
                 onInfoClicked: demoInfoPopup.open()
-                onCloseClicked: demoClosePopup.open()
+                onCloseClicked: root.closeApplication();
             }
         }
 
@@ -202,11 +202,6 @@ Item {
             sourceComponent: BootScreen {
                 applicationName: engine.applicationName
             }
-        }
-
-        DemoClosePopup {
-            id: demoClosePopup
-            visible: false
         }
 
         DemoInfoPopup {

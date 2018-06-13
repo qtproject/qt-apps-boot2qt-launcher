@@ -51,6 +51,7 @@ Item {
         }
 
         Flickable {
+            id: detailFlickable
             anchors.left: parent.left
             anchors.right: largeImg.left
             anchors.top: parent.top
@@ -59,11 +60,11 @@ Item {
             anchors.rightMargin: viewSettings.pageMargin
             contentHeight: descriptionHolder.height
             contentWidth: width
+            clip: true
 
             Column {
                 id: descriptionHolder
                 width: parent.width
-
                 spacing: viewSettings.pageMargin * 0.5
 
                 Text {
@@ -94,6 +95,12 @@ Item {
                     elide: Text.ElideRight
                 }
             }
+        }
+
+        FlickSlider {
+            flickItem: detailFlickable
+            anchors.right: largeImg.left
+            anchors.rightMargin: viewSettings.pageMargin * 0.35
         }
 
         QtButton {

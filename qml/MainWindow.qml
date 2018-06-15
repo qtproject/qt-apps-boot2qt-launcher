@@ -85,6 +85,7 @@ Item {
         id: root
         anchors.centerIn: parent
         property bool portraitMode: Screen.desktopAvailableHeight > Screen.desktopAvailableWidth ? true : false
+        property bool demoHeaderEnabled: applicationLoader.sourceComponent !== settingsUIComponent
         rotation: portraitMode ? 90 : 0
         width: portraitMode ? window.height : window.width
         height: portraitMode ? window.width : window.height
@@ -175,7 +176,7 @@ Item {
             opacity: 0;
             visible: opacity > 0.1
 
-            anchors.top: demoHeader.bottom
+            anchors.top: root.demoHeaderEnabled ? demoHeader.bottom : root.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
@@ -195,7 +196,7 @@ Item {
 
         DemoHeader {
             id: demoHeader
-            visible: applicationLoader.visible
+            visible: applicationLoader.visible && root.demoHeaderEnabled
             onInfoClicked: demoInfoPopup.open()
             onCloseClicked: root.closeApplication();
         }

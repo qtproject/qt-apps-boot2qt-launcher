@@ -35,3 +35,8 @@ RESOURCES += \
     images.qrc \
     fonts.qrc \
     qml.qrc
+
+static {
+    QTPLUGIN += qtvirtualkeyboardplugin
+    QT += svg
+}

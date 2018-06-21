@@ -78,3 +78,16 @@ void SettingsManager::setMouseSelected(bool enabled)
     setValue("mouseSelected", enabled);
     emit mouseSelectedChanged(enabled);
 }
+
+bool SettingsManager::rotationSelected()
+{
+    return getValue("rotationSelected", false).toBool();
+}
+
+void SettingsManager::setRotationSelected(bool enabled)
+{
+    if (rotationSelected() == enabled)
+        return;
+    setValue("rotationSelected", enabled);
+    emit rotationSelectedChanged(enabled);
+}

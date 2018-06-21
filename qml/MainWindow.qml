@@ -86,7 +86,8 @@ Item {
         anchors.centerIn: parent
         property bool portraitMode: Screen.desktopAvailableHeight > Screen.desktopAvailableWidth ? true : false
         property bool demoHeaderEnabled: applicationLoader.sourceComponent !== settingsUIComponent
-        rotation: portraitMode ? 90 : 0
+        property int rotateAmount: globalSettings.rotationSelected ? 180 : 0
+        rotation: portraitMode ? 90 + rotateAmount : 0 + rotateAmount
         width: portraitMode ? window.height : window.width
         height: portraitMode ? window.width : window.height
 

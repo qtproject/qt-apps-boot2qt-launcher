@@ -18,5 +18,6 @@
         <file>qml/icons/detail_icon_disabled.svg</file>
         <file>qml/icons/touch_icon_disabled.svg</file>
         <file>qml/icons/grid_icon_disabled.svg</file>
+        <file>qml/icons/display_icon.svg</file>
     </qresource>
 </RCC>

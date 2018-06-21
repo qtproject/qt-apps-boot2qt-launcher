@@ -52,9 +52,15 @@ public:
     bool mouseSelected();
     void setMouseSelected(bool enabled);
 
+    Q_PROPERTY (bool rotationSelected READ rotationSelected WRITE setRotationSelected NOTIFY rotationSelectedChanged)
+
+    bool rotationSelected();
+    void setRotationSelected(bool enabled);
+
 signals:
     void gridSelectedChanged(bool enabled);
     void mouseSelectedChanged(bool enabled);
+    void rotationSelectedChanged(bool enabled);
 
 private:
     QSettings m_settings;

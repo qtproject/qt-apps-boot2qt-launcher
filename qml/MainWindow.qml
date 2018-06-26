@@ -173,11 +173,12 @@ Item {
 
         Loader {
             id: applicationLoader
+            objectName: "applicationLoader"
             opacity: 0;
             visible: opacity > 0.1
+            height: root.demoHeaderEnabled ? parent.height - (demoHeader.height + demoHeader.y) : parent.height
 
             anchors.top: root.demoHeaderEnabled ? demoHeader.bottom : root.top
-            anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
 
@@ -192,6 +193,7 @@ Item {
                 else if (applicationLoader.item.objectName !== "empty")
                     engine.state = "app-running";
             }
+            Behavior on anchors.topMargin {NumberAnimation{ duration: 200 } }
         }
 
         DemoHeader {
@@ -274,7 +276,13 @@ Item {
             anchors.left: root.left
             anchors.right: root.right
             visible: y < root.height
-
+            onActiveChanged: {
+                if (!active)
+                    applicationLoader.anchors.topMargin = 0;
+                else {
+                    autoScroller.open();
+                }
+            }
             states: State {
                 name: "visible"
                 /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
@@ -288,6 +296,7 @@ Item {
                     y: root.height - inputPanel.height
                 }
             }
+
             transitions: Transition {
                 from: ""
                 to: "visible"
@@ -300,7 +309,9 @@ Item {
                     }
                 }
             }
-            AutoScroller {}
+            AutoScroller {
+                id: autoScroller
+            }
         }
 
         Item {

@@ -30,58 +30,38 @@ import QtQuick 2.0
 import QtQuick.VirtualKeyboard 2.0
 
 Item {
-
-    property var innerFlickable
-    property var outerFlickable
     property var inputItem: InputContext.inputItem
+    property var appLoader
 
-    onInputItemChanged: {
-        innerFlickable = null
-        outerFlickable = null
+    onInputItemChanged: open();
+
+    function open() {
+        appLoader = null
         if (inputItem !== null) {
             var parent_ = inputItem.parent
+            var found = false
             while (parent_) {
-                if (parent_.maximumFlickVelocity) {
-                    if (innerFlickable) {
-                        outerFlickable = parent_
-                        break
-                    } else {
-                        innerFlickable = parent_
-                    }
+                if (parent_.objectName == "applicationLoader") {
+                    appLoader = parent_
+                    found = true
+                    break;
                 }
                 parent_ = parent_.parent
             }
-            delayedLoading.triggered()
+            if (found) delayedLoading.triggered()
         }
     }
 
-    function ensureVisible(flickable) {
-        if (Qt.inputMethod.visible && inputItem && flickable && flickable.visible && flickable.interactive) {
+    function ensureVisible(loader) {
+        if (Qt.inputMethod.visible && inputItem && loader) {
 
-            var verticallyFlickable = (flickable.flickableDirection === Flickable.HorizontalAndVerticalFlick || flickable.flickableDirection === Flickable.VerticalFlick
-                                       || (flickable.flickableDirection === Flickable.AutoFlickDirection && flickable.contentHeight > flickable.height))
-            var horizontallyFlickable = (flickable.flickableDirection === Flickable.HorizontalAndVerticalFlick || flickable.flickableDirection === Flickable.HorizontalFlick
-                                         || (flickable.flickableDirection === Flickable.AutoFlickDirection && flickable.contentWidth > flickable.width))
+            //Check if the text field is under the virtual keyboard. Also add some margin just to make sure.
+            if (inputItem.mapToItem(loader, 0,0).y > root.height - inputPanel.height - root.height * 0.125) {
 
-            if ((!verticallyFlickable && !horizontallyFlickable) || !inputItem.hasOwnProperty("cursorRectangle"))
-                return
-
-            var cursorRectangle = flickable.contentItem.mapFromItem(inputItem, inputItem.cursorRectangle.x, inputItem.cursorRectangle.y)
-
-            var oldContentY = flickable.contentY
-            if (verticallyFlickable) {
-                var scrollMarginVertical = (flickable && flickable.scrollMarginVertical) ? flickable.scrollMarginVertical : 10
-                if (flickable.contentY >= cursorRectangle.y  - scrollMarginVertical)
-                    flickable.contentY = Math.max(0, cursorRectangle.y  - scrollMarginVertical)
-                else if (flickable.contentY + flickable.height <= cursorRectangle.y  + inputItem.cursorRectangle.height + scrollMarginVertical)
-                    flickable.contentY = Math.min(flickable.contentHeight - flickable.height, cursorRectangle.y + inputItem.cursorRectangle.height - flickable.height + scrollMarginVertical)
-            }
-            if (horizontallyFlickable) {
-                var scrollMarginHorizontal = (flickable && flickable.scrollMarginHorizontal) ? flickable.scrollMarginHorizontal : 10
-                if (flickable.contentX >= cursorRectangle.x - scrollMarginHorizontal)
-                    flickable.contentX = Math.max(0, cursorRectangle.x - scrollMarginHorizontal)
-                else if (flickable.contentX + flickable.width <= cursorRectangle.x + inputItem.cursorRectangle.width + scrollMarginHorizontal)
-                    flickable.contentX = Math.min(flickable.contentWidth - flickable.width, cursorRectangle.x + inputItem.cursorRectangle.width - flickable.width + scrollMarginHorizontal)
+                //Scroll the text field to the vertical center of the remaining screen space above the virtual keyboard.
+                loader.anchors.topMargin = ((root.height - inputPanel.height) / 2) - inputItem.mapToItem(loader, 0,0).y - (inputItem.height / 2);
+            } else {
+                loader.anchors.topMargin = 0;
             }
         }
     }
@@ -89,18 +69,7 @@ Item {
         id: delayedLoading
         interval: 10
         onTriggered: {
-            ensureVisible(innerFlickable)
-            ensureVisible(outerFlickable)
+            ensureVisible(appLoader)
         }
-    }
-    Connections {
-        ignoreUnknownSignals: true
-        target: inputItem && !Qt.inputMethod.animating ? Qt.inputMethod : null
-        onKeyboardRectangleChanged: delayedLoading.triggered()
-    }
-    Connections {
-        ignoreUnknownSignals: true
-        target: inputItem && inputItem.activeFocus ? inputItem : null
-        onCursorRectangleChanged: delayedLoading.triggered()
     }
 }

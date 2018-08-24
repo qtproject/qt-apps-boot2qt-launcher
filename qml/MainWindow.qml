@@ -33,6 +33,7 @@ import QtDeviceUtilities.SettingsUI 1.0
 import com.qtcompany.B2QtLauncher 1.0
 
 Item {
+    id: mainWindow
     anchors.fill: parent
     Component {
         id: emptyComponent
@@ -215,6 +216,9 @@ Item {
         DemoInfoPopup {
             id: demoInfoPopup
             visible: false
+            height: mainWindow.height
+            width: mainWindow.width
+            z: demoHeader.z + 1
         }
 
         /*  Handwriting input panel for full screen handwriting input.

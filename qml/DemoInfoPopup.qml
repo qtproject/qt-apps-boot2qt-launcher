@@ -31,8 +31,6 @@ import QtQuick.Controls 2.2
 
 Rectangle {
     id: demoInfoPopup
-    width: parent.width
-    height: parent.height
     color: viewSettings.backgroundColor
     opacity: 0.9
 

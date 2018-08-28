@@ -36,6 +36,8 @@
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlComponent>
+#include <QStandardPaths>
+#include <QIcon>
 
 #include <QQuickStyle>
 
@@ -66,6 +68,12 @@ void displayHelp(const char *appName)
 int main(int argc, char **argv)
 {
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+
+    qputenv("QT_QUICK_CONTROLS_CONF", "/data/user/qt/qtquickcontrols2/qtquickcontrols2.conf");
+    QIcon::setThemeSearchPaths(QStringList() << "/data/user/qt/qtquickcontrols2/icons");
+
+    QIcon::setThemeName("gallery");
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QApplication app(argc, argv);
     app.setApplicationVersion(APPLICATION_VERSION);
@@ -104,6 +112,12 @@ int main(int argc, char **argv)
     QtImageProvider imageProvider;
     QtSquareImageProvider squareImageProvider;
     QtImageMaskProvider imageMaskProvider;
+
+    QSettings styleSettings;
+    QString style = styleSettings.value("style").toString();
+    if (style.isEmpty() || style == "Default")
+        styleSettings.setValue("style", "Material");
+    QQuickStyle::setStyle(styleSettings.value("style").toString());
 
     QSettings themeColorSettings("QtLauncher", "colorSettings");
 

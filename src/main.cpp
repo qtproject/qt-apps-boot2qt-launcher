@@ -36,6 +36,8 @@
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
 #include <QtQml/QQmlComponent>
+#include <QStandardPaths>
+#include <QIcon>
 
 #include <QQuickStyle>
 
@@ -66,6 +68,12 @@ void displayHelp(const char *appName)
 int main(int argc, char **argv)
 {
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+
+    qputenv("QT_QUICK_CONTROLS_CONF", "/data/user/qt/qtquickcontrols2/qtquickcontrols2.conf");
+    QIcon::setThemeSearchPaths(QStringList() << "/data/user/qt/qtquickcontrols2/icons");
+
+    QIcon::setThemeName("gallery");
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QApplication app(argc, argv);
     app.setApplicationVersion(APPLICATION_VERSION);
@@ -101,9 +109,28 @@ int main(int argc, char **argv)
 
     QQmlApplicationEngine engine;
     SettingsManager settings;
+
     QtImageProvider imageProvider;
     QtSquareImageProvider squareImageProvider;
     QtImageMaskProvider imageMaskProvider;
+
+    QSettings styleSettings;
+    QString style = styleSettings.value("style").toString();
+    if (style.isEmpty() || style == "Default")
+        styleSettings.setValue("style", "Material");
+    QQuickStyle::setStyle(styleSettings.value("style").toString());
+
+    QSettings launcherSettings("QtLauncher", "colorSettings");
+
+    engine.rootContext()->setContextProperty("_backgroundColor", launcherSettings.value("backgroundColor", "#09102b"));
+    engine.rootContext()->setContextProperty("_primaryGreen", launcherSettings.value("primaryGreen", "#41cd52"));
+    engine.rootContext()->setContextProperty("_mediumGreen", launcherSettings.value("mediumGreen", "#21be2b"));
+    engine.rootContext()->setContextProperty("_darkGreen", launcherSettings.value("darkGreen", "#17a81a"));
+    engine.rootContext()->setContextProperty("_primaryGrey", launcherSettings.value("primaryGrey", "#9d9faa"));
+    engine.rootContext()->setContextProperty("_secondaryGrey", launcherSettings.value("secondaryGrey", "#3a4055"));
+
+    engine.rootContext()->setContextProperty("VideosLocation", launcherSettings.value("videosLocation", "file:///data/videos"));
+    engine.rootContext()->setContextProperty("DefaultVideoUrl", launcherSettings.value("defaultVideoUrl", "file:///data/videos/Qt+for+Device+Creation.mp4"));
 
     engine.addImageProvider("QtImage", &imageProvider);
     engine.addImageProvider("QtSquareImage", &squareImageProvider);

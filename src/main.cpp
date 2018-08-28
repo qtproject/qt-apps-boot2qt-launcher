@@ -109,6 +109,7 @@ int main(int argc, char **argv)
 
     QQmlApplicationEngine engine;
     SettingsManager settings;
+
     QtImageProvider imageProvider;
     QtSquareImageProvider squareImageProvider;
     QtImageMaskProvider imageMaskProvider;
@@ -119,14 +120,17 @@ int main(int argc, char **argv)
         styleSettings.setValue("style", "Material");
     QQuickStyle::setStyle(styleSettings.value("style").toString());
 
-    QSettings themeColorSettings("QtLauncher", "colorSettings");
+    QSettings launcherSettings("QtLauncher", "colorSettings");
 
-    engine.rootContext()->setContextProperty("_backgroundColor", themeColorSettings.value("backgroundColor", "#09102b"));
-    engine.rootContext()->setContextProperty("_primaryGreen", themeColorSettings.value("primaryGreen", "#41cd52"));
-    engine.rootContext()->setContextProperty("_mediumGreen", themeColorSettings.value("mediumGreen", "#21be2b"));
-    engine.rootContext()->setContextProperty("_darkGreen", themeColorSettings.value("darkGreen", "#17a81a"));
-    engine.rootContext()->setContextProperty("_primaryGrey", themeColorSettings.value("primaryGrey", "#9d9faa"));
-    engine.rootContext()->setContextProperty("_secondaryGrey", themeColorSettings.value("secondaryGrey", "#3a4055"));
+    engine.rootContext()->setContextProperty("_backgroundColor", launcherSettings.value("backgroundColor", "#09102b"));
+    engine.rootContext()->setContextProperty("_primaryGreen", launcherSettings.value("primaryGreen", "#41cd52"));
+    engine.rootContext()->setContextProperty("_mediumGreen", launcherSettings.value("mediumGreen", "#21be2b"));
+    engine.rootContext()->setContextProperty("_darkGreen", launcherSettings.value("darkGreen", "#17a81a"));
+    engine.rootContext()->setContextProperty("_primaryGrey", launcherSettings.value("primaryGrey", "#9d9faa"));
+    engine.rootContext()->setContextProperty("_secondaryGrey", launcherSettings.value("secondaryGrey", "#3a4055"));
+
+    engine.rootContext()->setContextProperty("VideosLocation", launcherSettings.value("videosLocation", "file:///data/videos"));
+    engine.rootContext()->setContextProperty("DefaultVideoUrl", launcherSettings.value("defaultVideoUrl", "file:///data/videos/Qt+for+Device+Creation.mp4"));
 
     engine.addImageProvider("QtImage", &imageProvider);
     engine.addImageProvider("QtSquareImage", &squareImageProvider);

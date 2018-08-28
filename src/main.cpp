@@ -105,6 +105,15 @@ int main(int argc, char **argv)
     QtSquareImageProvider squareImageProvider;
     QtImageMaskProvider imageMaskProvider;
 
+    QSettings themeColorSettings("QtLauncher", "colorSettings");
+
+    engine.rootContext()->setContextProperty("_backgroundColor", themeColorSettings.value("backgroundColor", "#09102b"));
+    engine.rootContext()->setContextProperty("_primaryGreen", themeColorSettings.value("primaryGreen", "#41cd52"));
+    engine.rootContext()->setContextProperty("_mediumGreen", themeColorSettings.value("mediumGreen", "#21be2b"));
+    engine.rootContext()->setContextProperty("_darkGreen", themeColorSettings.value("darkGreen", "#17a81a"));
+    engine.rootContext()->setContextProperty("_primaryGrey", themeColorSettings.value("primaryGrey", "#9d9faa"));
+    engine.rootContext()->setContextProperty("_secondaryGrey", themeColorSettings.value("secondaryGrey", "#3a4055"));
+
     engine.addImageProvider("QtImage", &imageProvider);
     engine.addImageProvider("QtSquareImage", &squareImageProvider);
     engine.addImageProvider("QtImageMask", &imageMaskProvider);

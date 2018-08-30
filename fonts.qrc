@@ -11,5 +11,14 @@
         <file>qml/fonts/TitilliumWeb-Regular.ttf</file>
         <file>qml/fonts/TitilliumWeb-SemiBold.ttf</file>
         <file>qml/fonts/TitilliumWeb-SemiBoldItalic.ttf</file>
+        <file>qml/fonts/fontawesome-webfont.ttf</file>
+        <file>qml/fonts/Montserrat-Bold.ttf</file>
+        <file>qml/fonts/Montserrat-Light.ttf</file>
+        <file>qml/fonts/Montserrat-Medium.ttf</file>
+        <file>qml/fonts/Montserrat-Regular.ttf</file>
+        <file>qml/fonts/Teko-Bold.ttf</file>
+        <file>qml/fonts/Teko-Light.ttf</file>
+        <file>qml/fonts/Teko-Medium.ttf</file>
+        <file>qml/fonts/Teko-Regular.ttf</file>
     </qresource>
 </RCC>

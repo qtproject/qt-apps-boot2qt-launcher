@@ -73,7 +73,11 @@ int main(int argc, char **argv)
     QIcon::setThemeSearchPaths(QStringList() << "/data/user/qt/qtquickcontrols2/icons");
 
     QIcon::setThemeName("gallery");
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+    // Do not set HighDpiScaling for emulator, see QTBUG-64815
+    if (qEnvironmentVariableIsEmpty("QTGLESSTREAM_DISPLAY")) {
+       QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    }
 
     QApplication app(argc, argv);
     app.setApplicationVersion(APPLICATION_VERSION);
@@ -90,6 +94,17 @@ int main(int argc, char **argv)
     QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-SemiBold.ttf");
     QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-Bold.ttf");
     QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-Black.ttf");
+
+    //For eBike demo
+    QFontDatabase::addApplicationFont(":/qml/fonts/Montserrat-Bold.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/Montserrat-Light.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/Montserrat-Medium.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/Montserrat-Regular.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/Teko-Bold.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/Teko-Light.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/Teko-Medium.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/Teko-Regular.ttf");
+    QFontDatabase::addApplicationFont(":/qml/fonts/fontawesome-webfont.ttf");
 
     ApplicationSettings applicationSettings;
 

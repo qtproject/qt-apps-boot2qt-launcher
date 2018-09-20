@@ -75,6 +75,8 @@ public:
     QString applicationName() const { return m_applicationName; }
     QString applicationDescription() const { return m_applicationDescription; }
 
+    static bool checkForGlAvailability();
+
     Q_INVOKABLE QUrl fromUserInput(const QString& userInput) { return QUrl::fromUserInput(userInput); }
     Q_INVOKABLE int sensibleButtonSize() const;
     Q_INVOKABLE int titleBarSize() const;

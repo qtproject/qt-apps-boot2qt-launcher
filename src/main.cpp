@@ -129,10 +129,15 @@ int main(int argc, char **argv)
     QtSquareImageProvider squareImageProvider;
     QtImageMaskProvider imageMaskProvider;
 
+    // Material style can be set only for devices supporting GL
     QSettings styleSettings;
     QString style = styleSettings.value("style").toString();
-    if (style.isEmpty() || style == "Default")
-        styleSettings.setValue("style", "Material");
+    if (Engine::checkForGlAvailability()) {
+        if (style.isEmpty() || style == "Default")
+            styleSettings.setValue("style", "Material");
+    } else {
+        qDebug()<<"No GL available, skipping Material style";
+    }
     QQuickStyle::setStyle(styleSettings.value("style").toString());
 
     QSettings launcherSettings("QtLauncher", "colorSettings");

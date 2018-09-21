@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2018 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of Qt for Device Creation.
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
     engine.rootContext()->setContextProperty("_secondaryGrey", launcherSettings.value("secondaryGrey", "#3a4055"));
 
     engine.rootContext()->setContextProperty("VideosLocation", launcherSettings.value("videosLocation", "file:///data/videos"));
-    engine.rootContext()->setContextProperty("DefaultVideoUrl", launcherSettings.value("defaultVideoUrl", "file:///data/videos/Qt+for+Device+Creation.mp4"));
+    engine.rootContext()->setContextProperty("DefaultVideoUrl", launcherSettings.value("defaultVideoUrl", "file:///data/videos/Qt+for+Designers+and+Developers.mp4"));
 
     engine.addImageProvider("QtImage", &imageProvider);
     engine.addImageProvider("QtSquareImage", &squareImageProvider);

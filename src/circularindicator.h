@@ -36,7 +36,7 @@ class CircularIndicator : public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(int startAngle READ startAngle WRITE setStartAngle NOTIFY startAngleChanged)
-    Q_PROPERTY(int endAngle READ endAngle WRITE setEndAngle NOTIFY endAngleChanged)
+    Q_PROPERTY(int spanAngle READ spanAngle WRITE setSpanAngle NOTIFY spanAngleChanged)
     Q_PROPERTY(int lineWidth READ lineWidth WRITE setLineWidth NOTIFY lineWidthChanged)
     Q_PROPERTY(QColor progressColor READ progressColor WRITE setProgressColor NOTIFY progressColorChanged)
     Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
@@ -47,7 +47,7 @@ public:
     ~CircularIndicator();
 
     int startAngle() const;
-    int endAngle() const;
+    int spanAngle() const;
     int lineWidth() const;
     QColor progressColor() const;
     QColor backgroundColor() const;
@@ -55,7 +55,7 @@ public:
 
 public slots:
     void setStartAngle(int angle);
-    void setEndAngle(int angle);
+    void setSpanAngle(int angle);
     void setLineWidth(int width);
     void setProgressColor(const QColor &color);
     void setBackgroundColor(const QColor &color);
@@ -63,7 +63,7 @@ public slots:
 
 signals:
     void startAngleChanged(int);
-    void endAngleChanged(int);
+    void spanAngleChanged(int);
     void lineWidthChanged(int);
     void progressColorChanged(QColor);
     void backgroundColorChanged(QColor);
@@ -74,7 +74,7 @@ protected:
 
 private:
     int m_startAngle;
-    int m_endAngle;
+    int m_spanAngle;
     int m_lineWidth;
     QColor m_progressColor;
     QColor m_backgroundColor;

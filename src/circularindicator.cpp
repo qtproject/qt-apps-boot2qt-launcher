@@ -31,7 +31,7 @@
 CircularIndicator::CircularIndicator(QQuickItem *parent)
     : QQuickPaintedItem(parent)
     , m_startAngle(0)
-    , m_endAngle(360)
+    , m_spanAngle(360)
     , m_lineWidth(10)
     , m_progressColor(QColor(255, 0, 0))
     , m_backgroundColor(QColor(240, 240, 240))
@@ -58,18 +58,18 @@ void CircularIndicator::setStartAngle(int angle)
     update();
 }
 
-int CircularIndicator::endAngle() const
+int CircularIndicator::spanAngle() const
 {
-    return m_endAngle;
+    return m_spanAngle;
 }
 
-void CircularIndicator::setEndAngle(int angle)
+void CircularIndicator::setSpanAngle(int angle)
 {
-    if (angle == m_endAngle)
+    if (angle == m_spanAngle)
         return;
 
-    m_endAngle = angle;
-    emit endAngleChanged(m_endAngle);
+    m_spanAngle = angle;
+    emit spanAngleChanged(m_spanAngle);
     update();
 }
 
@@ -156,11 +156,11 @@ void CircularIndicator::paint(QPainter *painter)
     painter->setPen(pen);
     painter->drawArc(indicatorRect, 0, 360 * 16);
 
-    if (m_startAngle == m_endAngle)
+    if (m_startAngle == m_spanAngle)
         return;
 
     // Draw the foreground
     pen.setColor(m_progressColor);
     painter->setPen(pen);
-    painter->drawArc(indicatorRect, (90 - m_startAngle) * 16, -m_endAngle * 16);
+    painter->drawArc(indicatorRect, (90 - m_startAngle) * 16, -m_spanAngle * 16);
 }

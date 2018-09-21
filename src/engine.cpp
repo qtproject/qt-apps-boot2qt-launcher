@@ -56,7 +56,7 @@ Engine::Engine(QQuickItem *parent)
     , m_intro_done(false)
     , m_apps_ready(false)
     , m_fps_enabled(false)
-    , m_glAvailable(true)
+    , m_glAvailable(checkForGlAvailability())
 {
     m_state = ENGINE_STATE_RUNNING;
 
@@ -74,13 +74,13 @@ Engine::Engine(QQuickItem *parent)
     m_screenHeight = m_screenSize.height();
 
     connect(this, SIGNAL(windowChanged(QQuickWindow*)), this, SLOT(windowChanged(QQuickWindow*)));
+}
 
-    //Check for software renderer
-    QString renderer = qgetenv("QMLSCENE_DEVICE");
-    if (renderer.toLower() == "softwarecontext") {
-        m_glAvailable = false;
-        emit glAvailableChanged(false);
-    }
+bool Engine::checkForGlAvailability()
+{
+    QQuickWindow window;
+    return ((window.sceneGraphBackend() != "software") &&
+            (window.sceneGraphBackend() != "softwarecontext"));
 }
 
 void Engine::updateReadyness()

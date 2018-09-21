@@ -39,43 +39,44 @@ CircularIndicator {
     SequentialAnimation {
         running: true
 
-        // Fill 1/5 of the circle before starting looping
+        // Fill 20 degrees of the circle before starting looping
         NumberAnimation {
             target: circularIndicator
-            property: "endAngle"
+            property: "spanAngle"
             from: 0
-            to: 72
+            to: 20
             duration: 200
         }
 
         SequentialAnimation {
             loops: Animation.Infinite
 
-            // Fill rest of the circle
+            // Fill the circle, except have both caps still visible
             NumberAnimation {
                 target: circularIndicator
-                property: "endAngle"
-                from: 72
-                to: 360
+                property: "spanAngle"
+                from: 20
+                to: 345
                 duration: 800
             }
 
-            // Fill 1/5 of the circle and clear previous fill
+            // Clear the circle, except for a 20 degree head start. The head start is to
+            // avoid an abrupt change in the cap of the indicator arc from an end to a beginning.
             ParallelAnimation {
                 NumberAnimation {
                     target: circularIndicator
                     property: "startAngle"
-                    from: -360
-                    to: 0
-                    duration: 200
+                    from: 0
+                    to: 360
+                    duration: 800
                     onStopped: circularIndicator.startAngle = 0
                 }
                 NumberAnimation {
                     target: circularIndicator
-                    property: "endAngle"
-                    from: 360
-                    to: 72
-                    duration: 200
+                    property: "spanAngle"
+                    from: 345
+                    to: 20
+                    duration: 800
                 }
             }
         }

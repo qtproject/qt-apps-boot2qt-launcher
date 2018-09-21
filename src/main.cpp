@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2018 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of Qt for Device Creation.
@@ -129,10 +129,15 @@ int main(int argc, char **argv)
     QtSquareImageProvider squareImageProvider;
     QtImageMaskProvider imageMaskProvider;
 
+    // Material style can be set only for devices supporting GL
     QSettings styleSettings;
     QString style = styleSettings.value("style").toString();
-    if (style.isEmpty() || style == "Default")
-        styleSettings.setValue("style", "Material");
+    if (Engine::checkForGlAvailability()) {
+        if (style.isEmpty() || style == "Default")
+            styleSettings.setValue("style", "Material");
+    } else {
+        qDebug()<<"No GL available, skipping Material style";
+    }
     QQuickStyle::setStyle(styleSettings.value("style").toString());
 
     QSettings launcherSettings("QtLauncher", "colorSettings");
@@ -145,7 +150,7 @@ int main(int argc, char **argv)
     engine.rootContext()->setContextProperty("_secondaryGrey", launcherSettings.value("secondaryGrey", "#3a4055"));
 
     engine.rootContext()->setContextProperty("VideosLocation", launcherSettings.value("videosLocation", "file:///data/videos"));
-    engine.rootContext()->setContextProperty("DefaultVideoUrl", launcherSettings.value("defaultVideoUrl", "file:///data/videos/Qt+for+Device+Creation.mp4"));
+    engine.rootContext()->setContextProperty("DefaultVideoUrl", launcherSettings.value("defaultVideoUrl", "file:///data/videos/Qt+for+Designers+and+Developers.mp4"));
 
     engine.addImageProvider("QtImage", &imageProvider);
     engine.addImageProvider("QtSquareImage", &squareImageProvider);

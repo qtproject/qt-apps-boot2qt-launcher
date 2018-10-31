@@ -50,7 +50,7 @@ bool ApplicationSettings::isShowFPSEnabled() const
 
 bool ApplicationSettings::parseCommandLineArguments()
 {
-    QStringList args = QCoreApplication::instance()->arguments();
+    QStringList args = QCoreApplication::arguments();
     for (int i=0; i<args.size(); ++i) {
         if (args.at(i) == QStringLiteral("--main-file")) {
             ++i;

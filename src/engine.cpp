@@ -51,7 +51,7 @@
 
 Engine::Engine(QQuickItem *parent)
     : QQuickItem(parent)
-    , m_fpsCounter(0)
+    , m_fpsCounter(nullptr)
     , m_fps(0)
     , m_intro_done(false)
     , m_apps_ready(false)
@@ -98,7 +98,7 @@ void Engine::updateFPSCounter()
 {
     if (m_fpsCounter) {
         delete m_fpsCounter;
-        m_fpsCounter = 0;
+        m_fpsCounter = nullptr;
     }
 
     if (m_fps_enabled && window()) {
@@ -187,7 +187,7 @@ void Engine::launchApplication(const QUrl &path, const QString &mainFile, const 
 
 void Engine::closeApplication()
 {
-    emit activeIconChanged(0);
+    emit activeIconChanged(nullptr);
 
     m_applicationMain = m_applicationUrl = QUrl();
     m_applicationName = QString();

@@ -44,7 +44,7 @@ class CircularIndicator : public QQuickPaintedItem
 
 public:
     CircularIndicator(QQuickItem *parent = 0);
-    ~CircularIndicator();
+    ~CircularIndicator() = default;
 
     int startAngle() const;
     int spanAngle() const;

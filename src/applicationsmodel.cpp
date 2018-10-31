@@ -38,7 +38,7 @@
 #include <QJsonObject>
 #include <QXmlStreamReader>
 
-const QEvent::Type RESULT_EVENT = (QEvent::Type) (QEvent::User + 1);
+const QEvent::Type RESULT_EVENT = static_cast<QEvent::Type>(QEvent::User + 1);
 class ResultEvent : public QEvent
 {
 public:
@@ -54,15 +54,14 @@ static bool appOrder(const AppData& a, const AppData& b)
 {
     if (a.priority != b.priority)
         return a.priority > b.priority;
-    else
-        return a.name < b.name;
+    return a.name < b.name;
 }
 
 class IndexingThread : public QThread
 {
 public:
 
-    void run()
+    void run() final
     {
         QList<AppData> results;
         QList<QString> roots = root.split(":");
@@ -136,7 +135,7 @@ public:
     }
 
     QString root;
-    ApplicationsModel *model;
+    ApplicationsModel *model = nullptr;
     QString target;
 };
 
@@ -159,7 +158,7 @@ QHash<int, QByteArray> ApplicationsModel::roleNames() const
 
 void ApplicationsModel::initialize(const QString &appsRoot)
 {
-    IndexingThread *thread = new IndexingThread;
+    auto *thread = new IndexingThread;
     thread->root = appsRoot;
     thread->model = this;
     thread->start();
@@ -221,12 +220,18 @@ QVariant ApplicationsModel::query(int i, const QString &name) const
     }
 
     const AppData &ad = m_data.at(i);
-    if (name == QStringLiteral("description")) return ad.description;
-    else if (name == QStringLiteral("name")) return ad.name;
-    else if (name == QStringLiteral("location")) return ad.location;
-    else if (name == QStringLiteral("mainFile")) return ad.main;
-    else if (name == QStringLiteral("icon")) return ad.icon;
-    else if (name == QStringLiteral("priority")) return ad.priority;
+    if (name == QStringLiteral("description"))
+        return ad.description;
+    if (name == QStringLiteral("name"))
+        return ad.name;
+    if (name == QStringLiteral("location"))
+        return ad.location;
+    if (name == QStringLiteral("mainFile"))
+        return ad.main;
+    if (name == QStringLiteral("icon"))
+        return ad.icon;
+    if (name == QStringLiteral("priority"))
+        return ad.priority;
 
     qWarning("ApplicationsModel::query: Asking for bad name %s", qPrintable(name));
 

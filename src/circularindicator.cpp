@@ -39,10 +39,6 @@ CircularIndicator::CircularIndicator(QQuickItem *parent)
 {
 }
 
-CircularIndicator::~CircularIndicator()
-{
-}
-
 int CircularIndicator::startAngle() const
 {
     return m_startAngle;

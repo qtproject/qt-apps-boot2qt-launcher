@@ -11,6 +11,7 @@ qtHaveModule(webengine) {
 HEADERS += \
     src/engine.h \
     src/applicationsmodel.h \
+    src/applicationsmodel_p.h \
     src/fpscounter.h \
     src/applicationsettings.h \
     src/settingsmanager.h \

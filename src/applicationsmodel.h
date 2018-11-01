@@ -77,10 +77,8 @@ public:
 signals:
     void ready();
 
-
-
-protected:
-    bool event(QEvent *e);
+private slots:
+    void handleIndexingResult(QList<AppData> results);
 
 private:
 

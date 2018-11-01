@@ -27,6 +27,7 @@
 **
 ****************************************************************************/
 #include "applicationsmodel.h"
+#include "applicationsmodel_p.h"
 
 #include <QCoreApplication>
 #include <QDirIterator>
@@ -38,18 +39,6 @@
 #include <QJsonObject>
 #include <QXmlStreamReader>
 
-const QEvent::Type RESULT_EVENT = static_cast<QEvent::Type>(QEvent::User + 1);
-class ResultEvent : public QEvent
-{
-public:
-    ResultEvent(const QList<AppData> &r)
-        : QEvent(RESULT_EVENT)
-        , results(r)
-    {
-    }
-    QList<AppData> results;
-};
-
 static bool appOrder(const AppData& a, const AppData& b)
 {
     if (a.priority != b.priority)
@@ -57,87 +46,78 @@ static bool appOrder(const AppData& a, const AppData& b)
     return a.name < b.name;
 }
 
-class IndexingThread : public QThread
+void IndexingThread::run()
 {
-public:
+    QList<AppData> results;
+    QList<QString> roots = root.split(":");
+    target = qgetenv("B2QT_BASE") + "-" + qgetenv("B2QT_PLATFORM");
+    foreach (const QString &root, roots) {
+        if (QFile::exists(root + "/demos.xml")) {
 
-    void run() final
-    {
-        QList<AppData> results;
-        QList<QString> roots = root.split(":");
-        target = qgetenv("B2QT_BASE") + "-" + qgetenv("B2QT_PLATFORM");
-        foreach (const QString &root, roots) {
-            if (QFile::exists(root + "/demos.xml")) {
+            QFile file(root + "/demos.xml");
 
-                QFile file(root + "/demos.xml");
+            if (!file.open(QIODevice::ReadOnly))
+                break;
 
-                if (!file.open(QIODevice::ReadOnly))
+            QXmlStreamReader xml(&file);
+
+            AppData data;
+            bool exclude = false;
+
+            while (!xml.atEnd()) {
+                switch (xml.readNext()) {
+
+                case QXmlStreamReader::StartElement:
+                    if (xml.name().toString().toLower() == "application") {
+
+                        const QStringList excludeList = xml.attributes().value("exclude").toString().split(QStringLiteral(";"));
+
+                        exclude = excludeList.contains(target) || excludeList.contains(QStringLiteral("all"));
+
+                        if (exclude)
+                            break;
+
+                        data.name = xml.attributes().value("title").toString().trimmed();
+
+                        QString path = xml.attributes().value("location").toString();
+                        data.location = QUrl::fromLocalFile(path);
+
+                        data.main = QString("/%1").arg(xml.attributes().value("main").toString());
+
+                        QString imageName = xml.attributes().value("icon").toString();
+
+                        data.icon = QFile::exists(imageName)
+                                ? QUrl::fromLocalFile(imageName)
+                                : QUrl("qrc:///qml/images/codeless.png");
+
+
+                        data.priority = xml.attributes().value("priority").toInt();
+
+                    } else if (xml.name().toString().toLower() == "description") {
+                        data.description = xml.readElementText().trimmed();
+                    }
                     break;
 
-                QXmlStreamReader xml(&file);
+                case QXmlStreamReader::EndElement:
+                    if (xml.name().toString().toLower() == "application" && !exclude)
+                        results << data;
+                    break;
 
-                AppData data;
-                bool exclude = false;
-
-                while (!xml.atEnd()) {
-                    switch (xml.readNext()) {
-
-                    case QXmlStreamReader::StartElement:
-                        if (xml.name().toString().toLower() == "application") {
-
-                            const QStringList excludeList = xml.attributes().value("exclude").toString().split(QStringLiteral(";"));
-
-                            exclude = excludeList.contains(target) || excludeList.contains(QStringLiteral("all"));
-
-                            if (exclude)
-                                break;
-
-                            data.name = xml.attributes().value("title").toString().trimmed();
-
-                            QString path = xml.attributes().value("location").toString();
-                            data.location = QUrl::fromLocalFile(path);
-
-                            data.main = QString("/%1").arg(xml.attributes().value("main").toString());
-
-                            QString imageName = xml.attributes().value("icon").toString();
-
-                            data.icon = QFile::exists(imageName)
-                                    ? QUrl::fromLocalFile(imageName)
-                                    : QUrl("qrc:///qml/images/codeless.png");
-
-
-                            data.priority = xml.attributes().value("priority").toInt();
-
-                        } else if (xml.name().toString().toLower() == "description") {
-                            data.description = xml.readElementText().trimmed();
-                        }
-                        break;
-
-                    case QXmlStreamReader::EndElement:
-                        if (xml.name().toString().toLower() == "application" && !exclude)
-                            results << data;
-                        break;
-
-                    default:
-                        break;
-                    }
+                default:
+                    break;
                 }
-
-                if (xml.error() != QXmlStreamReader::NoError)
-                    qWarning("XML Parser error: %s", qPrintable(xml.errorString()));
             }
+
+            if (xml.error() != QXmlStreamReader::NoError)
+                qWarning("XML Parser error: %s", qPrintable(xml.errorString()));
         }
-
-        std::sort(results.begin(), results.end(), appOrder);
-
-        qDebug() << "Indexer: all done... total:" << results.size();
-        QCoreApplication::postEvent(model, new ResultEvent(results));
     }
 
-    QString root;
-    ApplicationsModel *model = nullptr;
-    QString target;
-};
+    std::sort(results.begin(), results.end(), appOrder);
+
+    qDebug() << "Indexer: all done... total:" << results.size();
+    emit indexingFinished(results);
+}
 
 ApplicationsModel::ApplicationsModel(QObject *parent) :
     QAbstractItemModel(parent)
@@ -161,20 +141,11 @@ void ApplicationsModel::initialize(const QString &appsRoot)
     auto *thread = new IndexingThread;
     thread->root = appsRoot;
     thread->model = this;
+    qRegisterMetaType<QList<AppData>>("QList<AppData>");
+    connect(thread, &IndexingThread::indexingFinished,
+            this, &ApplicationsModel::handleIndexingResult);
+    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
     thread->start();
-}
-
-bool ApplicationsModel::event(QEvent *e)
-{
-    if (e->type() == RESULT_EVENT) {
-        beginResetModel();
-        m_data = static_cast<ResultEvent *>(e)->results;
-        endResetModel();
-        emit ready();
-        return true;
-    }
-
-    return QAbstractItemModel::event(e);
 }
 
 QVariant ApplicationsModel::data(const QModelIndex &index, int role) const
@@ -236,4 +207,12 @@ QVariant ApplicationsModel::query(int i, const QString &name) const
     qWarning("ApplicationsModel::query: Asking for bad name %s", qPrintable(name));
 
     return QVariant();
+}
+
+void ApplicationsModel::handleIndexingResult(QList<AppData> results)
+{
+    beginResetModel();
+    m_data = results;
+    endResetModel();
+    emit ready();
 }

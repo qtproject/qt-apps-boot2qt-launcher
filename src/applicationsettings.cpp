@@ -27,7 +27,9 @@
 **
 ****************************************************************************/
 #include "applicationsettings.h"
+
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDebug>
 #include <QtCore/QStringList>
 
 ApplicationSettings::ApplicationSettings(QObject *parent)
@@ -50,19 +52,23 @@ bool ApplicationSettings::isShowFPSEnabled() const
 
 bool ApplicationSettings::parseCommandLineArguments()
 {
-    QStringList args = QCoreApplication::arguments();
-    for (int i=0; i<args.size(); ++i) {
-        if (args.at(i) == QStringLiteral("--main-file")) {
+    const QStringList args = QCoreApplication::arguments();
+    for (int i = 1; i < args.size(); ++i) {
+        const QString arg = args.at(i);
+        if (arg == QStringLiteral("--main-file")) {
             ++i;
             m_mainFile = QUrl::fromUserInput(args.at(i));
-        } else if (args.at(i) == QStringLiteral("--applications-root")) {
+        } else if (arg == QStringLiteral("--applications-root")) {
             ++i;
             m_appsRoot = args.at(i);
-        } else if (args.at(i) == QStringLiteral("--show-fps")) {
+        } else if (arg == QStringLiteral("--show-fps")) {
             m_isShowFPSEnabled = true;
-        } else if (args.at(i) == QStringLiteral("-h")
-                   || args.at(i) == QStringLiteral("--help")
-                   || args.at(i) == QStringLiteral("-?")) {
+        } else if (arg == QStringLiteral("-h")
+                   || arg == QStringLiteral("--help")
+                   || arg == QStringLiteral("-?")) {
+            return false;
+        } else {
+            qCritical() << "Unknown command line argument:" << args.at(i);
             return false;
         }
     }

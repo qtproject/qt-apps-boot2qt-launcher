@@ -123,7 +123,7 @@ QPixmap QtSquareImageProvider::requestPixmap(const QString &id, QSize *size, con
             QRect r = image.rect();
             QLinearGradient gradient(r.topLeft(), r.bottomLeft());
             gradient.setColorAt(0, QColor("#99FFFFFF"));
-            gradient.setColorAt(1, Qt::transparent);
+            gradient.setColorAt(0.25, Qt::transparent);
             p.fillRect(r, gradient);
         }
 

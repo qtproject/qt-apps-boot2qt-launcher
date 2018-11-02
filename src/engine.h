@@ -46,7 +46,6 @@ class Engine : public QQuickItem
     Q_PROPERTY(QString state READ state WRITE setState NOTIFY stateChanged)
 
     Q_PROPERTY(QUrl applicationMain READ applicationMain NOTIFY applicationMainChanged)
-    Q_PROPERTY(QUrl applicationUrl READ applicationUrl NOTIFY applicationUrlChanged)
     Q_PROPERTY(QString applicationName READ applicationName NOTIFY applicationNameChanged)
     Q_PROPERTY(QString applicationDescription READ applicationDescription NOTIFY applicationDescriptionChanged)
 
@@ -55,10 +54,8 @@ class Engine : public QQuickItem
 
     Q_PROPERTY(const QString qtVersion READ qtVersion CONSTANT)
 
-    Q_PROPERTY(bool glAvailable READ glAvailable NOTIFY glAvailableChanged)
-
 public:
-    explicit Engine(QQuickItem *parent = 0);
+    explicit Engine(QQuickItem *parent = nullptr);
     
     QString state() const { return m_state; }
     void setState(const QString &state);
@@ -70,37 +67,26 @@ public:
 
     QString qtVersion() const { return QT_VERSION_STR; }
 
-    QUrl applicationUrl() const { return m_applicationUrl; }
     QUrl applicationMain() const { return m_applicationMain; }
     QString applicationName() const { return m_applicationName; }
     QString applicationDescription() const { return m_applicationDescription; }
 
     static bool checkForGlAvailability();
 
-    Q_INVOKABLE QUrl fromUserInput(const QString& userInput) { return QUrl::fromUserInput(userInput); }
-    Q_INVOKABLE int sensibleButtonSize() const;
-    Q_INVOKABLE int titleBarSize() const;
-    Q_INVOKABLE int smallFontSize() const { return qMax<int>(m_dpcm * 0.4, 10); }
-    Q_INVOKABLE int fontSize() const { return qMax<int>(m_dpcm * 0.6, 14); }
     Q_INVOKABLE int titleFontSize() const { return qMax<int>(m_dpcm * 0.9, 20); }
     Q_INVOKABLE int centimeter(int val = 1) const { return (m_dpcm * val); }
     Q_INVOKABLE int mm(int val) const { return (int)(m_dpcm * val * 0.1); }
-    Q_INVOKABLE int screenWidth() const { return m_screenWidth; }
-    Q_INVOKABLE int screenHeight() const { return m_screenHeight; }
-    Q_INVOKABLE bool glAvailable() const { return m_glAvailable; }
 
 protected:
 
 signals:
     void stateChanged(const QString &state);
     void activeIconChanged(QQuickItem *item);
-    void applicationUrlChanged(const QUrl &applicationUrl);
     void applicationMainChanged(const QUrl &applicationMain);
     void applicationNameChanged(const QString &applicationName);
     void applicationDescriptionChanged(const QString &applicationName);
     void fpsChanged(qreal fps);
     void fpsEnabledChanged(bool enabled);
-    void glAvailableChanged(bool available);
 
 public slots:
     void markApplicationsModelReady() { m_apps_ready = true; updateReadyness(); }
@@ -122,14 +108,12 @@ private:
 
     QString m_state;
 
-    QUrl m_applicationUrl;
     QUrl m_applicationMain;
     QString m_applicationName;
     QString m_applicationDescription;
 
     QSize m_screenSize;
     qreal m_dpcm;
-    int m_screenWidth, m_screenHeight;
 
     FpsCounter *m_fpsCounter;
     qreal m_fps;
@@ -137,7 +121,6 @@ private:
     uint m_intro_done : 1;
     uint m_apps_ready : 1;
     uint m_fps_enabled : 1;
-    bool m_glAvailable;
 };
 
 #endif // ENGINE_H

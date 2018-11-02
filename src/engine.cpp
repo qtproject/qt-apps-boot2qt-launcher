@@ -56,7 +56,6 @@ Engine::Engine(QQuickItem *parent)
     , m_intro_done(false)
     , m_apps_ready(false)
     , m_fps_enabled(false)
-    , m_glAvailable(checkForGlAvailability())
 {
     m_state = ENGINE_STATE_RUNNING;
 
@@ -70,8 +69,6 @@ Engine::Engine(QQuickItem *parent)
     float high = 20;
     float screenSizeCM = qMax<float>(qMin(m_screenSize.width(), m_screenSize.height()) / m_dpcm, low);
     m_dpcm *= (screenSizeCM - low) / (high - low) * 0.5 + 0.5;
-    m_screenWidth = m_screenSize.width();
-    m_screenHeight = m_screenSize.height();
 
     connect(this, SIGNAL(windowChanged(QQuickWindow*)), this, SLOT(windowChanged(QQuickWindow*)));
 }
@@ -115,11 +112,6 @@ void Engine::setState(const QString &state)
     emit stateChanged(m_state);
 }
 
-int Engine::titleBarSize() const
-{
-    return int(QGuiApplication::primaryScreen()->physicalDotsPerInch() / 2.54f);
-}
-
 void Engine::setFps(qreal fps)
 {
     fps = qRound(fps);
@@ -147,21 +139,6 @@ void Engine::setFpsEnabled(bool enabled)
     emit fpsEnabledChanged(m_fps_enabled);
 }
 
-
-int Engine::sensibleButtonSize() const
-{
-    // 3cm buttons, nice and big...
-    int buttonSize = int(m_dpcm * 3);
-
-    int baseSize = qMin(m_screenSize.width(), m_screenSize.height());
-
-    // Clamp buttonSize to screen..
-    if (buttonSize > baseSize)
-        buttonSize = baseSize;
-
-    return buttonSize;
-}
-
 bool Engine::fileExists(const QUrl &fileName)
 {
     QFile file(fileName.toLocalFile());
@@ -174,11 +151,10 @@ void Engine::launchApplication(const QUrl &path, const QString &mainFile, const 
     if (m_state != QStringLiteral("running"))
         return;
 
-    m_applicationMain = m_applicationUrl = path;
+    m_applicationMain = path;
     m_applicationMain.setPath(path.path() + "/" + mainFile);
     m_applicationName = name;
     m_applicationDescription = desc;
-    emit applicationUrlChanged(m_applicationUrl);
     emit applicationMainChanged(m_applicationMain);
     emit applicationNameChanged(m_applicationName);
     emit applicationDescriptionChanged(m_applicationName);
@@ -189,10 +165,9 @@ void Engine::closeApplication()
 {
     emit activeIconChanged(nullptr);
 
-    m_applicationMain = m_applicationUrl = QUrl();
+    m_applicationMain = QUrl();
     m_applicationName = QString();
     m_applicationDescription = QString();
-    emit applicationUrlChanged(m_applicationUrl);
     emit applicationMainChanged(m_applicationMain);
     emit applicationNameChanged(m_applicationName);
     emit applicationDescriptionChanged(m_applicationName);

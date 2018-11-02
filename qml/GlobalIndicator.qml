@@ -50,6 +50,6 @@ Item {
     Text {
         id: globalIndicatorLabel;
         color: "white"
-        font.pixelSize: engine.sensibleButtonSize() * 0.2
+        font.pointSize: 18
     }
 }

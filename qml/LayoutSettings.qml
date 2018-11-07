@@ -150,7 +150,7 @@ Item {
                 sourceSize.height: parent.height
                 width: parent.width * 0.9
                 height: width
-                source: "../newIcons/checkmark.svg"
+                source: "icons/checkmark.svg"
                 visible: checkBox.checked
                 antialiasing: true
                 smooth: true

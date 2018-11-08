@@ -30,14 +30,14 @@ import QtQuick 2.0
 import QtQuick.VirtualKeyboard 2.0
 
 Item {
-    property var inputItem: InputContext.inputItem
+    property var inputItem: InputContext.priv.inputItem
     property var appLoader
 
     onInputItemChanged: open();
 
     function open() {
         appLoader = null
-        if (inputItem !== null) {
+        if (inputItem) {
             var parent_ = inputItem.parent
             var found = false
             while (parent_) {

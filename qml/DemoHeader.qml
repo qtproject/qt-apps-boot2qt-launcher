@@ -91,6 +91,7 @@ Rectangle {
 
         Image {
             id: applicationCloseButton
+            objectName: "applicationCloseButton"
             height: parent.height
             width: height
             source: "icons/close_icon.svg"

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2017 The Qt Company Ltd.
+** Copyright (C) 2019 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of Qt for Device Creation.
@@ -26,36 +26,30 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtQuick.Controls 2.3
+import QtQuick 2.4
 
 Item {
-    id: gridroot
-    anchors.fill: parent
+    id: fps
+    property bool enabled
+    property alias text: globalIndicatorLabel.text
 
-    GridView {
-        id: grid
-        objectName: "launcherGridView"
-        anchors.fill: parent
-        anchors.margins: viewSettings.pageMargin * 0.5
-        anchors.topMargin: viewSettings.pageMargin
-        cacheBuffer: 10000
+    opacity: enabled ? 1 : 0
+    Behavior on opacity { NumberAnimation { duration: 500 } }
 
-        cellWidth: width / 3
-        cellHeight: cellWidth
-        clip: true
-        model: applicationsModel;
+    anchors.bottom: parent.bottom;
+    anchors.left: parent.left;
+    width: globalIndicatorLabel.width
+    height: globalIndicatorLabel.height
 
-        delegate: GridViewIcon {
-            id: iconRoot2;
-            height: grid.cellHeight
-            width: grid.cellWidth
-            onClicked: root.launchApplication(sLocation, sMainFile, sName, sDescription)
-        }
+    Rectangle {
+        color: "black"
+        opacity: 0.5
+        anchors.fill: globalIndicatorLabel
     }
 
-    FlickSlider {
-        flickItem: grid
-        anchors.right: parent.right
+    Text {
+        id: globalIndicatorLabel;
+        color: "white"
+        font.pixelSize: engine.sensibleButtonSize() * 0.2
     }
 }

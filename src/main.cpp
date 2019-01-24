@@ -51,6 +51,7 @@
 #include "settingsmanager.h"
 #include "imageproviders.h"
 #include "circularindicator.h"
+#include "automationhelper.h"
 
 void displayHelp(const char *appName)
 {
@@ -121,6 +122,7 @@ int main(int argc, char **argv)
     qmlRegisterType<ApplicationsModel>("com.qtcompany.B2QtLauncher", 1, 0, "LauncherApplicationsModel");
     qmlRegisterType<Engine>("com.qtcompany.B2QtLauncher", 1, 0, "LauncherEngine");
     qmlRegisterType<CircularIndicator>("Circle", 1, 0, "CircularIndicator");
+    qmlRegisterType<AutomationHelper>("AutomationHelper", 1, 0, "AutomationHelper");
 
     QQmlApplicationEngine engine;
     SettingsManager settings;

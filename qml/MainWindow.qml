@@ -45,6 +45,7 @@ Item {
     Component {
         id: gridComponent
         LaunchScreen {
+            objectName: "launchScreen"
             id: launchScreen
         }
     }
@@ -52,6 +53,7 @@ Item {
     Component {
         id: detailComponent
         DetailView {
+            objectName: "detailView"
             id: detailView
         }
     }
@@ -319,8 +321,44 @@ Item {
             }
         }
 
-        FpsIndicator {
+        GlobalIndicator {
+            id: fps
             enabled: engine.fpsEnabled
+            text: "FPS: " + engine.fps
         }
+
+        GlobalIndicator {
+            id: demoModeIndicator
+            enabled: demoMode.demoIsRunning
+            text: qsTr("DEMO MODE - Tap screen to use")
+            anchors.bottom: fps.enabled ? fps.top : parent.bottom
+        }
+    }
+
+    DemoMode {
+        id: demoMode
+        demoHeader: demoHeader
+        launcherHeader: header
+        visibleItem: (applicationLoader.item && (applicationLoader.item.objectName !== "empty")) ?
+                         applicationLoader.item : contentLoader.item
+    }
+
+    // MouseArea for capturing mouse clicks/presses
+    MouseArea {
+        anchors.fill: parent
+        propagateComposedEvents: true
+        enabled: demoMode.demoIsRunning
+
+        // Press or click
+        function pressedOrClicked(mouse) {
+            mouse.accepted = false
+            if (mouse.source === Qt.MouseEventSynthesizedByApplication)
+                return
+            demoMode.stopDemos()
+            mouse.accepted = true
+        }
+
+        onClicked: pressedOrClicked(mouse)
+        onPressed: pressedOrClicked(mouse)
     }
 }

@@ -38,6 +38,7 @@ Item {
     signal menuClicked()
 
     Image {
+        objectName: "settingsMenuIcon"
         anchors.left: parent.left
         anchors.top: parent.top
         source: "icons/settingsmenu_launcher_icon.svg"

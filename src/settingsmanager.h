@@ -36,7 +36,7 @@ class SettingsManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit SettingsManager(QObject *parent = 0);
+    explicit SettingsManager(QObject *parent = nullptr);
     ~SettingsManager();
 
     Q_INVOKABLE QVariant getValue(const QString& key, const QVariant &defaultValue);
@@ -53,14 +53,18 @@ public:
     void setMouseSelected(bool enabled);
 
     Q_PROPERTY (bool rotationSelected READ rotationSelected WRITE setRotationSelected NOTIFY rotationSelectedChanged)
+    Q_PROPERTY (bool demoModeSelected READ demoModeSelected WRITE setDemoModeSelected NOTIFY demoModeSelectedChanged)
 
     bool rotationSelected();
     void setRotationSelected(bool enabled);
+    bool demoModeSelected();
+    void setDemoModeSelected(bool enabled);
 
 signals:
     void gridSelectedChanged(bool enabled);
     void mouseSelectedChanged(bool enabled);
     void rotationSelectedChanged(bool enabled);
+    void demoModeSelectedChanged(bool enabled);
 
 private:
     QSettings m_settings;

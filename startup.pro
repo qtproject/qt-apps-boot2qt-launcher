@@ -15,7 +15,8 @@ HEADERS += \
     src/applicationsettings.h \
     src/settingsmanager.h \
     src/imageproviders.h \
-    src/circularindicator.h
+    src/circularindicator.h \
+    src/automationhelper.h
 
 SOURCES += src/main.cpp \
     src/engine.cpp \
@@ -24,7 +25,8 @@ SOURCES += src/main.cpp \
     src/applicationsettings.cpp \
     src/settingsmanager.cpp \
     src/imageproviders.cpp \
-    src/circularindicator.cpp
+    src/circularindicator.cpp \
+    src/automationhelper.cpp
 
 target.path = $$[INSTALL_ROOT]/usr/bin
 

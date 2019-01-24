@@ -105,6 +105,7 @@ Item {
 
         QtButton {
             id: startButton
+            objectName: "detailStartButton"
             height: detailInformation.height * 0.14
             width: height * 3
             anchors.left: parent.left
@@ -129,6 +130,7 @@ Item {
 
         ListView {
             id: thumbList
+            objectName: "detailListView"
             anchors.fill: parent
             anchors.margins: viewSettings.pageMargin * 0.5
             orientation: ListView.Horizontal

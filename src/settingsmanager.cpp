@@ -91,3 +91,16 @@ void SettingsManager::setRotationSelected(bool enabled)
     setValue("rotationSelected", enabled);
     emit rotationSelectedChanged(enabled);
 }
+
+bool SettingsManager::demoModeSelected()
+{
+    return getValue("demoModeSelected", false).toBool();
+}
+
+void SettingsManager::setDemoModeSelected(bool enabled)
+{
+    if (demoModeSelected() == enabled)
+        return;
+    setValue("demoModeSelected", enabled);
+    emit demoModeSelectedChanged(enabled);
+}

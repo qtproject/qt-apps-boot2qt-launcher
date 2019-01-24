@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2018 The Qt Company Ltd.
+** Copyright (C) 2019 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of Qt for Device Creation.
@@ -26,30 +26,22 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.4
+#ifndef AUTOMATIONHELPER_H
+#define AUTOMATIONHELPER_H
 
-Item {
-    id: fps
-    property bool enabled
+#include <QObject>
+#include <QQuickItem>
 
-    opacity: enabled ? 1 : 0
-    Behavior on opacity { NumberAnimation { duration: 500 } }
+class AutomationHelper : public QObject
+{
+    Q_OBJECT
+public:
+    AutomationHelper(QObject *parent = 0);
 
-    anchors.bottom: parent.bottom;
-    anchors.left: parent.left;
-    width: fpsLabel.width
-    height: fpsLabel.height
+public slots:
+    void click(QQuickItem* item);
+    void clickChildObject(QQuickItem* item, QString childObjectName);
+    QQuickItem* findChildObject(QQuickItem* item, QString childObjectName);
+};
 
-    Rectangle {
-        color: "black"
-        opacity: 0.5
-        anchors.fill: fpsLabel
-    }
-
-    Text {
-        id: fpsLabel;
-        color: "white"
-        text: "FPS: " + engine.fps
-        font.pixelSize: engine.sensibleButtonSize() * 0.2
-    }
-}
+#endif // AUTOMATIONHELPER_H

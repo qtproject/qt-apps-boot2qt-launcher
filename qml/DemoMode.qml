@@ -37,8 +37,6 @@ Item {
     property bool demoModeSeleted: globalSettings.demoModeSelected
     property bool demoIsRunning: false
 
-    property int demoInitialStartTime: 2000         // How fast demo starts after turning the demo on
-    property int demoIdleStartTime: 2 * 60 * 1000   // How fast demo starts after idle
     property int demoStepDuration: 2000
     property int applicationWaitDuration: 1000
     property int verticalFlickVelocity: 1000
@@ -46,8 +44,7 @@ Item {
 
     onDemoModeSeletedChanged: {
         if (demoModeSeleted) {
-            demoStartCounter.interval = demoInitialStartTime
-            demoStartCounter.start()
+            demoStartCounter.restart()
         } else {
             demoStartCounter.stop()
             stopDemos()
@@ -74,26 +71,27 @@ Item {
       Stop all currently running demos
     */
     function stopDemos() {
-        console.log("Stop automatic demo mode")
-        switchToSettingScreenAnimation.stop()
-        settingsDemoAnimation.stop()
-        gridViewDemoAnimation.stop()
-        graphicsEffectsDemoAnimation.stop()
-        qtChartsDemoAnimation.stop()
-        switchToDetailViewAnimation.stop()
-        detailViewDemoAnimation.stop()
-        eBikeViewDemoAnimation.stop()
-        demoIsRunning = false
+        if (demoIsRunning) {
+            switchToSettingScreenAnimation.stop()
+            settingsDemoAnimation.stop()
+            gridViewDemoAnimation.stop()
+            graphicsEffectsDemoAnimation.stop()
+            qtChartsDemoAnimation.stop()
+            switchToDetailViewAnimation.stop()
+            detailViewDemoAnimation.stop()
+            eBikeViewDemoAnimation.stop()
+            demoIsRunning = false
+        }
 
-        // Restart demo after idle time
+        // Postpone restarting
         if (demoModeSeleted) {
-            demoStartCounter.interval = demoIdleStartTime
             demoStartCounter.restart()
         }
     }
 
     Timer {
         id: demoStartCounter
+        interval: globalSettings.demoModeStartupTime * 1000
         repeat: false
         onTriggered: startDemos()
     }

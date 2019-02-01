@@ -28,6 +28,8 @@
 ****************************************************************************/
 #include "settingsmanager.h"
 
+static const int DEFAULT_DEMO_STARTUP_TIME = 2 * 60;
+
 SettingsManager::SettingsManager(QObject *parent) :
     QObject(parent),
     m_settings("The Qt Company", "Qt Demo Launcher")
@@ -103,4 +105,17 @@ void SettingsManager::setDemoModeSelected(bool enabled)
         return;
     setValue("demoModeSelected", enabled);
     emit demoModeSelectedChanged(enabled);
+}
+
+int SettingsManager::demoModeStartupTime()
+{
+    return getValue("demoModeStartupTime", DEFAULT_DEMO_STARTUP_TIME).toInt();
+}
+
+void SettingsManager::setDemoModeStartupTime(int startupTime)
+{
+    if (demoModeStartupTime() == startupTime)
+        return;
+    setValue("demoModeStartupTime", startupTime);
+    emit demoModeStartupTimeChanged(startupTime);
 }

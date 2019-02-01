@@ -347,15 +347,15 @@ Item {
     MouseArea {
         anchors.fill: parent
         propagateComposedEvents: true
-        enabled: demoMode.demoIsRunning
 
         // Press or click
         function pressedOrClicked(mouse) {
-            mouse.accepted = false
-            if (mouse.source === Qt.MouseEventSynthesizedByApplication)
+            if (mouse.source === Qt.MouseEventSynthesizedByApplication) {
+                mouse.accepted = false
                 return
+            }
+            mouse.accepted = demoMode.demoIsRunning
             demoMode.stopDemos()
-            mouse.accepted = true
         }
 
         onClicked: pressedOrClicked(mouse)

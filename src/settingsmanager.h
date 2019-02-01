@@ -54,17 +54,21 @@ public:
 
     Q_PROPERTY (bool rotationSelected READ rotationSelected WRITE setRotationSelected NOTIFY rotationSelectedChanged)
     Q_PROPERTY (bool demoModeSelected READ demoModeSelected WRITE setDemoModeSelected NOTIFY demoModeSelectedChanged)
+    Q_PROPERTY (int demoModeStartupTime READ demoModeStartupTime WRITE setDemoModeStartupTime NOTIFY demoModeStartupTimeChanged)
 
     bool rotationSelected();
     void setRotationSelected(bool enabled);
     bool demoModeSelected();
     void setDemoModeSelected(bool enabled);
+    int demoModeStartupTime();
+    void setDemoModeStartupTime(int startupTime);
 
 signals:
     void gridSelectedChanged(bool enabled);
     void mouseSelectedChanged(bool enabled);
     void rotationSelectedChanged(bool enabled);
     void demoModeSelectedChanged(bool enabled);
+    void demoModeStartupTimeChanged(int startupTime);
 
 private:
     QSettings m_settings;

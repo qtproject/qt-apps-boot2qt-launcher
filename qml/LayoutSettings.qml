@@ -125,31 +125,74 @@ Item {
                 text: qsTr("TOUCH")
             }
         }
-    }
 
-    LauncherCheckBox {
-        id: flipScreenCheckBox
-        text: qsTr("Flip screen")
-        checked: globalSettings.rotationSelected
-        anchors.top: column.bottom
-        anchors.left: parent.left
-        anchors.topMargin: root.margin
-
-        onCheckedChanged: {
-            globalSettings.rotationSelected = checked
+        Item {
+            height: root.margin
+            width: 1
         }
-    }
 
-    LauncherCheckBox {
-        id: demoModeCheckBox
-        text: qsTr("Demo mode")
-        checked: globalSettings.demoModeSelected
-        anchors.top: column.bottom
-        anchors.left: flipScreenCheckBox.right
-        anchors.topMargin: root.margin
+        Row {
+            spacing: root.margin
 
-        onCheckedChanged: {
-            globalSettings.demoModeSelected = checked
+            LauncherCheckBox {
+                id: demoModeCheckBox
+                text: qsTr("Demo mode")
+                checked: globalSettings.demoModeSelected
+
+                onCheckedChanged: {
+                    globalSettings.demoModeSelected = checked
+                }
+            }
+
+            LauncherCheckBox {
+                id: flipScreenCheckBox
+                text: qsTr("Flip screen")
+                checked: globalSettings.rotationSelected
+
+                onCheckedChanged: {
+                    globalSettings.rotationSelected = checked
+                }
+            }
+        }
+
+        Row {
+            spacing: root.margin * 0.2
+            Text {
+                height: pluginMain.buttonHeight
+                text: qsTr("Demo startup time:")
+                color: "white"
+                font.pixelSize: pluginMain.valueFontSize
+                font.family: appFont
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            TextField {
+                id: demoStartupTime
+                rightPadding: 6
+                bottomPadding: 6
+                topPadding: 6
+                height: pluginMain.buttonHeight
+                width: root.width * 0.1
+                color: "black"
+                font.pixelSize: pluginMain.valueFontSize
+                text: globalSettings.demoModeStartupTime
+                horizontalAlignment: Text.AlignRight
+                inputMethodHints: Qt.ImhDigitsOnly
+                background: Rectangle {
+                    border.color: demoStartupTime.focus ? viewSettings.buttonGreenColor : "transparent"
+                    border.width: parent.width * 0.05
+                }
+                onAccepted: globalSettings.demoModeStartupTime = text
+            }
+
+            Text {
+                height: pluginMain.buttonHeight
+                text: qsTr("s")
+                color: "white"
+                font.pixelSize: pluginMain.valueFontSize
+                font.family: appFont
+                verticalAlignment: Text.AlignVCenter
+            }
         }
     }
 }

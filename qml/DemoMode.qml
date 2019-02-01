@@ -367,7 +367,7 @@ Item {
         }
         PauseAnimation { duration: demoStepDuration }
         ScriptAction { script: automationHelper.clickChildObject(visibleItem, "detailStartButton") }
-        PauseAnimation { duration: applicationWaitDuration }
+        PauseAnimation { duration: 3 * applicationWaitDuration } // E-Bike is slower to start than other demos
 
         // Turn on lights
         ScriptAction { script: automationHelper.clickChildObject(visibleItem, "ebikeLightsButton") }

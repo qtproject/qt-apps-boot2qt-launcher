@@ -40,13 +40,15 @@ public:
     virtual ~IndexingThread() = default;
     void run() final;
 
+private:
+    void parseDemo(QString path, QList<AppData> &results);
+
 signals:
     void indexingFinished(QList<AppData> results);
 
 public:
     QString root;
     ApplicationsModel *model = nullptr;
-    QString target;
 };
 
 #endif // APPLICATIONSMODEL_P_H

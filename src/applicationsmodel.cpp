@@ -50,66 +50,12 @@ void IndexingThread::run()
 {
     QList<AppData> results;
     QList<QString> roots = root.split(":");
-    target = qgetenv("B2QT_BASE") + "-" + qgetenv("B2QT_PLATFORM");
     foreach (const QString &root, roots) {
-        if (QFile::exists(root + "/demos.xml")) {
-
-            QFile file(root + "/demos.xml");
-
-            if (!file.open(QIODevice::ReadOnly))
-                break;
-
-            QXmlStreamReader xml(&file);
-
-            AppData data;
-            bool exclude = false;
-
-            while (!xml.atEnd()) {
-                switch (xml.readNext()) {
-
-                case QXmlStreamReader::StartElement:
-                    if (xml.name().toString().toLower() == "application") {
-
-                        const QStringList excludeList = xml.attributes().value("exclude").toString().split(QStringLiteral(";"));
-
-                        exclude = excludeList.contains(target) || excludeList.contains(QStringLiteral("all"));
-
-                        if (exclude)
-                            break;
-
-                        data.name = xml.attributes().value("title").toString().trimmed();
-
-                        QString path = xml.attributes().value("location").toString();
-                        data.location = QUrl::fromLocalFile(path);
-
-                        data.main = QString("/%1").arg(xml.attributes().value("main").toString());
-
-                        QString imageName = xml.attributes().value("icon").toString();
-
-                        data.icon = QFile::exists(imageName)
-                                ? QUrl::fromLocalFile(imageName)
-                                : QUrl("qrc:///qml/images/codeless.png");
-
-
-                        data.priority = xml.attributes().value("priority").toInt();
-
-                    } else if (xml.name().toString().toLower() == "description") {
-                        data.description = xml.readElementText().trimmed();
-                    }
-                    break;
-
-                case QXmlStreamReader::EndElement:
-                    if (xml.name().toString().toLower() == "application" && !exclude)
-                        results << data;
-                    break;
-
-                default:
-                    break;
-                }
-            }
-
-            if (xml.error() != QXmlStreamReader::NoError)
-                qWarning("XML Parser error: %s", qPrintable(xml.errorString()));
+        QDirIterator it(root, QDir::Dirs | QDir::NoDotDot);
+        while (it.hasNext()) {
+            QString path = it.next();
+            if (QFile::exists(path + "/demo.xml"))
+                parseDemo(path, results);
         }
     }
 
@@ -117,6 +63,52 @@ void IndexingThread::run()
 
     qDebug() << "Indexer: all done... total:" << results.size();
     emit indexingFinished(results);
+}
+
+void IndexingThread::parseDemo(QString path, QList<AppData> &results) {
+    QFile file(path + "/demo.xml");
+
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+
+    QXmlStreamReader xml(&file);
+
+    AppData data;
+    while (!xml.atEnd()) {
+        switch (xml.readNext()) {
+
+        case QXmlStreamReader::StartElement:
+            if (xml.name().toString().toLower() == "application") {
+                data.location = QUrl::fromLocalFile(path);
+                data.name = xml.attributes().value("title").toString().trimmed();
+                data.main = QString("/%1").arg(xml.attributes().value("main").toString());
+
+                QString imageName = QString("%1/%2")
+                        .arg(path, xml.attributes().value("icon").toString());
+
+                data.icon = QFile::exists(imageName)
+                        ? QUrl::fromLocalFile(imageName)
+                        : QUrl();
+
+                data.priority = xml.attributes().value("priority").toInt();
+
+            } else if (xml.name().toString().toLower() == "description") {
+                data.description = xml.readElementText().trimmed();
+            }
+            break;
+
+        case QXmlStreamReader::EndElement:
+            if (xml.name().toString().toLower() == "application")
+                results << data;
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    if (xml.error() != QXmlStreamReader::NoError)
+        qWarning("XML Parser error: %s", qPrintable(xml.errorString()));
 }
 
 ApplicationsModel::ApplicationsModel(QObject *parent) :

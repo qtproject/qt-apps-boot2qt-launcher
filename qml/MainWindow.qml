@@ -180,11 +180,7 @@ Item {
             objectName: "applicationLoader"
             opacity: 0;
             visible: opacity > 0.1
-            height: root.demoHeaderEnabled ? parent.height - (demoHeader.height + demoHeader.y) : parent.height
-
-            anchors.top: root.demoHeaderEnabled ? demoHeader.bottom : root.top
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.fill: parent
 
             asynchronous: true;
             onStatusChanged: {

@@ -142,7 +142,7 @@ int main(int argc, char **argv)
     }
     QQuickStyle::setStyle(styleSettings.value("style").toString());
 
-    QSettings launcherSettings("QtLauncher", "colorSettings");
+    QSettings launcherSettings("Qt", "QtLauncher");
 
     engine.rootContext()->setContextProperty("_backgroundColor", launcherSettings.value("backgroundColor", "#09102b"));
     engine.rootContext()->setContextProperty("_primaryGreen", launcherSettings.value("primaryGreen", "#41cd52"));
@@ -151,8 +151,11 @@ int main(int argc, char **argv)
     engine.rootContext()->setContextProperty("_primaryGrey", launcherSettings.value("primaryGrey", "#9d9faa"));
     engine.rootContext()->setContextProperty("_secondaryGrey", launcherSettings.value("secondaryGrey", "#3a4055"));
 
-    engine.rootContext()->setContextProperty("VideosLocation", launcherSettings.value("videosLocation", "file:///data/videos"));
-    engine.rootContext()->setContextProperty("DefaultVideoUrl", launcherSettings.value("defaultVideoUrl", "file:///data/videos/Qt+for+Designers+and+Developers.mp4"));
+    engine.rootContext()->setContextProperty("VideosLocation",
+                                             launcherSettings.value("videosLocation"));
+    engine.rootContext()->setContextProperty("DefaultVideoUrl",
+                                             launcherSettings.value("defaultVideoUrl"));
+
 
     engine.addImageProvider("QtImage", &imageProvider);
     engine.addImageProvider("QtSquareImage", &squareImageProvider);

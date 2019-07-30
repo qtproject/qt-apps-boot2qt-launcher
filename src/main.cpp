@@ -68,10 +68,13 @@ void displayHelp(const char *appName)
 
 int main(int argc, char **argv)
 {
+    QSettings launcherSettings("Qt", "QtLauncher");
+
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
-    qputenv("QT_QUICK_CONTROLS_CONF", "/data/user/qt/qtquickcontrols2/qtquickcontrols2.conf");
-    QIcon::setThemeSearchPaths(QStringList() << "/data/user/qt/qtquickcontrols2/icons");
+    QByteArray applicationsRootStr = launcherSettings.value("defaultApplicationRoot").toByteArray();
+    qputenv("QT_QUICK_CONTROLS_CONF", applicationsRootStr + "/qtquickcontrols2/qtquickcontrols2.conf");
+    QIcon::setThemeSearchPaths(QStringList() << applicationsRootStr + "/qtquickcontrols2/icons");
 
     QIcon::setThemeName("gallery");
 
@@ -107,7 +110,7 @@ int main(int argc, char **argv)
     QFontDatabase::addApplicationFont(":/qml/fonts/Teko-Regular.ttf");
     QFontDatabase::addApplicationFont(":/qml/fonts/fontawesome-webfont.ttf");
 
-    ApplicationSettings applicationSettings;
+    ApplicationSettings applicationSettings(applicationsRootStr);
 
     if (!applicationSettings.parseCommandLineArguments()) {
         displayHelp(argv[0]);
@@ -132,17 +135,15 @@ int main(int argc, char **argv)
     QtImageMaskProvider imageMaskProvider;
 
     // Material style can be set only for devices supporting GL
-    QSettings styleSettings;
-    QString style = styleSettings.value("style").toString();
+    QString style = launcherSettings.value("style").toString();
     if (Engine::checkForGlAvailability()) {
-        if (style.isEmpty() || style == "Default")
-            styleSettings.setValue("style", "Material");
+        if (style.isEmpty())
+            launcherSettings.setValue("style", "Material");
     } else {
-        qDebug()<<"No GL available, skipping Material style";
+        qDebug() << "No GL available, skipping Material style";
+        launcherSettings.setValue("style", "Default");
     }
-    QQuickStyle::setStyle(styleSettings.value("style").toString());
-
-    QSettings launcherSettings("Qt", "QtLauncher");
+    QQuickStyle::setStyle(launcherSettings.value("style").toString());
 
     engine.rootContext()->setContextProperty("_backgroundColor", launcherSettings.value("backgroundColor", "#09102b"));
     engine.rootContext()->setContextProperty("_primaryGreen", launcherSettings.value("primaryGreen", "#41cd52"));

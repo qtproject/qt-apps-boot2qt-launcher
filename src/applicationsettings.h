@@ -40,7 +40,7 @@ class ApplicationSettings : public QObject
     Q_PROPERTY(QString appsRoot READ appsRoot NOTIFY appsRootChanged)
     Q_PROPERTY(bool isShowFPSEnabled READ isShowFPSEnabled NOTIFY isShowFPSEnabledChanged)
 public:
-    explicit ApplicationSettings(QObject *parent = 0);
+    explicit ApplicationSettings(QString appsRoot, QObject *parent = 0);
 
     QUrl mainFile() const;
     QString appsRoot() const;

@@ -32,10 +32,10 @@
 #include <QtCore/QDebug>
 #include <QtCore/QStringList>
 
-ApplicationSettings::ApplicationSettings(QObject *parent)
+ApplicationSettings::ApplicationSettings(QString appsRoot, QObject *parent)
     : QObject(parent)
     , m_mainFile(QUrl(QStringLiteral("qrc:///qml/Main.qml")))
-    , m_appsRoot("/data/user/qt")
+    , m_appsRoot(appsRoot)
     , m_isShowFPSEnabled(false)
 {
 }

@@ -37,6 +37,7 @@ Item {
     property real demoHeaderHeight: 2.5 * pageMargin
     property string appFont: "TitilliumWeb"
     property int stateDelay: 200;
+    property int headerAutoHideDelay: 3000
     property string backgroundColor: "#09102b"
     property string borderColor: "#9d9faa"
     property string buttonGreenColor: "#41cd52"

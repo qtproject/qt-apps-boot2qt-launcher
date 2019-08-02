@@ -111,11 +111,13 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         y: open ? parent.height - height/2 : parent.height
         rotation: open ? 180 : 0
+        Drag.active: headerToggleMouseArea.drag.active
 
         Behavior on rotation { NumberAnimation { duration: 100 } }
         Behavior on y { NumberAnimation { duration: 100 } }
 
         MouseArea {
+            id: headerToggleMouseArea
             anchors.fill: parent
             anchors.margins: -parent.height * 0.5
             drag.target: demoHeaderBar
@@ -123,13 +125,34 @@ Rectangle {
             drag.minimumX: -demoHeaderBar.height
             drag.maximumY: 0
 
-            onClicked: {
-                if (demoHeaderBar.y < -demoHeaderBar.height / 2)
-                    demoHeaderBar.y = 0
-                else
-                    demoHeaderBar.y = -demoHeaderBar.height
+            DropArea {
+                anchors.fill: parent
+                onDropped: demoHeaderVisibilityDelay.restart()
             }
-            onReleased: demoHeaderBar.y = demoHeaderBar.y > -demoHeaderBar.height / 4 ? 0 : -demoHeaderBar.height
+
+            onClicked: {
+                if (demoHeaderBar.y < -demoHeaderBar.height / 2) {
+                    demoHeaderBar.y = 0
+                    demoHeaderVisibilityDelay.restart()
+                } else {
+                    demoHeaderBar.y = -demoHeaderBar.height
+                }
+            }
+            onReleased: {
+                demoHeaderBar.y = demoHeaderBar.y > -demoHeaderBar.height / 4 ? 0 : -demoHeaderBar.height
+                parent.Drag.drop()
+            }
+        }
+    }
+
+    Component.onCompleted: demoHeaderVisibilityDelay.start()
+
+    Timer {
+        id: demoHeaderVisibilityDelay
+        interval: viewSettings.headerAutoHideDelay
+        onTriggered: {
+            if (!demoHeaderVisibilityDelay.running)
+                demoHeaderBar.y = -demoHeaderBar.height
         }
     }
 }

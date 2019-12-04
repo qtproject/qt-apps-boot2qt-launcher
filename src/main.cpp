@@ -68,6 +68,12 @@ void displayHelp(const char *appName)
 
 int main(int argc, char **argv)
 {
+#if defined(USE_QTWEBENGINE)
+    // This is currently needed by all QtWebEngine applications using the HW accelerated QQuickWebView.
+    // It enables sharing the QOpenGLContext of all QQuickWindows of the application.
+    // We have to do so until we expose public API for it in Qt or choose to enable it by default.
+    QtWebEngine::initialize();
+#endif
     QSettings launcherSettings("Qt", "QtLauncher");
 
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
@@ -85,13 +91,6 @@ int main(int argc, char **argv)
 
     QApplication app(argc, argv);
     app.setApplicationVersion(APPLICATION_VERSION);
-
-#if defined(USE_QTWEBENGINE)
-    // This is currently needed by all QtWebEngine applications using the HW accelerated QQuickWebView.
-    // It enables sharing the QOpenGLContext of all QQuickWindows of the application.
-    // We have to do so until we expose public API for it in Qt or choose to enable it by default.
-    QtWebEngine::initialize();
-#endif
 
     QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-Light.ttf");
     QFontDatabase::addApplicationFont(":/qml/fonts/TitilliumWeb-Regular.ttf");

@@ -39,6 +39,9 @@ Window {
 
     color: viewSettings.backgroundColor
     property alias appFont: viewSettings.appFont
+    contentOrientation: Screen.desktopAvailableHeight > Screen.desktopAvailableWidth ?
+                            (globalSettings.rotationSelected ? Qt.InvertedLandscapeOrientation : Qt.LandscapeOrientation) :
+                            (globalSettings.rotationSelected ? Qt.InvertedPortraitOrientation : Qt.PortraitOrientation)
 
     ViewSettings {
         id: viewSettings

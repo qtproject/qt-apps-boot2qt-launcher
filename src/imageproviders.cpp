@@ -33,6 +33,7 @@
 #include <QPen>
 #include <QBrush>
 #include <QPainter>
+#include <QPainterPath>
 #include <QLinearGradient>
 
 static const int CORNER_CUTSIZE = 20;

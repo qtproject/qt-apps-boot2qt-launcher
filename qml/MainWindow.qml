@@ -275,10 +275,16 @@ Item {
         InputPanel {
             id: inputPanel
             z: 99
-            y: root.height
-            anchors.left: root.left
-            anchors.right: root.right
-            visible: y < root.height
+            x: root.portraitMode ?
+                   (globalSettings.rotationSelected ?
+                        inputPanel.height + root.height : -inputPanel.height - root.height) :
+                   0
+            y: root.portraitMode ?
+                   (globalSettings.rotationSelected ? inputPanel.height : inputPanel.height) :
+                   (globalSettings.rotationSelected ? -root.height : root.height)
+            width: root.portraitMode ? window.height : window.width
+            rotation: root.rotation
+            property real alignmentWorkaround: height * 0.1
             onActiveChanged: {
                 if (!active)
                     applicationLoader.anchors.topMargin = 0;
@@ -296,7 +302,14 @@ Item {
                 when: inputPanel.active
                 PropertyChanges {
                     target: inputPanel
-                    y: root.height - inputPanel.height
+                    x: root.portraitMode ?
+                           (globalSettings.rotationSelected ?
+                                root.height - inputPanel.height * 2 - inputPanel.alignmentWorkaround :
+                                -inputPanel.height - inputPanel.alignmentWorkaround) :
+                           0
+                    y: root.portraitMode ?
+                           inputPanel.height + inputPanel.alignmentWorkaround :
+                           (globalSettings.rotationSelected ? 0 : root.height - inputPanel.height)
                 }
             }
 
@@ -305,6 +318,11 @@ Item {
                 to: "visible"
                 reversible: true
                 ParallelAnimation {
+                    NumberAnimation {
+                        properties: "x"
+                        duration: 250
+                        easing.type: Easing.InOutQuad
+                    }
                     NumberAnimation {
                         properties: "y"
                         duration: 250

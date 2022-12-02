@@ -1,20 +1,21 @@
-This is the Boot to Qt launcher, it can launch in-process QML applications
+This is the Boot to Qt 6 Demo Launcher, it's a Wayland compositor that can launch Qt demo applications as Wayland clients.
 
 Command line options:
  --main-file [.qml file]        Specify an optional qml file
  --applications-root [dir]      The root of your directories, multiple can
                                 be given, separated by ':'
- --no-boot-animation            If you think it is boring, disable it
 
+Each demo added to the launcher uses the following XML format named as demo.xml and located in <applications-root/demoname>
 
-Generating new screenshots:
----------------------------
+---------------------------------------------------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
 
-First, cd into screenshot/plugin and compile/make install that plugin, then
-run the launcher with the command line options:
+<application title="TITLE" priority="1" icon="preview.png" binary="PATH/TO/BINARY" arguments="-COMMANDLINE ARGS">
+<environment>
+    <variable name="CUSTOM_ENV_VARIABLE" value="ENV_VALUE"/>
+</environment>
+<description>SHORT DESCRIPTION OF THE DEMO APPEARING ON LAUNCHER</description>
+</application>
+---------------------------------------------------------------------------------------------------------------------------
 
-> qtlauncher --main-file screenshot/Main.qml --applications-root [your apps]
-
-When you hit the "grab" button, it will grab a highres "preview_l.jpg" and
-a lowres copy into the application's directory. Resize to portrait to get
-a portrait version, named "preview_p.jpg".
+If icon image is not found, the launcher app creates one automatically on first demo startup.

@@ -57,7 +57,7 @@ int main(int argc, char **argv)
     }
 
     if (appsRoot.isEmpty()) {
-        appsRoot = "/usr/examples/data";
+        appsRoot = "/usr/share/examples/boot2qt-launcher-demos";
     }
 
     qInfo() << "Applications Root:" << appsRoot;

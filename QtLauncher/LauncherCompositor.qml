@@ -7,6 +7,8 @@ import QtWayland.Compositor.IviApplication
 
 WaylandCompositor {
     id: waylandCompositor
+    socketName: "boot2qt-democompositor"
+
     property bool scalableDemo: false
     property string appsRoot: ""
     property ListModel shellSurfaces: ListModel {}

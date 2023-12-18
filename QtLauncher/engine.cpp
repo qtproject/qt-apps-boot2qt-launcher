@@ -5,6 +5,7 @@
 
 #include <QFileInfo>
 #include <QDir>
+#include <QStandardPaths>
 
 #define ENGINE_STATE_RUNNING QStringLiteral("running")
 #define ENGINE_STATE_APPLAUNCHING QStringLiteral("app-launching")
@@ -57,6 +58,7 @@ void Engine::launchApplication(const QString &binary, const QString &arguments, 
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
     environment.insert("QT_IM_MODULE", "");
     environment.insert("QT_QPA_PLATFORM", "wayland-egl");
+    environment.insert("WAYLAND_DISPLAY", QStringLiteral("%1/boot2qt-democompositor").arg(QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation)));
 
     for (QVariantMap::const_iterator i = env.begin(); i !=env.end(); ++i) {
         environment.insert(i.key(), i.value().toString());

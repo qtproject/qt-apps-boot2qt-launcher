@@ -25,6 +25,11 @@ Item {
             anchors.right: parent.right
             height: parent.height
             width: parent.width * 0.5
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: detailRoot.appsModel.launchFromIndex(thumbList.currentIndex)
+            }
         }
 
         Flickable {
@@ -32,7 +37,7 @@ Item {
             anchors.left: parent.left
             anchors.right: largeImg.left
             anchors.top: parent.top
-            anchors.bottom: startButton.top
+            anchors.bottom: parent.bottom
             anchors.bottomMargin: detailRoot.pageMargin * 0.5
             anchors.rightMargin: detailRoot.pageMargin
             contentHeight: descriptionHolder.height
@@ -75,29 +80,6 @@ Item {
                     color: "white"
                     elide: Text.ElideRight
                 }
-            }
-        }
-
-        Image {
-            id: startButton
-            height: detailInformation.height * 0.14
-            width: height * 3
-            sourceSize: Qt.size(width,height)
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-            anchors.margins: detailRoot.pageMargin * 0.5
-            source : "image://QtButtonImage/10/%1/%1".arg(ViewSettings.buttonGreenColor)
-
-            Text {
-                anchors.centerIn: parent
-                text: qsTr("Start")
-                color: "white"
-                font.pixelSize: parent.height * .5
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: detailRoot.appsModel.launchFromIndex(thumbList.currentIndex)
             }
         }
     }

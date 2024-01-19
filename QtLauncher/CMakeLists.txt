@@ -36,6 +36,9 @@ set(images
     "images/backImg.jpg"
     "images/QtCorner.png"
     "images/glow.png"
+    "images/glow_border.png"
+    "images/glow_border2.png"
+    "images/glow_corner.png"
 )
 
 set(icons

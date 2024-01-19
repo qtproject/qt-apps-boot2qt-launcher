@@ -10,6 +10,105 @@ Item {
     onWidthChanged: contentRect.openChanged()
     onHeightChanged: contentRect.openChanged()
 
+    Item {
+        id: glowItem
+        anchors.fill: contentRect
+        visible: contentRect.open
+
+        SequentialAnimation on opacity {
+            running: glowItem.visible
+            loops: SequentialAnimation.Infinite
+            OpacityAnimator {
+                from: 0
+                to: .5
+                duration: 2000
+                easing.type: Easing.InOutSine
+            }
+            OpacityAnimator {
+                from: .5
+                to: .0
+                duration: 2000
+                easing.type: Easing.InOutSine
+            }
+            PauseAnimation {
+                duration: 1000
+            }
+        }
+
+        Image {
+            id: borderCorner1
+            source: "images/glow_corner.png"
+            anchors.right: glowItem.left
+            anchors.bottom: glowItem.top
+            width: pageMargin * 1.5
+            height: width
+        }
+        Image {
+            id: border1
+            source: "images/glow_border.png"
+            anchors.left: borderCorner1.right
+            anchors.right: borderCorner2.left
+            anchors.bottom: glowItem.top
+            height: pageMargin * 1.5
+        }
+        Image {
+            id: borderCorner2
+            source: "images/glow_corner.png"
+            anchors.left: glowItem.right
+            anchors.bottom: glowItem.top
+            width: pageMargin * 1.5
+            height: width
+            mirror: true
+        }
+        Image {
+            id: border2
+            source: "images/glow_border2.png"
+            anchors.left: glowItem.right
+            anchors.top: borderCorner2.bottom
+            anchors.bottom: borderCorner3.top
+            mirror: true
+            width: pageMargin * 1.5
+        }
+        Image {
+            id: border3
+            source: "images/glow_border2.png"
+            anchors.right: glowItem.left
+            anchors.top: borderCorner1.bottom
+            anchors.bottom: borderCorner3.top
+            width: pageMargin * 1.5
+        }
+        Image {
+            id: borderCorner3
+            source: "images/glow_corner.png"
+            anchors.right: glowItem.left
+            anchors.top: glowItem.bottom
+            mirrorVertically: true
+            width: pageMargin * 1.5
+            height: width
+        }
+
+        Image {
+            id: border4
+            source: "images/glow_border.png"
+            anchors.left: borderCorner3.right
+            anchors.right: borderCorner4.left
+            anchors.top: glowItem.bottom
+            mirrorVertically: true
+            height: pageMargin * 1.5
+        }
+
+        Image {
+            id: borderCorner4
+            source: "images/glow_corner.png"
+            anchors.left: glowItem.right
+            anchors.top: glowItem.bottom
+            mirror: true
+            mirrorVertically: true
+            width: pageMargin * 1.5
+            height: width
+        }
+    }
+
     Image {
         id: contentRect
         width: -root.width * .006
@@ -18,6 +117,13 @@ Item {
         smooth: !imageAnimation.running
         property bool open: false
         property string newImageSource: ""
+
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: ViewSettings.neon
+            border.width: 1
+        }
 
         onNewImageSourceChanged: {
             if (contentRect.open && contentRect.newImageSource) {

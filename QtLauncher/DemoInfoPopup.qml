@@ -8,6 +8,7 @@ Item {
     id: demoInfoPopup
     required property real pageMargin
     property alias description: tt.text
+    property alias title: infoTitle.text
 
     function open()
     {
@@ -76,7 +77,6 @@ Item {
             color: "white"
             font.family: ViewSettings.appFont
             font.styleName: "SemiBold"
-            text: qsTr("About Current Demo")
             wrapMode: Text.WordWrap
         }
 

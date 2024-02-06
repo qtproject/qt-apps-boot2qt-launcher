@@ -30,6 +30,7 @@ Item {
 
         function launchFromIndex(index: int) {
             demoInfoPopup.description = applicationsModel.query(index, "description")
+            demoInfoPopup.title = applicationsModel.query(index, "name")
             demoHeader.title = applicationsModel.query(index, "name")
             mainWindow.compositor.scalableDemo = applicationsModel.query(index, "scalable")
 

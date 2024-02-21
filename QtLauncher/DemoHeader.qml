@@ -65,6 +65,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 anchors.margins: -parent.height * 0.5
+                enabled: demoHeaderBar.open
                 onClicked: demoHeaderBar.infoClicked()
             }
         }
@@ -78,6 +79,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 anchors.margins: -parent.height * 0.5
+                enabled: demoHeaderBar.open
                 onClicked: demoHeaderBar.closeClicked()
             }
         }

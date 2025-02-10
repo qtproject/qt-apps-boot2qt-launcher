@@ -12,6 +12,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QXmlStreamReader>
+#include <QLibraryInfo>
 
 static bool appOrder(const AppData& a, const AppData& b)
 {
@@ -23,7 +24,7 @@ static bool appOrder(const AppData& a, const AppData& b)
 void IndexingThread::run()
 {
     QList<AppData> results;
-    QList<QString> roots = root.split(":");
+    QList<QString> roots = {root, ":metadata"};
     foreach (const QString &root, roots) {
         QDirIterator it(root, QDir::Dirs | QDir::NoDotDot);
         while (it.hasNext()) {
@@ -71,6 +72,9 @@ void IndexingThread::parseDemo(QString path, QList<AppData> &results) {
                 data.priority = xml.attributes().value("priority").toInt();
 
                 data.binary = xml.attributes().value("binary").toString();
+                QFileInfo binary(data.binary);
+                if (!binary.isAbsolute())
+                    data.binary = QLibraryInfo::path(QLibraryInfo::ExamplesPath) + "/" + data.binary;
                 data.arguments = xml.attributes().value("arguments").toString();
                 data.scalable = xml.attributes().value("scalable").toInt();
 
@@ -93,8 +97,12 @@ void IndexingThread::parseDemo(QString path, QList<AppData> &results) {
             break;
 
         case QXmlStreamReader::EndElement:
-            if (xml.name().toString().toLower() == "application")
-                results << data;
+            if (xml.name().toString().toLower() == "application") {
+                if (QFileInfo::exists(data.binary))
+                    results << data;
+                else
+                    qInfo() << "Demo not found:" << data.binary;
+            }
             break;
 
         default:

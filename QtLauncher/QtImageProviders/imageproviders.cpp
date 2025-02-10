@@ -62,7 +62,7 @@ QPixmap QtImageProvider::requestPixmap(const QString &id, QSize *size, const QSi
     Q_UNUSED(requestedSize);
 
     QString idd = id;
-    idd.remove("file://");
+    idd.remove("file:");
 
     if (idd.endsWith("_missing"))
         idd = ":/qt/qml/QtLauncher/QtImageProviders/thumbnail.png";
@@ -89,7 +89,7 @@ QPixmap QtSquareImageProvider::requestPixmap(const QString &id, QSize *size, con
 
     QString idd = id;
 
-    idd.remove("file://");
+    idd.remove("file:");
     idd.remove("gradient/");
 
     if (idd.endsWith("_missing"))

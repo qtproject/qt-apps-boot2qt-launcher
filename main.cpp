@@ -9,6 +9,7 @@
 #include <QtGui/QFontDatabase>
 #include <QtGui/QGuiApplication>
 #include <QtQml/QQmlApplicationEngine>
+#include <QtCore/QLibraryInfo>
 
 #if defined(USE_STATIC_BUILD_FLAG)
 #include <QtQml/QQmlEngineExtensionPlugin>
@@ -64,7 +65,7 @@ int main(int argc, char **argv)
     }
 
     if (appsRoot.isEmpty()) {
-        appsRoot = "/usr/share/examples/boot2qt-launcher-demos";
+        appsRoot = QLibraryInfo::path(QLibraryInfo::ExamplesPath);
     }
 
     qInfo() << "Applications Root:" << appsRoot;

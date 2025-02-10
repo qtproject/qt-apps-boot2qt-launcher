@@ -19,6 +19,17 @@ qt_add_executable(${PROJECT_NAME}
     main.cpp
 )
 
+
+# Collect metadata
+file(GLOB_RECURSE metadata_glob
+    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    metadata/*)
+list(APPEND metadata ${metadata_glob})
+
+qt_add_resources(${PROJECT_NAME} "metadata"
+    FILES ${metadata}
+)
+
 if(NOT DEFINED USE_SHARED_BUILD)
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_STATIC_BUILD_FLAG)
 endif()

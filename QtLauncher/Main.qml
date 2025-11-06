@@ -14,6 +14,7 @@ LauncherCompositor {
         width: Screen.desktopAvailableWidth
         height: Screen.desktopAvailableHeight
         color: ViewSettings.backgroundColor
+        visibility: compositor.fullscreen ? Window.FullScreen : Window.AutomaticVisibility
 
         property real pageMargin: ViewSettings.margin * Math.min(window.width, window.height)
 

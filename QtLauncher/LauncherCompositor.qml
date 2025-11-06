@@ -11,6 +11,7 @@ WaylandCompositor {
 
     property bool scalableDemo: false
     property string appsRoot: ""
+    property bool fullscreen: false
     property ListModel shellSurfaces: ListModel {}
     property alias waylandOutput: output
 

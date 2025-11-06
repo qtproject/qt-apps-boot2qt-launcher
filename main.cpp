@@ -23,6 +23,7 @@ void displayHelp(const char *appName)
            "\n"
            "Options:\n"
            " --applications-root [path]         Specify a different applications root\n"
+           " --fullscreen                       Start in fullscreen mode\n"
            , appName
            );
 }
@@ -35,6 +36,7 @@ int main(int argc, char **argv)
     QGuiApplication app(argc, argv);
 
     QString appsRoot;
+    bool fullscreen = false;
 
     const QStringList args = app.arguments();
     for (int i = 1; i < args.size(); ++i) {
@@ -42,6 +44,8 @@ int main(int argc, char **argv)
         if (arg == QStringLiteral("--applications-root")) {
             ++i;
             appsRoot = args.at(i);
+        } else if (arg == QStringLiteral("--fullscreen")) {
+            fullscreen = true;
         } else if (arg == QStringLiteral("-h")
                    || arg == QStringLiteral("--help")
                    || arg == QStringLiteral("-?")) {
@@ -67,8 +71,7 @@ int main(int argc, char **argv)
 
     QQmlApplicationEngine engine;
 
-    engine.setInitialProperties({{"appsRoot", appsRoot}});
+    engine.setInitialProperties({{"appsRoot", appsRoot}, {"fullscreen", fullscreen}});
     engine.loadFromModule("QtLauncher", "Main");
-
     return app.exec();
 }

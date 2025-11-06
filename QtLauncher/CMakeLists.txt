@@ -52,6 +52,7 @@ set(icons
     "icons/settings_icon.svg"
     "icons/grid_icon.svg"
     "icons/touch_icon.svg"
+    "icons/quit_icon.svg"
 )
 
 add_subdirectory(QtImageProviders)

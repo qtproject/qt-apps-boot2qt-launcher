@@ -143,6 +143,21 @@ Item {
                     height: parent.height
                     color: "white"
                 }
+
+                SettingsButton {
+                    id: quit
+                    source: "icons/quit_icon.svg"
+
+                    onClicked: {
+                        Qt.quit()
+                    }
+                }
+
+                Rectangle {
+                    width: 2
+                    height: parent.height
+                    color: "white"
+                }
             }
         }
 
